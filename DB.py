@@ -1,7 +1,26 @@
 import pymysql
 
+
 class DB:
+    """
+    무슨일을 하는 클래스인지 적어주세요
+    """
     def __init__(self, ip, port, user, password, db_name, charset='utf8'):
+        """
+        무슨일을 하는 함수인지 적어주세요
+
+        Args:
+            ip:
+            port:
+            user:
+            password:
+            db_name:
+            charset:
+
+        Returns:
+
+        """
+
         self.db = pymysql.connect(host=str(ip), port=port, user=user, passwd=password, db=db_name, charset=charset)
         #-- let's think about cashing here --
         #--
@@ -10,6 +29,18 @@ class DB:
 
     # environment table APIs
     def set_environment(self, ipv4, floor, width, height, depth):
+        """
+        무슨일을 하는 함수인지 적어주세요
+
+        Args:
+            ipv4:
+            floor:
+            width:
+            height:
+            depth:
+
+        Returns:
+        """
         try:
             with self.db.cursor() as cursor:
                 query = 'INSERT INTO environment(ipv4, floor, width, height, depth) VALUES(INET_ATON("%s"), %s, %s, %s, %s)'
@@ -24,26 +55,71 @@ class DB:
             return True
 
     def get_environment(self, id):
+        """
+        무슨일을 하는 함수인지 적어주세요
+
+        Args:
+            id:
+
+        Returns:
+        """
         # 'select * from environment where id = id'
         # return tuple type env data
         print('now working on')
 
     def delete_environment(self, id):
+        """
+        무슨일을 하는 함수인지 적어주세요
+
+        Args:
+            id:
+
+        Returns:
+        """
         # 'delete * from environment where id = id'
         # return True/False
         print('now working on')
 
     def update_environment(self, id, ipv4, floor, width, height, depth):
+        """
+        무슨일을 하는 함수인지 적어주세요
+
+        Args:
+            id:
+            ipv4:
+            floor:
+            width:
+            height:
+            depth:
+
+        Returns:
+        """
         # 'update environment set ... where id = id
         # return True/False
         print('now working on')
 
     def list_environment(self):
+        """
+        무슨일을 하는 함수인지 적어주세요
+
+        Args:
+
+        Returns:
+        """
         # 'select * from environment'
         # return tuple type lists
         print('now working on')
 
     def set_image(self, device_id, image, type):
+        """
+        무슨일을 하는 함수인지 적어주세요
+
+        Args:
+            device_id:
+            image:
+            type:
+        Retruns:
+        """
         if isinstance(image, str):
             try:
                 with open(image, 'rb') as file:
