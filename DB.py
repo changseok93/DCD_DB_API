@@ -1,8 +1,23 @@
 import pymysql
 import querys
 
+
 class DB:
+    """
+    MySQL database와 정보를 주고받는 API class 입니다.
+    """
     def __init__(self, ip, port, user, password, db_name, charset='utf8'):
+        """
+        DB class 초기화
+
+        Args:
+            ip: ipv4 주소
+            port: 포트 포워딩을 위한 포트
+            user: MySQL 서버에 로그인을 위한 아이디
+            password: MySQL 서버에 로그인을 위한 비밀번호
+            db_name: 데이터베이스 네임
+            charset: 문자 인코딩 방식
+        """
         try:
             self.db = pymysql.connect(host=str(ip), port=port, user=user, passwd=password, db=db_name, charset=charset)
         except Exception as e:
@@ -15,6 +30,18 @@ class DB:
 
     # environment table APIs
     def set_environment(self, ipv4, floor, width, height, depth):
+        """
+        Args:
+            ipv4:
+            floor:
+            width:
+            height:
+            depth:
+
+        Returns:
+            True: Mysql에 쿼리 날리기 성
+            False:
+        """
         with self.db.cursor() as cursor:
             try:
                 query = 'INSERT INTO environment(ipv4, floor, width, height, depth) VALUES(INET_ATON(%s), %s, %s, %s, %s)'
