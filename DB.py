@@ -46,7 +46,6 @@ class DB:
                 query = 'INSERT INTO environment(ipv4, floor, width, height, depth) VALUES(INET_ATON("%s"), %s, %s, %s, %s)'
                 values = (ipv4, floor, width, height, depth)
                 cursor.execute(query, values)
-
         except:
             return False
 
@@ -119,6 +118,7 @@ class DB:
             image:
             type:
         Retruns:
+
         """
         if isinstance(image, str):
             try:
