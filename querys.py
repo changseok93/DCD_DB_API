@@ -51,7 +51,7 @@ initial_queries.append(create_loc_sql)
 
 # table super_class
 create_superCategories_sql="""
-CREATE TABLE super_class(
+CREATE TABLE super_category(
 id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 name CHAR(50) NOT NULL,
 PRIMARY KEY(id)
@@ -60,7 +60,7 @@ initial_queries.append(create_superCategories_sql)
 
 # table class
 create_categories_sql="""
-CREATE TABLE class(
+CREATE TABLE category(
 id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 super_id INT UNSIGNED NOT NULL,
 name CHAR(50) NOT NULL,
@@ -79,7 +79,7 @@ create_object_sql="""
 CREATE TABLE object(
 img_id INT UNSIGNED NOT NULL,
 loc_id INT UNSIGNED NOT NULL,
-class_id INT UNSIGNED NOT NULL,
+category_id INT UNSIGNED NOT NULL,
 id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 PRIMARY KEY(id),
 FOREIGN KEY(img_id)
