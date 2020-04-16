@@ -1,6 +1,9 @@
 # DCD_DB_API
 Data Collection Device DataBase Application Programming Interface
 
+# DB Scheme
+<img src="http://changseok2.iptime.org/share/share_imgs/DB_Scheme_V5.png"></img>
+
 
 ### API in stealth mode now
 
