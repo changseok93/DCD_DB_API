@@ -639,7 +639,7 @@ class DB:
             except:
                 return None
 
-    def set_category(self, super_id, name, width, height, depth, thumbnail):
+    def set_category(self, super_id, name, width, height, depth, iteration, thumbnail):
         """
         category table에 row 정보 추가
 
@@ -649,6 +649,7 @@ class DB:
             width: 물체의 가로 크기
             height: 물체의 세로 크기
             depth: 물체의 높이
+            iteration: 물체 촬영 횟수
             thumbnail: 썸네일 이미지
 
         Return:
@@ -661,8 +662,8 @@ class DB:
                     with open(thumbnail, 'rb') as file:
                         thumbnail = file.read()
 
-                query = 'INSERT INTO category(super_id, name, width, height, depth, thumbnail) VALUES(%s, %s, %s, %s, %s, %s)'
-                values = (super_id, name, width, height, depth, thumbnail)
+                query = 'INSERT INTO category(super_id, name, width, height, depth, iteration, thumbnail) VALUES(%s, %s, %s, %s, %s, %s, %s)'
+                values = (super_id, name, width, height, depth, iteration, thumbnail)
                 cursor.execute(query, values)
             except Exception as e:
                 print(e)
@@ -716,7 +717,7 @@ class DB:
             self.db.commit()
             return True
 
-    def update_category(self, id, super_id, name, width, height, depth, thumbnail):
+    def update_category(self, id, super_id, name, width, height, depth, iteration, thumbnail):
         """
         category table의 특정 id의 row 정보 갱신
 
@@ -727,6 +728,8 @@ class DB:
             width: 물체의 가로 크기
             height: 물체의 세로 크기
             depth: 물체의 높이
+            iteration: 물체 촬영 횟수
+            thumbnail: 썸네일 이미지
 
         Return:
             True: 갱신 성공
@@ -750,6 +753,8 @@ class DB:
                     query_head += 'height={}, '.format(height)
                 if depth != None:
                     query_head += 'depth={}, '.format(depth)
+                if iteration != None:
+                    query_head += 'iteration={}, '.format(iteration)
                 if thumbnail != None:
                     query_head += "thumbnail=x'{}' , ".format(thumbnail.hex())
 

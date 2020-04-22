@@ -67,6 +67,7 @@ name CHAR(50) NOT NULL,
 width INT UNSIGNED NOT NULL,
 height INT UNSIGNED NOT NULL,
 depth INT UNSIGNED NOT NULL,
+iteration INT UNSIGNED NOT NULL,
 thumbnail blob,
 PRIMARY KEY(id),
 FOREIGN KEY(super_id)
