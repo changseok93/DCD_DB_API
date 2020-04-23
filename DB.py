@@ -21,6 +21,7 @@ class DB:
         """
         try:
             self.db = pymysql.connect(host=str(ip), port=port, user=user, passwd=password, db=db_name, charset=charset)
+            print("setting on")
         except Exception as e:
             print('invalid DB information')
             print(e)
@@ -160,7 +161,7 @@ class DB:
             except:
                 return None
 
-    def set_image(self, device_id, image, type):
+    def set_image(self, device_id, image, type, check_num):
         """
         image table에 값 추가(setting)
 
@@ -168,6 +169,7 @@ class DB:
             device_id: enviroment table의 id(foreigner key)
             image: image data
             type: 합성된 이미지인지 아닌지
+            check_num: 검수표시할 check 컬럼
 
         Return:
              True: 값 추가 성공
@@ -179,8 +181,8 @@ class DB:
                     with open(image, 'rb') as file:
                         image = file.read()
 
-                query = 'INSERT INTO image(env_id, data, type) VALUES(%s, %s, %s)'
-                values = (device_id, image, type)
+                query = 'INSERT INTO image(env_id, data, type, check_num) VALUES(%s, %s, %s, %s)'
+                values = (device_id, image, type, check_num)
 
                 cursor.execute(query, values)
 
@@ -235,7 +237,7 @@ class DB:
             self.db.commit()
             return True
 
-    def update_image(self, id=None, device_id=None, image=None, type=None):
+    def update_image(self, id=None, device_id=None, image=None, type=None, check_num=None):
         """
         image table의 특정 id의 값들 갱신
 
@@ -244,6 +246,7 @@ class DB:
             device_id: image table의 env_id(foreigner key)
             image: image 정보
             type: 합성된 이미지 인지 아닌지
+            check_num: 검수표시할 check 컬럼
 
         Return:
             True: 갱신 성공
@@ -263,6 +266,8 @@ class DB:
                     query_head += "data=x'{}' , ".format(image.hex())
                 if type != None:
                     query_head += 'type={}, '.format(type)
+                if check_num != None:
+                    check_num += 'check={}, '.format(check_num)
 
                 query = query_head[:-2]
                 query += query_tail
