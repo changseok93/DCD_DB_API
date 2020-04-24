@@ -1,5 +1,6 @@
 import pymysql
 import querys
+import inspect
 
 
 class DB:
@@ -22,12 +23,11 @@ class DB:
         try:
             self.db = pymysql.connect(host=str(ip), port=port, user=user, passwd=password, db=db_name, charset=charset)
             print("setting on")
+
         except Exception as e:
             print('invalid DB information')
             print(e)
         #-- let's think about cashing here --
-        #--
-        #--
         #-- ---------------------------------
 
     def set_environment(self, ipv4, floor, width, height, depth):
@@ -49,12 +49,13 @@ class DB:
         """
         with self.db.cursor() as cursor:
             try:
-                query = 'INSERT INTO Environment(ipv4, floor, width, height, depth) VALUES(INET_ATON(%s), %s, %s, %s, %s)'
+                query = 'INSERT INTO Environment(ipv4, floor, width, height, depth) VALUES(%s, %s, %s, %s, %s)'
                 values = (ipv4, floor, width, height, depth)
                 cursor.execute(query, values)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
-                return False
 
             self.db.commit()
             return True
@@ -78,6 +79,7 @@ class DB:
                 return cursor.fetchall()
 
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return None
 
@@ -98,13 +100,14 @@ class DB:
                 values = (id)
                 cursor.execute(query, values)
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def update_environment(self, id, ipv4, floor, width, height, depth):
+    def update_environment(self, id, ipv4=None, floor=None, width=None, height=None, depth=None):
         """
         Enviroment table의 특정 id의 값들을 갱신
 
@@ -125,7 +128,7 @@ class DB:
                 query_head = 'UPDATE Environment SET '
                 query_tail = ' WHERE id={}'.format(id)
                 if ipv4 != None:
-                    query_head += 'ipv4=INET_ATON("{}"), '.format(ipv4)
+                    query_head += "ipv4='{}', ".format(ipv4)
                 if floor != None:
                     query_head += 'floor={}, '.format(floor)
                 if width != None:
@@ -138,7 +141,9 @@ class DB:
                 query += query_tail
 
                 cursor.execute(query)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
@@ -147,27 +152,29 @@ class DB:
 
     def list_environment(self):
         """
-        Enviroment table의 모든 값 반환
+        Environment table의 모든 값 반환
 
         Return:
-           list(): Enviroment table의 모든 값을 리스트로 반환
+           list(): Environment table의 모든 값을 리스트로 반환
            None: 에러로 인한 반환 실패
         """
         with self.db.cursor() as cursor:
             try:
-                query = 'SELECT * FROM environment'
+                query = 'SELECT * FROM Environment'
                 cursor.execute(query)
                 return list(cursor.fetchall())
-            except:
+            except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
+                print(e)
                 return None
 
-    def set_Image(self, device_id, Image, type, check_num):
+    def set_image(self, device_id, image, type, check_num):
         """
         Image table에 값 추가(setting)
 
         Args:
-            device_id: Enviroment table의 id(foreigner key)
-            Image: Image data
+            device_id: Environment table의 id(foreigner key)
+            image: image data
             type: 합성된 이미지인지 아닌지
             check_num: 검수표시할 check 컬럼
 
@@ -177,23 +184,24 @@ class DB:
         """
         with self.db.cursor() as cursor:
             try:
-                if isinstance(Image, str):
-                    with open(Image, 'rb') as file:
-                        Image = file.read()
+                if isinstance(image, str):
+                    with open(image, 'rb') as file:
+                        image = file.read()
 
                 query = 'INSERT INTO Image(env_id, data, type, check_num) VALUES(%s, %s, %s, %s)'
-                values = (device_id, Image, type, check_num)
+                values = (device_id, image, type, check_num)
 
                 cursor.execute(query, values)
 
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
             finally:
                 self.db.commit()
                 return True
 
-    def get_Image(self, id):
+    def get_image(self, id):
         """
         Image table에서 특정 id의 값 가져옴
 
@@ -212,10 +220,11 @@ class DB:
                 return cursor.fetchall()
 
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return None
 
-    def delete_Image(self, id):
+    def delete_image(self, id):
         """
         Image table의 특정 id의 row 정보 삭제
 
@@ -230,21 +239,23 @@ class DB:
                 query = 'DELETE FROM Image WHERE id=%s'
                 values = (id)
                 cursor.execute(query, values)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def update_Image(self, id=None, device_id=None, Image=None, type=None, check_num=None):
+    def update_image(self, id, device_id=None, image=None, type=None, check_num=None):
         """
         Image table의 특정 id의 값들 갱신
 
         Args:
             id: Image table의 특정 id(primary key)
             device_id: Image table의 env_id(foreigner key)
-            Image: Image 정보
+            image: image 정보
             type: 합성된 이미지 인지 아닌지
             check_num: 검수표시할 check 컬럼
 
@@ -254,16 +265,16 @@ class DB:
         """
         with self.db.cursor() as cursor:
             try:
-                if isinstance(Image, str):
-                    with open(Image, 'rb') as file:
-                        Image = file.read()
+                if isinstance(image, str):
+                    with open(image, 'rb') as file:
+                        image = file.read()
 
                 query_head = 'UPDATE Image SET '
                 query_tail = ' WHERE id={}'.format(id)
                 if device_id != None:
                     query_head += 'env_id={}, '.format(device_id)
-                if Image != None:
-                    query_head += "data=x'{}' , ".format(Image.hex())
+                if image != None:
+                    query_head += "data=x'{}' , ".format(image.hex())
                 if type != None:
                     query_head += 'type={}, '.format(type)
                 if check_num != None:
@@ -272,14 +283,16 @@ class DB:
                 query = query_head[:-2]
                 query += query_tail
                 cursor.execute(query)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def list_Image(self):
+    def list_image(self):
         """
         Image table의 모든 값 조회
 
@@ -292,16 +305,19 @@ class DB:
                 query = 'SELECT * FROM Image'
                 cursor.execute(query)
                 return list(cursor.fetchall())
-            except:
+
+            except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
+                print(e)
                 return None
 
-    def set_Grid(self, width, height):
+    def set_grid(self, width, height):
         """
         Grid table 값 추가(set)
 
         Args:
-            width: Grid 가로 칸 개수
-            height: Grid 세로 칸 개수
+            width: grid 가로 칸 개수
+            height: grid 세로 칸 개수
         Return:
             True: 추가 성공
             False: 추가 실패
@@ -311,14 +327,16 @@ class DB:
                 query = 'INSERT INTO Grid(width, height) VALUES(%s, %s)'
                 values = (width, height)
                 cursor.execute(query, values)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def get_Grid(self, id):
+    def get_grid(self, id):
         """
         Grid table에서 특정 id의 row 조회
 
@@ -336,10 +354,11 @@ class DB:
                 return cursor.fetchall()
 
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return None
 
-    def detete_Grid(self, id):
+    def delete_grid(self, id):
         """
         Grid table에서 특정 id의 row 정보 삭제
 
@@ -354,21 +373,23 @@ class DB:
                 query = 'DELETE FROM Grid WHERE id=%s'
                 values = (id)
                 cursor.execute(query, values)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def update_Grid(self, id, width, height):
+    def update_grid(self, id, width=None, height=None):
         """
         Grid table의 특정 id row 값들을 갱신
 
         Args:
             id: Grid table의 특정 id(primary key)
-            width: Grid 가로 칸 수
-            height: Grid 세로 칸 수
+            width: grid 가로 칸 수
+            height: grid 세로 칸 수
 
         Return:
             True: 갱신 성공
@@ -380,20 +401,21 @@ class DB:
                 query_tail = ' WHERE id={}'.format(id)
                 if width != None:
                     query_head += 'width={}, '.format(width)
-                if width != None:
+                if height != None:
                     query_head += 'height={}, '.format(height)
                 query = query_head[:-2]
                 query += query_tail
-
                 cursor.execute(query)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def list_Grid(self):
+    def list_grid(self):
         """
         Grid table의 모든 값 조회
 
@@ -406,15 +428,18 @@ class DB:
                 query = 'SELECT * FROM Grid'
                 cursor.execute(query)
                 return list(cursor.fetchall())
-            except:
+
+            except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
+                print(e)
                 return None
 
-    def set_Location(self, Grid_id, x, y):
+    def set_location(self, grid_id, x, y):
         """
         Location table의 값을 추가(set)
 
         Args:
-            Grid_id: Grid table의 id(foreigner key)
+            grid_id: Grid table의 id(foreigner key)
             x: 물체의 가로 좌표
             y: 물체의 세로 좌표
 
@@ -424,17 +449,19 @@ class DB:
         """
         with self.db.cursor() as cursor:
             try:
-                query = 'INSERT INTO Location(Grid_id, x, y) VALUES(%s, %s, %s)'
-                values = (Grid_id, x, y)
+                query = 'INSERT INTO Location(grid_id, x, y) VALUES(%s, %s, %s)'
+                values = (grid_id, x, y)
                 cursor.execute(query, values)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def get_Location(self, id):
+    def get_location(self, id):
         """
         Location table의 특정 id의 row 값 조회
 
@@ -453,10 +480,11 @@ class DB:
                 return cursor.fetchall()
 
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return None
 
-    def delete_Location(self, id):
+    def delete_location(self, id):
         """
         Location table의 특정 id row 삭제
 
@@ -472,20 +500,22 @@ class DB:
                 query = 'DELETE FROM Location WHERE id=%s'
                 values = (id)
                 cursor.execute(query, values)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def update_Location(self, id, Grid_id, x, y):
+    def update_location(self, id, grid_id=None, x=None, y=None):
         """
         Location table의 특정 id의 row 정보 갱신
 
         Args:
             id: Location table의 특정 id(primary key)
-            Grid_id: Grid table의 특정 id(foreigner key)
+            grid_id: Grid table의 특정 id(foreigner key)
             x: 물체의 x 좌표
             y: 물체의 y 좌표
         Return:
@@ -497,8 +527,8 @@ class DB:
 
                 query_head = 'UPDATE Location SET '
                 query_tail = ' WHERE id={}'.format(id)
-                if Grid_id != None:
-                    query_head += 'Grid_id={}, '.format(Grid_id)
+                if grid_id != None:
+                    query_head += 'Grid_id={}, '.format(grid_id)
                 if x != None:
                     query_head += 'x={}, '.format(x)
                 if y != None:
@@ -507,14 +537,16 @@ class DB:
                 query += query_tail
 
                 cursor.execute(query)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def list_Location(self):
+    def list_location(self):
         """
         Location table의 모든 정보 획득
 
@@ -527,12 +559,15 @@ class DB:
                 query = 'SELECT * FROM Location'
                 cursor.execute(query)
                 return list(cursor.fetchall())
-            except:
+
+            except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
+                print(e)
                 return None
 
     def set_superCategory(self, name):
         """
-        superCategory table의 row 추가(set)
+        SuperCategory table의 row 추가(set)
 
         Arg:
             name: 물체의 이름(종류)
@@ -543,10 +578,12 @@ class DB:
         """
         with self.db.cursor() as cursor:
             try:
-                query = 'INSERT INTO superCategory(name) VALUES(%s)'
+                query = 'INSERT INTO SuperCategory(name) VALUES(%s)'
                 values = (name)
                 cursor.execute(query, values)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
@@ -555,10 +592,10 @@ class DB:
 
     def get_superCategory(self, id):
         """
-        superCategory table의 특정 id의 row 조회
+        SuperCategory table의 특정 id의 row 조회
 
         Arg:
-            id: superCategory table의 특정 id(primary key)
+            id: SuperCategory table의 특정 id(primary key)
 
         Return:
             cursor.fetchall(): superCategory table의 특정 id의 row 정보
@@ -572,15 +609,16 @@ class DB:
                 return cursor.fetchall()
 
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return None
 
     def delete_superCategory(self, id):
         """
-        superCategory table의 특정 id의 row 정보 삭제
+        SuperCategory table의 특정 id의 row 정보 삭제
 
         Arg:
-            id: superCategory table의 특정 id(primary key)
+            id: SuperCategory table의 특정 id(primary key)
 
         Return:
             True: 삭제 성공
@@ -591,19 +629,21 @@ class DB:
                 query = 'DELETE FROM SuperCategory WHERE id=%s'
                 values = (id)
                 cursor.execute(query, values)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def update_superCategory(self, id, name):
+    def update_superCategory(self, id, name=None):
         """
-        superCategory table의 특정 id의 row 정보 갱신
+        SuperCategory table의 특정 id의 row 정보 갱신
 
         Args:
-            id: superCategory table의 특정 id(primary key)
+            id: SuperCategory table의 특정 id(primary key)
             name: 물체의 이름(종류)
 
         Return:
@@ -612,16 +652,16 @@ class DB:
         """
         with self.db.cursor() as cursor:
             try:
-
                 query_head = 'UPDATE SuperCategory SET '
                 query_tail = ' WHERE id={}'.format(id)
                 if name != None:
-                    query_head += 'name={}, '.format(name)
+                    query_head += "name='{}', ".format(name)
                 query = query_head[:-2]
                 query += query_tail
-
                 cursor.execute(query)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
@@ -630,7 +670,7 @@ class DB:
 
     def list_superCategory(self):
         """
-        superCategory table의 모든 정보 조회
+        SuperCategory table의 모든 정보 조회
 
         Return:
             list(): superCategory table의 모든 정보
@@ -641,15 +681,18 @@ class DB:
                 query = 'SELECT * FROM SuperCategory'
                 cursor.execute(query)
                 return list(cursor.fetchall())
-            except:
+
+            except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
+                print(e)
                 return None
 
-    def set_Category(self, super_id, name, width, height, depth, iteration, thumbnail):
+    def set_category(self, super_id, name, width, height, depth, iteration, thumbnail):
         """
         Category table에 row 정보 추가
 
         Args:
-            super_id: superCategory의 특정 id(foreigner key)
+            super_id: SuperCategory table의 특정 id(foreigner key)
             name: 물품의 이름
             width: 물체의 가로 크기
             height: 물체의 세로 크기
@@ -670,14 +713,16 @@ class DB:
                 query = 'INSERT INTO Category(super_id, name, width, height, depth, iteration, thumbnail) VALUES(%s, %s, %s, %s, %s, %s, %s)'
                 values = (super_id, name, width, height, depth, iteration, thumbnail)
                 cursor.execute(query, values)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def get_Category(self, id):
+    def get_category(self, id):
         """
         Category table의 특정 id의 row 조회
 
@@ -696,10 +741,11 @@ class DB:
                 return cursor.fetchall()
 
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return None
 
-    def delete_Category(self, id):
+    def delete_category(self, id):
         """
         Category table의 특정 id row 삭제
 
@@ -715,14 +761,16 @@ class DB:
                 query = 'DELETE FROM Category WHERE id=%s'
                 values = (id)
                 cursor.execute(query, values)
+
             except Exception as e:
                 print(e)
+                print('Error function:', inspect.stack()[0][3])
                 return False
 
             self.db.commit()
             return True
 
-    def update_Category(self, id, super_id, name, width, height, depth, iteration, thumbnail):
+    def update_category(self, id, super_id=None, name=None, width=None, height=None, depth=None, iteration=None, thumbnail=None):
         """
         Category table의 특정 id의 row 정보 갱신
 
@@ -751,7 +799,7 @@ class DB:
                 if super_id != None:
                     query_head += 'super_id={}, '.format(super_id)
                 if name != None:
-                    query_head += 'name={}, '.format(name)
+                    query_head += "name='{}', ".format(name)
                 if width != None:
                     query_head += 'width={}, '.format(width)
                 if height != None:
@@ -766,14 +814,16 @@ class DB:
                 query = query_head[:-2]
                 query += query_tail
                 cursor.execute(query)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def list_Category(self):
+    def list_category(self):
         """
         Category table의 모든 정보 조회
 
@@ -786,17 +836,20 @@ class DB:
                 query = 'SELECT * FROM Category'
                 cursor.execute(query)
                 return list(cursor.fetchall())
-            except:
+
+            except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
+                print(e)
                 return None
 
-    def set_Object(self, img_id, loc_id, Category_id):
+    def set_object(self, img_id, loc_id, category_id):
         """
         Object table의 정보 추가
 
         Args:
             img_id: Image table의 id(foreigner key)
             loc_id: Location table의 id(foreigner key)
-            Category_id: Category table의 id(foreigner key)
+            category_id: Category table의 id(foreigner key)
 
         Return:
             True: 추가 성공
@@ -804,17 +857,19 @@ class DB:
         """
         with self.db.cursor() as cursor:
             try:
-                query = 'INSERT INTO Object(img_id, loc_id, Category_id) VALUES(%s, %s, %s)'
-                values = (img_id, loc_id, Category_id)
+                query = 'INSERT INTO Object(img_id, loc_id, category_id) VALUES(%s, %s, %s)'
+                values = (img_id, loc_id, category_id)
                 cursor.execute(query, values)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def get_Object(self, id):
+    def get_object(self, id):
         """
         Object table의 특정 id의 row 정보 조회
 
@@ -833,10 +888,11 @@ class DB:
                 return cursor.fetchall()
 
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return None
 
-    def delete_Object(self, id):
+    def delete_object(self, id):
         """
         Object table에서 특정 id row 삭제
 
@@ -853,13 +909,14 @@ class DB:
                 values = (id)
                 cursor.execute(query, values)
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def update_Object(self, id, img_id, loc_id, Category_id):
+    def update_object(self, id, img_id=None, loc_id=None, category_id=None):
         """
         Object table의 특정 id 정보 갱신
 
@@ -867,7 +924,7 @@ class DB:
             id: Object table의 특정 id(primary key)
             img_id: Image talbe의 특정 id(foreigner key)
             loc_id: Location table의 특정 id(foreigner key)
-            Category_id: Category table의 특정 id(foreigner key)
+            category_id: Category table의 특정 id(foreigner key)
 
         Return:
             True: 갱신 성공
@@ -881,21 +938,23 @@ class DB:
                     query_head += 'img_id={}, '.format(img_id)
                 if loc_id != None:
                     query_head += 'loc_id={}, '.format(loc_id)
-                if Category_id != None:
-                    query_head += 'Category_id={}, '.format(Category_id)
+                if category_id != None:
+                    query_head += 'Category_id={}, '.format(category_id)
 
                 query = query_head[:-2]
                 query += query_tail
 
                 cursor.execute(query)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def list_Object(self):
+    def list_object(self):
         """
         Object table의 모든 정보 조회
 
@@ -908,10 +967,13 @@ class DB:
                 query = 'SELECT * FROM Object'
                 cursor.execute(query)
                 return list(cursor.fetchall())
-            except:
+
+            except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
+                print(e)
                 return None
 
-    def set_Bbox(self, obj_id, x, y, width, height):
+    def set_bbox(self, obj_id, x, y, width, height):
         """
         Bbox table에 정보 추가
 
@@ -931,14 +993,16 @@ class DB:
                 query = 'INSERT INTO Bbox(obj_id, x, y, width, height) VALUES(%s, %s, %s, %s, %s)'
                 values = (obj_id, x, y, width, height)
                 cursor.execute(query, values)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def get_Bbox(self, id):
+    def get_bbox(self, id):
         """
         Bbox table의 특정 id row 조회
 
@@ -957,10 +1021,11 @@ class DB:
                 return cursor.fetchall()
 
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return None
 
-    def delete_Bbox(self, id):
+    def delete_bbox(self, id):
         """
         Bbox table의 특정 id 삭제
 
@@ -977,13 +1042,14 @@ class DB:
                 values = (id)
                 cursor.execute(query, values)
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def update_Bbox(self, id, x, y, width, height):
+    def update_bbox(self, id, x=None, y=None, width=None, height=None):
         """
         Bbox table의 특정 id row 갱신
 
@@ -1015,13 +1081,14 @@ class DB:
 
                 cursor.execute(query)
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def list_Bbox(self):
+    def list_bbox(self):
         """
         Bbox table의 모든 정보 조회
 
@@ -1034,10 +1101,13 @@ class DB:
                 query = 'SELECT * FROM Bbox'
                 cursor.execute(query)
                 return list(cursor.fetchall())
-            except:
+
+            except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
+                print(e)
                 return None
 
-    def set_Mask(self, obj_id, x, y):
+    def set_mask(self, obj_id, x, y):
         """
         Mask table의 정보 추가
 
@@ -1051,14 +1121,16 @@ class DB:
                 query = 'INSERT INTO Mask(obj_id, x, y) VALUES(%s, %s, %s)'
                 values = (obj_id, x, y)
                 cursor.execute(query, values)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def get_Mask(self, id):
+    def get_mask(self, id):
         with self.db.cursor() as cursor:
             try:
                 query = 'SELECT * FROM Mask WHERE id=%s'
@@ -1067,23 +1139,26 @@ class DB:
                 return cursor.fetchall()
 
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return None
 
-    def delete_Mask(self, id):
+    def delete_mask(self, id):
         with self.db.cursor() as cursor:
             try:
                 query = 'DELETE FROM Mask WHERE id=%s'
                 values = (id)
                 cursor.execute(query, values)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def update_Mask(self, id, obj_id, x, y):
+    def update_mask(self, id, obj_id=None, x=None, y=None):
         with self.db.cursor() as cursor:
             try:
                 query_head = 'UPDATE Mask SET '
@@ -1099,25 +1174,28 @@ class DB:
                 query += query_tail
 
                 cursor.execute(query)
+
             except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return False
 
             self.db.commit()
             return True
 
-    def list_Mask(self):
+    def list_mask(self):
         with self.db.cursor() as cursor:
             try:
                 query = 'SELECT * FROM Mask'
                 cursor.execute(query)
                 return list(cursor.fetchall())
-            except:
+
+            except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
+                print(e)
                 return None
 
-    #-------------------------------------------------------------------------------------------------------------------
-    # additional APIs
-    def initialize(self):
+    def table_initialize(self):
         try:
             with self.db.cursor() as cursor:
                 for i, sql in enumerate(querys.initial_queries):
@@ -1127,8 +1205,10 @@ class DB:
                 cursor.execute("SHOW TABLES")
                 for line in cursor.fetchall():
                     print(line)
-        except:
+
+        except Exception as e:
             print('your database is already exist')
+            print(e)
 
         finally:
             self.db.commit()
