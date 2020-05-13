@@ -60,8 +60,8 @@ initial_queries.append(create_superCategories_sql)
 # table class
 create_categories_sql="""
 CREATE TABLE Category(
-id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 super_id INT UNSIGNED NOT NULL,
+id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 name VARCHAR(100) NOT NULL,
 width SMALLINT UNSIGNED NOT NULL,
 height SMALLINT UNSIGNED NOT NULL,
@@ -90,8 +90,8 @@ initial_queries.append(create_object_sql)
 # table Bbox
 create_bbox_sql="""
 CREATE TABLE Bbox(
-id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 obj_id INT UNSIGNED NOT NULL,
+id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 x SMALLINT UNSIGNED NOT NULL,
 y SMALLINT UNSIGNED NOT NULL,
 width SMALLINT UNSIGNED NOT NULL,
@@ -104,8 +104,8 @@ initial_queries.append(create_bbox_sql)
 # table Mask
 create_mask_sql="""
 CREATE TABLE Mask(
-id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 obj_id INT UNSIGNED NOT NULL,
+id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 x SMALLINT UNSIGNED NOT NULL,
 Y SMALLINT UNSIGNED NOT NULL,
 PRIMARY KEY(id),
