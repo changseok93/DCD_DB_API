@@ -1212,3 +1212,22 @@ class DB:
 
         finally:
             self.db.commit()
+
+    def drop_table(self, table):
+        """
+        mysql databse에 있는 특정 table을 지웁니다.
+
+        Args:
+            table: 지우고자하는 table
+        """
+        with self.db.cursor() as cursor:
+            try:
+                query = 'DROP TABLE '
+                query += table
+                cursor.execute(query)
+                return list(cursor.fetchall())
+
+            except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
+                print(e)
+                return None
