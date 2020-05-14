@@ -184,10 +184,6 @@ class DB:
         """
         with self.db.cursor() as cursor:
             try:
-                if isinstance(image, str):
-                    with open(image, 'rb') as file:
-                        image = file.read()
-
                 query = 'INSERT INTO Image(env_id, data, type, check_num) VALUES(%s, %s, %s, %s)'
                 values = (device_id, image, type, check_num)
 
@@ -265,10 +261,6 @@ class DB:
         """
         with self.db.cursor() as cursor:
             try:
-                if isinstance(image, str):
-                    with open(image, 'rb') as file:
-                        image = file.read()
-
                 query_head = 'UPDATE Image SET '
                 query_tail = ' WHERE id={}'.format(id)
                 if device_id != None:

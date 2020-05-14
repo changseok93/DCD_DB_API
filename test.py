@@ -16,8 +16,6 @@ def check_environment(db):
 
 
 def check_image(db):
-    # 자료형이 이미지(longblob)일 경우엔 이미지 경로를 지정해줘야 합니다.
-    # 예시에선 그냥 인트형으로 넣었는데 됨
     db.set_image(device_id=2, image=10, type=0, check_num=1)
     db.get_image(id=1)
     db.delete_image(id=1)
@@ -131,4 +129,4 @@ if __name__ == "__main__":
     check_mask(mydb)
 
     # reset tables
-    reset_table(mydb)
+    # reset_table(mydb)
