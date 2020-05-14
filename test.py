@@ -6,77 +6,86 @@ def create_tables(db):
     db.table_initialize()
 
 
-def check_environment(db):
+def check_Environment(db):
     # check environment fucntions
-    db.set_environment(ipv4='127.223.444.444', floor=2, width=2, height=3, depth=2)
-    db.get_environment(id=1)
-    db.delete_environment(id=1)
-    db.update_environment(id=2, ipv4='127.223.444.444')
-    print('Environment table:', db.list_environment())
+    db.set_Environment(ipv4='127.223.444.444', floor=2, width=2, height=3, depth=2)
+    db.get_table(id=2, table='Environment')
+    db.delete_table(id=1, table='Environment')
+    db.update_Environment(id=2, ipv4='127.223.444.444')
+    print('Environment table: ', db.list_table(table='Environment'))
+    print('Environment table last id: ', db.last_id_table(table="Environment"))
 
 
-def check_image(db):
-    db.set_image(device_id=2, image=10, type=0, check_num=1)
-    db.get_image(id=1)
-    db.delete_image(id=1)
-    db.update_image(id=2, device_id=5)
-    print('Image table:', db.list_image())
+def check_Image(db):
+    db.set_Image(device_id=2, image=10, type=0, check_num=1)
+    db.get_table(id=2, table='Image')
+    db.delete_table(id=1, table='Image')
+    db.update_Image(id=2, device_id=5)
+    print('Image table: ', db.list_table(table='Image'))
+    print('Image table last id: ', db.last_id_table(table='Image'))
 
 
-def check_grid(db):
-    db.set_grid(width=10, height=10)
-    db.get_grid(id=1)
-    db.delete_grid(id=1)
-    db.update_grid(id=2, width=11)
-    print('Grid table:', db.list_grid())
+def check_Grid(db):
+    db.set_Grid(width=10, height=10)
+    db.get_table(id=2, table='Grid')
+    db.delete_table(id=1, table='Grid')
+    db.update_Grid(id=2, width=11)
+    print('Grid table: ', db.list_table(table='Grid'))
+    print('Grid table last id: ', db.last_id_table(table='Grid'))
 
 
-def check_location(db):
-    db.set_location(grid_id=2, x=2, y=2)
-    db.get_location(id=1)
-    db.delete_location(id=1)
-    db.update_location(id=2, x=22)
-    print('Location table:', db.list_location())
+def check_Location(db):
+    db.set_Location(grid_id=2, x=2, y=2)
+    db.get_table(id=2, table='Location')
+    db.delete_table(id=1, table='Location')
+    db.update_Location(id=2, x=22)
+    print('Location table: ', db.list_table(table='Location'))
+    print('Location table last id: ', db.last_id_table(table='Location'))
 
 
-def check_superCategory(db):
-    db.set_superCategory(name='물병')
-    db.get_superCategory(id=1)
-    db.delete_superCategory(id=1)
-    db.update_superCategory(id=2, name='물병2')
-    print('SuperCateogry table:', db.list_superCategory())
+def check_SuperCategory(db):
+    db.set_SuperCategory(name='물병')
+    db.get_table(id=2, table='SuperCategory')
+    db.delete_table(id=1, table='SuperCategory')
+    db.update_SuperCategory(id=2, name='물병2')
+    print('SuperCateogry table: ', db.list_table(table='SuperCategory'))
+    print('SuperCategory table last id: ', db.last_id_table(table='SuperCategory'))
 
 
-def check_category(db):
-    db.set_category(super_id=2, name='삼다수', width=10, height=10, depth=10, iteration=1, thumbnail=11)
-    db.get_category(id=1)
-    db.delete_category(id=1)
-    db.update_category(id=2, name='삼다수2')
-    print('Category table:', db.list_category())
+def check_Category(db):
+    db.set_Category(super_id=2, name='삼다수', width=10, height=10, depth=10, iteration=1, thumbnail=11)
+    db.get_table(id=2, table='Category')
+    db.delete_table(id=1, table='Category')
+    db.update_Category(id=2, name='삼다수2')
+    print('Category table: ', db.list_table(table='Category'))
+    print('Category table last id: ', db.last_id_table(table='Category'))
 
 
-def check_object(db):
-    db.set_object(img_id=2, loc_id=2, category_id=2)
-    db.get_object(id=1)
-    db.delete_object(id=1)
-    db.update_object(id=2, loc_id=2)
-    print('Object table:', db.list_object())
+def check_Object(db):
+    db.set_Object(img_id=2, loc_id=2, category_id=2)
+    db.get_table(id=2, table='Object')
+    db.delete_table(id=1, table='Object')
+    db.update_Object(id=2, loc_id=2)
+    print('Object table: ', db.list_table(table='Object'))
+    print('Object table last id: ', db.last_id_table(table='Object'))
 
 
-def check_bbox(db):
-    db.set_bbox(obj_id=2, x=10, y=10, width=1, height=1)
-    db.get_bbox(id=1)
-    db.delete_bbox(id=1)
-    db.update_bbox(id=2, x=15)
-    print('Bbox table:', db.list_bbox())
+def check_Bbox(db):
+    db.set_Bbox(obj_id=2, x=10, y=10, width=1, height=1)
+    db.get_table(id=2, table='Bbox')
+    db.delete_table(id=1, table='Bbox')
+    db.update_Bbox(id=2, x=15)
+    print('Bbox table: ', db.list_table(table='Bbox'))
+    print('Bbox table last id: ', db.last_id_table(table='Bbox'))
 
 
-def check_mask(db):
-    db.set_mask(obj_id=2, x=20, y=20)
-    db.get_mask(id=1)
-    db.delete_bbox(id=1)
-    db.update_bbox(id=2, x=3333)
-    print('Mask table:', db.list_mask())
+def check_Mask(db):
+    db.set_Mask(obj_id=2, x=20, y=20)
+    db.get_table(id=2, table='Mask')
+    db.delete_table(id=1, table='Mask')
+    db.update_Bbox(id=2, x=3333)
+    print('Mask table: ', db.list_table(table='Mask'))
+    print('Mask table last id: ', db.last_id_table(table='Mask'))
 
 
 def reset_table(db):
@@ -102,31 +111,31 @@ if __name__ == "__main__":
         print("db가 이미 생성됨")
 
     # Environment table test
-    check_environment(mydb)
+    check_Environment(mydb)
 
     # Image table test
-    check_image(mydb)
+    check_Image(mydb)
 
     # Gird
-    check_grid(mydb)
+    check_Grid(mydb)
 
     # Location
-    check_location(mydb)
+    check_Location(mydb)
 
     # Super Category
-    check_superCategory(mydb)
+    check_SuperCategory(mydb)
 
     # Category
-    check_category(mydb)
+    check_Category(mydb)
 
     # Object
-    check_object(mydb)
+    check_Object(mydb)
 
     # Bbox
-    check_bbox(mydb)
+    check_Bbox(mydb)
 
     # Mask
-    check_mask(mydb)
+    check_Mask(mydb)
 
     # reset tables
     # reset_table(mydb)
