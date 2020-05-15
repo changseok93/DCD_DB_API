@@ -44,8 +44,8 @@ class DB:
             depth (str): 냉장고 층 높이
 
         Return:
-            True: Table 값 set 성공
-            False: Table 값 set 실패
+            True (boolean): Table 값 set 성공
+            False (boolean): Table 값 set 실패
         """
         with self.db.cursor() as cursor:
             try:
@@ -73,8 +73,8 @@ class DB:
             depth (str): 냉장고 층 높이
 
         Return:
-            True: 갱신 성공
-            False: 갱신 실패
+            True (boolean): 갱신 성공
+            False (boolean): 갱신 실패
         """
         with self.db.cursor() as cursor:
             try:
@@ -114,8 +114,8 @@ class DB:
             check_num (str): 검수표시할 check 컬럼
 
         Return:
-             True: 값 추가 성공
-             False: 값 추가 실패
+             True (boolean): 값 추가 성공
+             False (boolean): 값 추가 실패
         """
         with self.db.cursor() as cursor:
             try:
@@ -144,8 +144,8 @@ class DB:
             check_num (str): 검수표시할 check 컬럼
 
         Return:
-            True: 갱신 성공
-            False: 갱신 실패
+            True (boolean): 갱신 성공
+            False (boolean): 갱신 실패
         """
         with self.db.cursor() as cursor:
             try:
@@ -180,8 +180,8 @@ class DB:
             width (str): grid 가로 칸 개수
             height (str): grid 세로 칸 개수
         Return:
-            True: 추가 성공
-            False: 추가 실패
+            True (boolean): 추가 성공
+            False (boolean): 추가 실패
         """
         with self.db.cursor() as cursor:
             try:
@@ -207,8 +207,8 @@ class DB:
             height (str): grid 세로 칸 수
 
         Return:
-            True: 갱신 성공
-            False: 갱신 실패
+            True (boolean): 갱신 성공
+            False (boolean): 갱신 실패
         """
         with self.db.cursor() as cursor:
             try:
@@ -240,8 +240,8 @@ class DB:
             y (str): 물체의 세로 좌표
 
         Return:
-            True: 추가 성공
-            False: 추가 실패
+            True (boolean): 추가 성공
+            False (boolean): 추가 실패
         """
         with self.db.cursor() as cursor:
             try:
@@ -267,8 +267,8 @@ class DB:
             x (str): 물체의 x 좌표
             y (str): 물체의 y 좌표
         Return:
-            True: 갱신 성공
-            False: 갱신 실패
+            True (boolean): 갱신 성공
+            False (boolean): 갱신 실패
         """
         with self.db.cursor() as cursor:
             try:
@@ -302,8 +302,8 @@ class DB:
             name (str): 물체의 이름(종류)
 
         Return:
-            True: 추가 성공
-            False: 추가 실패
+            True (boolean): 추가 성공
+            False (boolean): 추가 실패
         """
         with self.db.cursor() as cursor:
             try:
@@ -328,8 +328,8 @@ class DB:
             name (str): 물체의 이름(종류)
 
         Return:
-            True: 갱신 성공
-            False: 갱신 실패
+            True (boolean): 갱신 성공
+            False (boolean): 갱신 실패
         """
         with self.db.cursor() as cursor:
             try:
@@ -363,8 +363,8 @@ class DB:
             thumbnail (image): 썸네일 이미지
 
         Return:
-            True: 추가 성공
-            False: 추가 실패
+            True (boolean): 추가 성공
+            False (boolean): 추가 실패
         """
         with self.db.cursor() as cursor:
             try:
@@ -395,8 +395,8 @@ class DB:
             thumbnail (image): 썸네일 이미지
 
         Return:
-            True: 갱신 성공
-            False: 갱신 실패
+            True (boolean): 갱신 성공
+            False (boolean): 갱신 실패
         """
         with self.db.cursor() as cursor:
             try:
@@ -439,8 +439,8 @@ class DB:
             category_id (str): Category table의 id(foreigner key)
 
         Return:
-            True: 추가 성공
-            False: 추가 실패
+            True (boolean): 추가 성공
+            False (boolean): 추가 실패
         """
         with self.db.cursor() as cursor:
             try:
@@ -467,8 +467,8 @@ class DB:
             category_id (str): Category table의 특정 id(foreigner key)
 
         Return:
-            True: 갱신 성공
-            False: 갱신 실패
+            True (boolean): 갱신 성공
+            False (boolean): 갱신 실패
         """
         with self.db.cursor() as cursor:
             try:
@@ -506,8 +506,8 @@ class DB:
             height (str): Bbox의 세로 크기
 
         Return:
-            True: 추가 성공
-            False: 추가 실패
+            True (boolean): 추가 성공
+            False (boolean): 추가 실패
         """
         with self.db.cursor() as cursor:
             try:
@@ -535,8 +535,8 @@ class DB:
             height (str): Bboxm의 세로 크기
 
         Return:
-            True: 갱신 성공
-            False: 갱신 실패
+            True (boolean): 갱신 성공
+            False (boolean): 갱신 실패
         """
         with self.db.cursor() as cursor:
             try:
@@ -609,6 +609,9 @@ class DB:
             return True
 
     def table_initialize(self):
+        """
+        table을 생성합니다.
+        """
         try:
             with self.db.cursor() as cursor:
                 for i, sql in enumerate(querys.initial_queries):
@@ -652,7 +655,7 @@ class DB:
             id (str): table의 id 값
             table (str): 조회하기 원하는 table 이름
         Return:
-            tuple(): 해당 id의 row 값
+            tuple (tuple): 해당 id의 row 값
             None: 조회 실패
         """
         with self.db.cursor() as cursor:
@@ -674,8 +677,8 @@ class DB:
             id (str): table의 id 값
             table (str): 조회하기 원하는 table 이름
         Return:
-            True: 삭제 성공
-            False: 삭제 실패
+            True (boolean): 삭제 성공
+            False (boolean): 삭제 실패
         """
         with self.db.cursor() as cursor:
             try:
@@ -697,7 +700,7 @@ class DB:
         Args:
             table (str): 조회하기 원하는 table 이름
         Return:
-            list(): 특정 table의 모든 값
+            list (list): 특정 table의 모든 값
             None: 조회 실패
         """
         with self.db.cursor() as cursor:
@@ -719,7 +722,7 @@ class DB:
             table (str): table 이
 
         Return:
-            list(): 마지막 id 값
+            list (list): 마지막 id 값
             None: 조회 실패
         """
         with self.db.cursor() as cursor:
