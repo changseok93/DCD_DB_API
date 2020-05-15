@@ -13,15 +13,15 @@ class DB:
         pymysql.connect()를 이용해 MySQL과 연결
 
         Args:
-            ip: MySQL 서버에 로그인하기위한 ip 주소
-            port: 포트 포워딩을 위한 포트
-            user: MySQL 서버에 로그인을 위한 아이디
-            password: MySQL 서버에 로그인을 위한 비밀번호
-            db_name: 데이터베이스 네임
-            charset: 문자 인코딩 방식
+            ip (str): MySQL 서버에 로그인하기위한 ip 주소
+            port (int): 포트 포워딩을 위한 포트
+            user (str): MySQL 서버에 로그인을 위한 아이디
+            password (str): MySQL 서버에 로그인을 위한 비밀번호
+            db_name (str): 데이터베이스 네임
+            charset (str): 문자 인코딩 방식
         """
         try:
-            self.db = pymysql.connect(host=str(ip), port=port, user=user, passwd=password, db=db_name, charset=charset)
+            self.db = pymysql.connect(host=ip, port=port, user=user, passwd=password, db=db_name, charset=charset)
             print("setting on")
 
         except Exception as e:
@@ -37,15 +37,15 @@ class DB:
         commit()을 통해 mySQL 서버에 확정 반영
 
         Args:
-            ipv4: 연결된 냉장고의 ip
-            floor: 냉장고 층
-            width: 냉장고 층 가로길이
-            height: 냉장고 층 세로길이
-            depth: 냉장고 층 높이
+            ipv4 (str): 연결된 냉장고의 ip
+            floor (str) : 냉장고 층
+            width (str): 냉장고 층 가로길이
+            height (str): 냉장고 층 세로길이
+            depth (str): 냉장고 층 높이
 
         Return:
-            True: Table 값 추가(set) 성공
-            False: Table 값 추가(set) 실패
+            True: Table 값 set 성공
+            False: Table 값 set 실패
         """
         with self.db.cursor() as cursor:
             try:
@@ -65,12 +65,12 @@ class DB:
         Enviroment table의 특정 id의 값들을 갱신
 
         Args:
-            id: Enviroment table의 특정 id(primary key)
-            ipv4: 냉장고 ip 주소
-            floor: 냉장고 층
-            width: 냉장고 층 가로 길이
-            height: 냉장고 층 세로 길이
-            depth: 냉장고 층 높이
+            id (str): Enviroment table의 특정 id(primary key)
+            ipv4 (str): 냉장고 ip 주소
+            floor (str): 냉 장고 층
+            width (str): 냉장고 층 가로 길이
+            height (str): 냉장고 층 세로 길이
+            depth (str): 냉장고 층 높이
 
         Return:
             True: 갱신 성공
@@ -108,10 +108,10 @@ class DB:
         Image table에 값 추가(setting)
 
         Args:
-            device_id: Environment table의 id(foreigner key)
-            image: image data
-            type: 합성된 이미지인지 아닌지
-            check_num: 검수표시할 check 컬럼
+            device_id (str): Environment table의 id(foreigner key)
+            image (image): image data
+            type (str): 합성된 이미지인지 아닌지
+            check_num (str): 검수표시할 check 컬럼
 
         Return:
              True: 값 추가 성공
@@ -137,11 +137,11 @@ class DB:
         Image table의 특정 id의 값들 갱신
 
         Args:
-            id: Image table의 특정 id(primary key)
-            device_id: Image table의 env_id(foreigner key)
-            image: image 정보
-            type: 합성된 이미지 인지 아닌지
-            check_num: 검수표시할 check 컬럼
+            id (str): Image table의 특정 id(primary key)
+            device_id (str): Image table의 env_id(foreigner key)
+            image (image): image 정보
+            type (str): 합성된 이미지 인지 아닌지
+            check_num (str): 검수표시할 check 컬럼
 
         Return:
             True: 갱신 성공
@@ -177,8 +177,8 @@ class DB:
         Grid table 값 추가(set)
 
         Args:
-            width: grid 가로 칸 개수
-            height: grid 세로 칸 개수
+            width (str): grid 가로 칸 개수
+            height (str): grid 세로 칸 개수
         Return:
             True: 추가 성공
             False: 추가 실패
@@ -202,9 +202,9 @@ class DB:
         Grid table의 특정 id row 값들을 갱신
 
         Args:
-            id: Grid table의 특정 id(primary key)
-            width: grid 가로 칸 수
-            height: grid 세로 칸 수
+            id (str): Grid table의 특정 id(primary key)
+            width (str): grid 가로 칸 수
+            height (str): grid 세로 칸 수
 
         Return:
             True: 갱신 성공
@@ -235,9 +235,9 @@ class DB:
         Location table의 값을 추가(set)
 
         Args:
-            grid_id: Grid table의 id(foreigner key)
-            x: 물체의 가로 좌표
-            y: 물체의 세로 좌표
+            grid_id (str): Grid table의 id(foreigner key)
+            x (str): 물체의 가로 좌표
+            y (str): 물체의 세로 좌표
 
         Return:
             True: 추가 성공
@@ -262,10 +262,10 @@ class DB:
         Location table의 특정 id의 row 정보 갱신
 
         Args:
-            id: Location table의 특정 id(primary key)
-            grid_id: Grid table의 특정 id(foreigner key)
-            x: 물체의 x 좌표
-            y: 물체의 y 좌표
+            id (str): Location table의 특정 id(primary key)
+            grid_id (str): Grid table의 특정 id(foreigner key)
+            x (str): 물체의 x 좌표
+            y (str): 물체의 y 좌표
         Return:
             True: 갱신 성공
             False: 갱신 실패
@@ -299,7 +299,7 @@ class DB:
         SuperCategory table의 row 추가(set)
 
         Arg:
-            name: 물체의 이름(종류)
+            name (str): 물체의 이름(종류)
 
         Return:
             True: 추가 성공
@@ -324,8 +324,8 @@ class DB:
         SuperCategory table의 특정 id의 row 정보 갱신
 
         Args:
-            id: SuperCategory table의 특정 id(primary key)
-            name: 물체의 이름(종류)
+            id (str): SuperCategory table의 특정 id(primary key)
+            name (str): 물체의 이름(종류)
 
         Return:
             True: 갱신 성공
@@ -354,13 +354,13 @@ class DB:
         Category table에 row 정보 추가
 
         Args:
-            super_id: SuperCategory table의 특정 id(foreigner key)
-            name: 물품의 이름
-            width: 물체의 가로 크기
-            height: 물체의 세로 크기
-            depth: 물체의 높이
-            iteration: 물체 촬영 횟수
-            thumbnail: 썸네일 이미지
+            super_id (str): SuperCategory table의 특정 id(foreigner key)
+            name (str): 물품의 이름
+            width (str): 물체의 가로 크기
+            height (str): 물체의 세로 크기
+            depth (str): 물체의 높이
+            iteration (str): 물체 촬영 횟수
+            thumbnail (image): 썸네일 이미지
 
         Return:
             True: 추가 성공
@@ -368,10 +368,6 @@ class DB:
         """
         with self.db.cursor() as cursor:
             try:
-                if isinstance(thumbnail, str):
-                    with open(thumbnail, 'rb') as file:
-                        thumbnail = file.read()
-
                 query = 'INSERT INTO Category(super_id, name, width, height, depth, iteration, thumbnail) VALUES(%s, %s, %s, %s, %s, %s, %s)'
                 values = (super_id, name, width, height, depth, iteration, thumbnail)
                 cursor.execute(query, values)
@@ -389,14 +385,14 @@ class DB:
         Category table의 특정 id의 row 정보 갱신
 
         Args:
-            id: Category table의 특정 id(primary key)
-            super_id: superCategory의 id(foreigner key)
-            name: 물품의 이름
-            width: 물체의 가로 크기
-            height: 물체의 세로 크기
-            depth: 물체의 높이
-            iteration: 물체 촬영 횟수
-            thumbnail: 썸네일 이미지
+            id (str): Category table의 특정 id(primary key)
+            super_id (str): superCategory의 id(foreigner key)
+            name (str): 물품의 이름
+            width (str): 물체의 가로 크기
+            height (str): 물체의 세로 크기
+            depth (str): 물체의 높이
+            iteration (str): 물체 촬영 횟수
+            thumbnail (image): 썸네일 이미지
 
         Return:
             True: 갱신 성공
@@ -404,10 +400,6 @@ class DB:
         """
         with self.db.cursor() as cursor:
             try:
-                if isinstance(thumbnail, str):
-                    with open(thumbnail, 'rb') as file:
-                        thumbnail = file.read()
-
                 query_head = 'UPDATE Category SET '
                 query_tail = ' WHERE id={}'.format(id)
                 if super_id != None:
@@ -442,9 +434,9 @@ class DB:
         Object table의 정보 추가
 
         Args:
-            img_id: Image table의 id(foreigner key)
-            loc_id: Location table의 id(foreigner key)
-            category_id: Category table의 id(foreigner key)
+            img_id (str): Image table의 id(foreigner key)
+            loc_id (str): Location table의 id(foreigner key)
+            category_id (str): Category table의 id(foreigner key)
 
         Return:
             True: 추가 성공
@@ -469,10 +461,10 @@ class DB:
         Object table의 특정 id 정보 갱신
 
         Args:
-            id: Object table의 특정 id(primary key)
-            img_id: Image talbe의 특정 id(foreigner key)
-            loc_id: Location table의 특정 id(foreigner key)
-            category_id: Category table의 특정 id(foreigner key)
+            id (str): Object table의 특정 id(primary key)
+            img_id (str): Image talbe의 특정 id(foreigner key)
+            loc_id (str): Location table의 특정 id(foreigner key)
+            category_id (str): Category table의 특정 id(foreigner key)
 
         Return:
             True: 갱신 성공
@@ -507,11 +499,11 @@ class DB:
         Bbox table에 정보 추가
 
         Args:
-            obj_id: Object table의 id(foreigner key)
-            x: Bbox의 왼쪽 시작 점 x 좌표
-            y: Bbox의 왼쪽 시작 점 y 좌표
-            width: Bbox의 가로 크기
-            height: Bbox의 세로 크기
+            obj_id (str): Object table의 id(foreigner key)
+            x (str): Bbox의 왼쪽 시작 점 x 좌표
+            y (str): Bbox의 왼쪽 시작 점 y 좌표
+            width (str): Bbox의 가로 크기
+            height (str): Bbox의 세로 크기
 
         Return:
             True: 추가 성공
@@ -536,11 +528,11 @@ class DB:
         Bbox table의 특정 id row 갱신
 
         Args:
-            id: Bbox table의 특정 id(primary key)
-            x: Bbox의 왼쪽 시작점 x 좌표
-            y: Bbox의 왼쪽 시작점 y 좌표
-            width: Bbox의 가로 크기
-            height: Bboxm의 세로 크기
+            id (str): Bbox table의 특정 id(primary key)
+            x (str): Bbox의 왼쪽 시작점 x 좌표
+            y (str): Bbox의 왼쪽 시작점 y 좌표
+            width (str): Bbox의 가로 크기
+            height (str): Bboxm의 세로 크기
 
         Return:
             True: 갱신 성공
@@ -575,9 +567,7 @@ class DB:
         Mask table의 정보 추가
 
         Args:
-            obj_id: Object table의 id(foreigner key)
-            x:
-
+            obj_id (str): Object table의 id(foreigner key)
         """
         with self.db.cursor() as cursor:
             try:
@@ -641,7 +631,7 @@ class DB:
         mysql databse에 있는 특정 table을 지웁니다.
 
         Args:
-            table: 지우고자하는 table
+            table (str): 지우고자하는 table
         """
         with self.db.cursor() as cursor:
             try:
@@ -659,8 +649,8 @@ class DB:
         """
         mysql databse에 있는 특정 table의 특정 id를 가져옵니다.
         Args:
-            id: table의 id 값
-            table: 조회하기 원하는 table 이름
+            id (str): table의 id 값
+            table (str): 조회하기 원하는 table 이름
         Return:
             tuple(): 해당 id의 row 값
             None: 조회 실패
@@ -681,8 +671,8 @@ class DB:
         """
         mysql databse에 있는 특정 table의 특정 id를 지웁니다..
         Args:
-            id: table의 id 값
-            table: 조회하기 원하는 table 이름
+            id (str): table의 id 값
+            table (str): 조회하기 원하는 table 이름
         Return:
             True: 삭제 성공
             False: 삭제 실패
@@ -694,7 +684,7 @@ class DB:
                 cursor.execute(query, values)
 
             except Exception as e:
-                print('Error function:', inspect.stack()[0][3], '_', table)
+                print('Error function:', inspect.stack()[0][3], table)
                 print(e)
                 return False
 
@@ -705,7 +695,7 @@ class DB:
         """
         mysql databse에 있는 특정 table의 모든 값을 가져옵니다.
         Args:
-            table: 조회하기 원하는 table 이름
+            table (str): 조회하기 원하는 table 이름
         Return:
             list(): 특정 table의 모든 값
             None: 조회 실패
@@ -723,7 +713,10 @@ class DB:
 
     def last_id_table(self, table):
         """
-        Image table의 마지막 id 값 조회
+        table의 마지막 id 값 조회
+
+        Args:
+            table (str): table 이
 
         Return:
             list(): 마지막 id 값
