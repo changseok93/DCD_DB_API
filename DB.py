@@ -655,7 +655,7 @@ class DB:
             id (str): table의 id 값
             table (str): 조회하기 원하는 table 이름
         Return:
-            tuple (tuple): 해당 id의 row 값
+            tuple[][] (tuple): 해당 id의 row 값
             None: 조회 실패
         """
         with self.db.cursor() as cursor:
@@ -700,7 +700,7 @@ class DB:
         Args:
             table (str): 조회하기 원하는 table 이름
         Return:
-            list (list): 특정 table의 모든 값
+            list[][] (list): 특정 table의 모든 값
             None: 조회 실패
         """
         with self.db.cursor() as cursor:
@@ -722,7 +722,7 @@ class DB:
             table (str): table 이
 
         Return:
-            list (list): 마지막 id 값
+            list[][] (list): 마지막 id 값
             None: 조회 실패
         """
         with self.db.cursor() as cursor:

@@ -26,7 +26,7 @@ def check_Image(db):
     db.get_table(id='2', table='Image')
     db.delete_table(id='1', table='Image')
     db.update_Image(id='2', device_id='5')
-    print('Image table: ', db.list_table(table='Image'))
+    # print('Image table: ', db.list_table(table='Image'))
     print('Image table last id: ', db.last_id_table(table='Image'))
 
 
@@ -67,7 +67,7 @@ def check_Category(db):
     db.get_table(id='2', table='Category')
     db.delete_table(id='1', table='Category')
     db.update_Category(id='2', name='삼다수2')
-    print('Category table: ', db.list_table(table='Category'))
+    # print('Category table: ', db.list_table(table='Category'))
     print('Category table last id: ', db.last_id_table(table='Category'))
 
 
@@ -110,15 +110,36 @@ def reset_table(db):
     db.drop_table(table='SuperCategory')
 
 
+def read_img_from_db(db):
+    import cv2
+    import numpy as np
+
+    im = mydb.get_table(id='2', table='Image')
+    img_byte_str = im[0][2]
+    img_dir = './output.png'
+
+    nparr = np.frombuffer(img_byte_str, np.uint8)
+    img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+    cv2.imshow('d', img_np)
+    cv2.waitKey(0)
+
+    # byte 타입으로 저장도 가능
+    # cv2를 굳이 안써도 되지만, cv2.imshow 불가
+    with open(img_dir, 'wb') as file:
+        file.write(img_byte_str)
+
+
 if __name__ == "__main__":
     # cunnect to MYSQL Server
     mydb = DB.DB('192.168.10.69', 3306, 'root', 'return123', 'test')
-
     # 처음 test를 돌리기 위해선 테이블 생성 먼저 해야함
     try:
         create_tables(mydb)
     except:
         print("db가 이미 생성됨")
+
+    # reset_table(mydb)
 
     # Environment table test
     check_Environment(mydb)
@@ -146,6 +167,9 @@ if __name__ == "__main__":
 
     # Mask
     check_Mask(mydb)
+
+    # db로 부터 이미지 정보를 가져와 읽는 예
+    read_img_from_db(mydb)
 
     # reset tables
     # reset_table(mydb)
