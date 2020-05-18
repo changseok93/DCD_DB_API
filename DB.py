@@ -7,10 +7,16 @@ class DB:
     """
     MySQL 서버와 정보를 주고받는 class 입니다.
     """
-    def __init__(self, ip, port, user, password, db_name, charset='utf8'):
+    def __init__(self, ip, port, user, password, db_name, charset='utf8mb4'):
         """
-        DB class 초기화
+        DB class를 초기화하는 함수
         pymysql.connect()를 이용해 MySQL과 연결
+        데이터베이스 생성
+        mysql 서버의 변수 설정
+            wait_timeout: 활동하지 않는 커넥션을 끊을때까지 서버가 대기하는 시간
+            interactive_timeout: 활동중인 커넥션이 닫히기 전까지 서버가 대기하는 시간
+            max_connections: 한번에 mysql 서버에 접속할 수 있는 클라이언트 수
+            참조: https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html
 
         Args:
             ip (str): MySQL 서버에 로그인하기위한 ip 주소
@@ -21,14 +27,29 @@ class DB:
             charset (str): 문자 인코딩 방식
         """
         try:
-            self.db = pymysql.connect(host=ip, port=port, user=user, passwd=password, db=db_name, charset=charset)
+            self.db = pymysql.connect(host=ip, port=port, user=user, passwd=password, charset=charset)
             print("setting on")
 
+            with self.db.cursor() as cursor:
+                query = 'CREATE DATABASE ' + db_name
+                cursor.execute(query)
+
+                query = 'SET GLOBAL wait_timeout=31536000;'
+                cursor.execute(query)
+
+                query = 'SET GLOBAL interactive_timeout=31536000;'
+                cursor.execute(query)
+
+                query = 'SET GLOBAL max_connections=100000;'
+                cursor.execute(query)
+
         except Exception as e:
-            print('invalid DB information')
+            print('already init DB')
             print(e)
-        #-- let's think about cashing here --
-        #-- ---------------------------------
+
+        # select databases, 'use [database]'와 동일
+        self.db.select_db(db_name)
+        self.db.commit()
 
     def set_Environment(self, ipv4, floor, width, height, depth):
         """
@@ -608,46 +629,6 @@ class DB:
             self.db.commit()
             return True
 
-    def table_initialize(self):
-        """
-        table을 생성합니다.
-        """
-        try:
-            with self.db.cursor() as cursor:
-                for i, sql in enumerate(querys.initial_queries):
-                    print('{} 번째 sql 실행중...'.format(i + 1))
-                    cursor.execute(sql)
-
-                cursor.execute("SHOW TABLES")
-                for line in cursor.fetchall():
-                    print(line)
-
-        except Exception as e:
-            print('your database is already exist')
-            print(e)
-
-        finally:
-            self.db.commit()
-
-    def drop_table(self, table):
-        """
-        mysql databse에 있는 특정 table을 지웁니다.
-
-        Args:
-            table (str): 지우고자하는 table
-        """
-        with self.db.cursor() as cursor:
-            try:
-                query = 'DROP TABLE '
-                query += table
-                cursor.execute(query)
-                return list(cursor.fetchall())
-
-            except Exception as e:
-                print('Error function:', inspect.stack()[0][3])
-                print(e)
-                return None
-
     def get_table(self, id, table):
         """
         mysql databse에 있는 특정 table의 특정 id를 가져옵니다.
@@ -711,6 +692,46 @@ class DB:
 
             except Exception as e:
                 print('Error function:', inspect.stack()[0][3], '_', table)
+                print(e)
+                return None
+
+    def init_table(self):
+        """
+        table을 생성합니다.
+        """
+        try:
+            with self.db.cursor() as cursor:
+                for i, sql in enumerate(querys.initial_queries):
+                    print('{} 번째 sql 실행중...'.format(i + 1))
+                    cursor.execute(sql)
+
+                cursor.execute("SHOW TABLES")
+                for line in cursor.fetchall():
+                    print(line)
+
+        except Exception as e:
+            print('table is already exist')
+            print(e)
+
+        finally:
+            self.db.commit()
+
+    def drop_table(self, table):
+        """
+        mysql databse에 있는 특정 table을 지웁니다.
+
+        Args:
+            table (str): 지우고자하는 table
+        """
+        with self.db.cursor() as cursor:
+            try:
+                query = 'DROP TABLE '
+                query += table
+                cursor.execute(query)
+                return list(cursor.fetchall())
+
+            except Exception as e:
+                print('Error function:', inspect.stack()[0][3])
                 print(e)
                 return None
 
