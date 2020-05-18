@@ -69,7 +69,7 @@ def check_Category(db):
 
 
 def check_Object(db):
-    db.set_Object(img_id='1', loc_id='1', category_id='1')
+    db.set_Object(img_id='1', loc_id='1', category_id='1', iteration=2)
     db.get_table(id='1', table='Object')
     # db.delete_table(id='1', table='Object')
     db.update_Object(id='1', loc_id='2')
