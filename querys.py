@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 initial_queries = list()
 
 # table environment
@@ -80,6 +82,7 @@ img_id INT UNSIGNED NOT NULL,
 loc_id INT UNSIGNED NOT NULL,
 category_id INT UNSIGNED NOT NULL,
 id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+iteration SMALLINT UNSIGNED NOT NULL,
 PRIMARY KEY(id),
 FOREIGN KEY(img_id) REFERENCES Image(id) ON UPDATE CASCADE ON DELETE CASCADE,
 FOREIGN KEY(loc_id) REFERENCES Location(id) ON UPDATE CASCADE ON DELETE CASCADE,

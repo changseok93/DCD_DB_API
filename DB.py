@@ -394,7 +394,7 @@ class DB:
         finally:
             self.db.commit()
 
-    def set_Object(self, img_id, loc_id, category_id):
+    def set_Object(self, img_id, loc_id, category_id, iteration):
         """
         Object table의 정보 추가
 
@@ -402,11 +402,12 @@ class DB:
             img_id (str): Image table의 id(foreigner key)
             loc_id (str): Location table의 id(foreigner key)
             category_id (str): Category table의 id(foreigner key)
+            iteration (str): 물체를 방향 별로 찍어야하는 횟수
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'INSERT INTO Object(img_id, loc_id, category_id) VALUES(%s, %s, %s)'
-                values = (img_id, loc_id, category_id)
+                query = 'INSERT INTO Object(img_id, loc_id, category_id, iteration) VALUES(%s, %s, %s, %s)'
+                values = (img_id, loc_id, category_id, iteration)
                 cursor.execute(query, values)
 
         except Exception as e:
@@ -416,7 +417,7 @@ class DB:
         finally:
             self.db.commit()
 
-    def update_Object(self, id, img_id=None, loc_id=None, category_id=None):
+    def update_Object(self, id, img_id=None, loc_id=None, category_id=None, iteration=None):
         """
         Object table의 특정 id 정보 갱신
 
@@ -425,6 +426,7 @@ class DB:
             img_id (str): Image talbe의 특정 id(foreigner key)
             loc_id (str): Location table의 특정 id(foreigner key)
             category_id (str): Category table의 특정 id(foreigner key)
+            iteration (str): 물체를 방향 별로 찍어야하는 횟수
         """
         try:
             with self.db.cursor() as cursor:
@@ -436,6 +438,8 @@ class DB:
                     query_head += 'loc_id={}, '.format(loc_id)
                 if category_id != None:
                     query_head += 'Category_id={}, '.format(category_id)
+                if category_id != None:
+                    query_head += 'Category_id={}, '.format(iteration)
 
                 query = query_head[:-2]
                 query += query_tail
