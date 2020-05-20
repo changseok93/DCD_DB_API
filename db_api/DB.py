@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 import pymysql
-import querys
+from db_api import querys
 import inspect
 
 
 class DB:
     """
-    MySQL 서버와 정보를 주고받는 class 입니다.
+    MySQL server와 정보를 주고받는 class 입니다.
     """
     def __init__(self, ip, port, user, password, db_name, charset='utf8mb4'):
         """
         DB class를 초기화하는 함수
         pymysql.connect()를 이용해 MySQL과 연결
-        데이터베이스 생성
+        database 생성
         mysql 서버의 변수 설정
             wait_timeout: 활동하지 않는 커넥션을 끊을때까지 서버가 대기하는 시간
             interactive_timeout: 활동중인 커넥션이 닫히기 전까지 서버가 대기하는 시간
@@ -62,9 +62,7 @@ class DB:
 
     def set_environment(self, ipv4, floor, width, height, depth):
         """
-        촬영된 냉장고의 환경(environment) 정보를 Enviroment table에 저장
-        cursor Object를 가져옴 -> cursor.execute()를 통해 SQL 실행
-        commit()을 통해 mySQL 서버에 확정 반영
+        Environment table에 row 추가
 
         Args:
             ipv4 (str): 연결된 냉장고의 ip
@@ -91,7 +89,7 @@ class DB:
 
     def update_environment(self, id, ipv4=None, floor=None, width=None, height=None, depth=None):
         """
-        Enviroment table의 특정 id의 값들을 갱신
+        Enviroment table의 특정 id의 row 값 갱신
 
         Args:
             id (str): Enviroment table의 특정 id(primary key)
@@ -132,7 +130,7 @@ class DB:
 
     def set_image(self, device_id, image, type, check_num):
         """
-        Image table에 값 추가(setting)
+        Image table에 row 추가
 
         Args:
             device_id (str): Environment table의 id(foreigner key)
@@ -159,7 +157,7 @@ class DB:
 
     def update_image(self, id, device_id=None, image=None, type=None, check_num=None):
         """
-        Image table의 특정 id의 값들 갱신
+        Image table의 특정 id의 row 값 갱신
 
         Args:
             id (str): Image table의 특정 id(primary key)
@@ -196,7 +194,7 @@ class DB:
 
     def set_grid(self, width, height):
         """
-        Grid table 값 추가(set)
+        Grid table row 추가
 
         Args:
             width (str): grid 가로 칸 개수
@@ -220,7 +218,7 @@ class DB:
 
     def update_grid(self, id, width=None, height=None):
         """
-        Grid table의 특정 id row 값들을 갱신
+        Grid table의 특정 id row 값 갱신
 
         Args:
             id (str): Grid table의 특정 id(primary key)
@@ -251,7 +249,7 @@ class DB:
 
     def set_location(self, grid_id, x, y):
         """
-        Location table의 값을 추가(set)
+        Location table에 row 추가
 
         Args:
             grid_id (str): Grid table의 id(foreigner key)
@@ -276,7 +274,7 @@ class DB:
 
     def update_location(self, id, grid_id=None, x=None, y=None):
         """
-        Location table의 특정 id의 row 정보 갱신
+        Location table의 특정 id 값 갱신
 
         Args:
             id (str): Location table의 특정 id(primary key)
@@ -311,7 +309,7 @@ class DB:
 
     def set_supercategory(self, name):
         """
-        SuperCategory table의 row 추가(set)
+        SuperCategory table에 row 추가
 
         Arg:
             name (str): 물체의 이름(종류)
@@ -334,7 +332,7 @@ class DB:
 
     def update_supercategory(self, id, name=None):
         """
-        SuperCategory table의 특정 id의 row 정보 갱신
+        SuperCategory table의 특정 id의 row 값 갱신
 
         Args:
             id (str): SuperCategory table의 특정 id(primary key)
@@ -362,7 +360,7 @@ class DB:
 
     def set_category(self, super_id, name, width, height, depth, iteration, thumbnail):
         """
-        Category table에 row 정보 추가
+        Category table에 row 추가
 
         Args:
             super_id (str): SuperCategory table의 특정 id(foreigner key)
@@ -438,7 +436,7 @@ class DB:
 
     def set_object(self, img_id, loc_id, category_id, iteration):
         """
-        Object table의 정보 추가
+        Object table에 row 추가
 
         Args:
             img_id (str): Image table의 id(foreigner key)
@@ -503,7 +501,7 @@ class DB:
 
     def set_bbox(self, obj_id, x, y, width, height):
         """
-        Bbox table에 정보 추가
+        Bbox table에 row 추가
 
         Args:
             obj_id (str): Object table의 id(foreigner key)
@@ -530,7 +528,7 @@ class DB:
 
     def update_bbox(self, id, x=None, y=None, width=None, height=None):
         """
-        Bbox table의 특정 id row 갱신
+        Bbox table의 특정 id 정보 갱
 
         Args:
             id (str): Bbox table의 특정 id(primary key)
@@ -568,7 +566,7 @@ class DB:
 
     def set_mask(self, obj_id, x, y):
         """
-        Mask table의 정보 추가
+        Mask table의 id row 추가
 
         Args:
             obj_id (str): Object table의 id(foreigner key)
@@ -593,7 +591,7 @@ class DB:
 
     def update_mask(self, id, obj_id=None, x=None, y=None):
         """
-        Mask table의 정보 업데이트
+        Mask table의 특정 id의 row 갱신
 
         Args:
             id: Mask table의 id(primary key)
@@ -743,7 +741,7 @@ class DB:
 
     def last_id_table(self, table):
         """
-        table의 마지막 id 값 조회
+        table의 마지막 id 조회
 
         Args:
             table (str): table 이름
@@ -768,7 +766,7 @@ class DB:
 
     def get_env_id_from_args(self, ipv4, floor):
         """
-        Environment table의 ipv4와 floor를 받아 Environment table id를 반환하는 함수
+        Environment table의 id 반환
 
         Args:
             ipv4 (str): Environment table ipv4 정보
@@ -796,7 +794,7 @@ class DB:
 
     def get_grid_id_from_args(self, width, height):
         """
-        Grid table의 width와 height 값을 받아 Grid table id를 반환하는 함수
+        Grid table의 id 반환
 
         Args:
             width (str): gird 가로 칸 수
@@ -824,7 +822,7 @@ class DB:
 
     def get_supercategory_id_from_args(self, name):
         """
-        SuperCategory table의 name을 입력받아 SuperCategory table id 반환하는 함수
+        SuperCategory table의 id 반환
 
         Args:
             name (str): SuperCategory table의 name 정보
@@ -851,7 +849,7 @@ class DB:
 
     def get_location_id_from_args(self, grid_id, x, y):
         """
-        조회하고 싶은 location 위치와 상위 grid를 받아 해당하는 location의 id를 반환하는 함수
+        Location table의 id 반환
 
         Args:
             grid_id (str): grid_id 값(foreigner key)
@@ -880,7 +878,7 @@ class DB:
 
     def get_category_id_from_args(self, super_id, category_name):
         """
-        조회하고 싶은 category name과 상위 super category name을 받아 해당하는 category의 id를 반환하는 함수
+        Category table의 id를 반환
 
         Args:
             super_id (str): 조회하기 원하는 category의 상위 super_category
@@ -908,10 +906,10 @@ class DB:
 
     def get_img_id_from_args(self, obj_id):
         """
-        Object table에서 img_id를 반환하는 함
+        Object table의 img_id를 반환
 
         Args:
-            obj_id (str): 조회하기 원하는 object의 id
+            obj_id (str): 조회하기 원하는 Object table의 id
 
         Return:
             int: 해당하는 Object table의 image id
@@ -933,12 +931,11 @@ class DB:
             print(e)
             return None
 
-    def get_obj_id_from_args(self, img_id, loc_id, category_id, iteration):
+    def get_obj_id_from_args(self, loc_id, category_id, iteration):
         """
-        Object table의 id를 반환하는 함수
+        Object table의 id를 반환
 
         Args:
-            img_id (str): Object table의 img_id
             loc_id (str): Object table의 loc_id
             category_id (str): Object table의 category_id
             iteration (str): Object table의 iteration
@@ -949,8 +946,8 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT id FROM Object WHERE img_id=%s AND loc_id=%s AND category_id=%s AND iteration=%s"
-                value = (img_id, loc_id, category_id, iteration)
+                query = "SELECT id FROM Object WHERE loc_id=%s AND category_id=%s AND iteration=%s"
+                value = (loc_id, category_id, iteration)
                 cursor.execute(query, value)
                 return sum(cursor.fetchall(), ())[0]
 
@@ -961,10 +958,10 @@ class DB:
 
     def check_image_check_num(self, img_id):
         """
-        Image table의 이미지의 검수 여부(check_num)를 반환하는 함수
+        Image table의 이미지의 check_num을 반환
 
         Args:
-            img_id (str): 조회하기 원하는 object의 id
+            img_id (str): 조회하기 원하는 Object table의 id
 
         Return:
             int (0, 1, 2): 해당 object의 이미지 검수여부 반환
@@ -988,11 +985,11 @@ class DB:
 
     def update_image_check_num(self, img_id, check_num):
         """
-        Image table의 check_num을 원하는 값으로 수정하는 함수
+        Image table의 check_num 갱신
 
         Args:
-            img_id (str): 수정하기 원하는 Object table id
-            check_num (str): 수정하기 원하는 Image table check_num
+            img_id (str): 수정하기 원하는 Object table의 id
+            check_num (str): 수정하기 원하는 Image table의 check_num
 
         Return:
             Bool: True or False
@@ -1004,7 +1001,7 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'UPDATE Image SET check_num=' + check_num + ' WHERE id=' + img_id
+                query = "UPDATE Image SET check_num=" + check_num + " WHERE id=" + img_id
                 print(query)
                 cursor.execute(query)
                 return True
@@ -1016,7 +1013,7 @@ class DB:
 
     def update_image_img(self, img_id, img):
         """
-        Image table의 image를 바꿈
+        Image table의 image 갱신
 
         Args:
             img_id (str): Image table의 id

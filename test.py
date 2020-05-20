@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-import DB
-import os
+from db_api.DB import DB
 
 
 def img_loader(img_dir):
@@ -22,7 +21,7 @@ def check_environment(db):
 
 
 def check_image(db):
-    img_dir = './example.png'
+    img_dir = 'img/example.png'
     if isinstance(img_dir, str):
         with open(img_dir, 'rb') as file:
             img = file.read()
@@ -63,7 +62,7 @@ def check_supercategory(db):
 
 
 def check_category(db):
-    img_dir = './example.png'
+    img_dir = 'img/example.png'
     if isinstance(img_dir, str):
         with open(img_dir, 'rb') as file:
             img = file.read()
@@ -121,7 +120,7 @@ def read_img_from_db(db, img_id, table):
 
     im = db.get_table(id=img_id, table=table)
     img_byte_str = im[2]
-    img_dir = './output.png'
+    img_dir = 'img/output.png'
 
     nparr = np.frombuffer(img_byte_str, np.uint8)
     img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
@@ -137,7 +136,8 @@ def read_img_from_db(db, img_id, table):
 
 def get_environment_id(db, ipv4, floor):
     """
-    Environment table ipv4와 floor 정보를받아 Environment table id를 반환
+    Environment table (ipv4, floor)를 입력 받아
+    Environment table의 (id)를 반환
 
     Args:
         db (DB class): DB class
@@ -154,7 +154,8 @@ def get_environment_id(db, ipv4, floor):
 
 def get_grid_id(db, grid_w_h):
     """
-    Grid table의 width, height를 받아 Grid table id 반환하는 함수
+    Grid table의 (width, height)를 입력 받아
+    Grid table의 (id)를 반환하는 함수
 
     Args:
         db (DB class): DB class
@@ -171,7 +172,8 @@ def get_grid_id(db, grid_w_h):
 
 def get_supercategory_id(db, super_name):
     """
-    SuperCategory table의 name을 입력으로 받아 SuperCategory table의 id 반환하는 함수
+    SuperCategory table의 (name)을 입력 받아
+    SuperCategory table의 (id) 반환하는 함수
 
     Args:
         db (DB class): DB class
@@ -187,7 +189,8 @@ def get_supercategory_id(db, super_name):
 
 def get_location_id(db, grid_w_h, loc_x_y):
     """
-    Grid table 정보와 Location table 정보를 받아 Location table id 반환하는 함수
+    Grid table의 (width, height)와 Location table의 (x, y)를 입력받아
+    Location table의 (id) 반환하는 함수
 
     Args:
         db (DB class): DB class
@@ -210,8 +213,8 @@ def get_location_id(db, grid_w_h, loc_x_y):
 
 def get_category_id(db, super_name, category_name):
     """
-    SuperCateogry table name을 통해 SuperCategory table의 id를 얻고
-    이후 Category table의 name과 super_id를 통해 Category table id 반환하는 함수
+    SuperCateogry table의 (name)과 Category table의 (name)을 입력받아
+    Category table의 (id) 반환하는 함수
 
     Args:
         db (DB class): DB class
@@ -230,29 +233,10 @@ def get_category_id(db, super_name, category_name):
     return category_id
 
 
-def check_category_id(db, super_name, category_name):
-    """
-    SuperCateogry table의 name을 통해 SuperCategory table의 id를 얻고
-    이후 Category table의 name과 super_id를 통해 Category table에 특정 id가 있는지 check하는 함수
-
-    Args:
-        db (DB class): DB class
-        super_name (str): SuperCategory table의 name
-        category_name (str): Category table의 name
-
-    Return:
-        Bool: Category table에 해당 id가 존재하면 True or False
-    """
-    category_id = get_category_id(db=db, super_name=super_name, category_name=category_name)
-    if category_id is not None:
-        return True
-    else:
-        return False
-
-
 def get_image_check_num(db, obj_id):
     """
-    Object table의 id를 입력으로 받아 Image table의 check_num 반환하는 함수
+    Object table의 (id)를 입력 받아
+    Image table의 (check_num) 반환하는 함수
 
     Args:
         db (DB class): DB class
@@ -270,9 +254,72 @@ def get_image_check_num(db, obj_id):
     return img_check_num
 
 
+def get_object_id(db, loc_id, category_id, iteration):
+    """
+    Object table의 (loc_id, category_id, iteration)를 입력 받아
+    Object table (id) 반환하는 함수
+
+    Args:
+        db (DB): DB class
+        loc_id (str): Location table의 id
+        category_id (str): Category table의 id
+        iteration (str): Object table의 iteration
+
+    Return:
+        obj_id (int): Object table의 id
+        None: 조회 실패
+    """
+
+    obj_id = db.get_obj_id_from_args(loc_id=loc_id, category_id=category_id, iteration=iteration)
+    return obj_id
+
+
+def check_object_id(db, loc_id, category_id, iteration):
+    """
+    Object table의 (loc_id, category_id, iteration)를 입력 받아
+    Object table의 특정 (id)를 check 하는 함수
+
+       Args:
+           db (DB): DB class
+           loc_id (str): Location table의 id
+           category_id (str): Category table의 id
+           iteration (str): Object table의 iteration
+
+       Return:
+           Bool: True or False
+       """
+    obj_id = db.get_obj_id_from_args(loc_id=loc_id, category_id=category_id, iteration=iteration)
+    if obj_id is not None:
+        return True
+    else:
+        return False
+
+
+def check_category_id(db, super_name, category_name):
+    """
+    SuperCateogry table의 (name)과 Category table의 (name)을 입력받아
+    Category table의 특정 (id)가 존재하는지 check하는 함수
+
+
+    Args:
+        db (DB class): DB class
+        super_name (str): SuperCategory table의 name
+        category_name (str): Category table의 name
+
+    Return:
+        Bool: Category table에 해당 id가 존재하면 True or False
+    """
+    category_id = get_category_id(db=db, super_name=super_name, category_name=category_name)
+    if category_id is not None:
+        return True
+    else:
+        return False
+
+
 def update_image_check_num(db, obj_id, check_num):
     """
-    Image table의 check_num을 update 하는 함수
+    Object table의 (id)를 입력 받아
+    Image table의 (check_num)을 update 하는 함수
 
     Args:
         db (DB class): DB class
@@ -295,7 +342,8 @@ def update_image_check_num(db, obj_id, check_num):
 
 def update_image_image(db, obj_id, img):
     """
-    Object table의 id를 입력으로 받아 Image table의 image 정보 update하는 함수
+    Object table의 (id)를 입력 받아
+    Image table의 (image) update 하는 함수
 
     Args:
         db (DB class): DB class
@@ -316,35 +364,20 @@ def update_image_image(db, obj_id, img):
         return True
 
 
-def get_object_id(db, img_id, loc_id, category_id, iteration):
+def set_object_list(db, category_id, grid_id):
     """
-    Object table id 반환하는 함수
-
-    Args:
-        db (DB): DB class
-        img_id (str): Image table의 id
-        loc_id (str): Location table의 id
-        category_id (str): Category table의 id
-        iteration (str): Object table의 iteration
-
-    Return:
-        obj_id (int): Object table의 id
-        None: 조회 실패
     """
-
-    obj_id = db.get_obj_id_from_args(img_id=img_id, loc_id=loc_id, category_id=category_id, iteration=iteration)
-    return obj_id
 
 
 if __name__ == "__main__":
-    img = img_loader('./example.png')
+    img = img_loader('img/example.png')
 
     # cunnect to MYSQL Server
-    mydb = DB.DB(ip='192.168.10.69',
-                 port=3306,
-                 user='root',
-                 password='return123',
-                 db_name='test')
+    mydb = DB(ip='192.168.10.69',
+              port=3306,
+              user='root',
+              password='return123',
+              db_name='test')
 
     # table 초기화
     mydb.init_table()
@@ -401,15 +434,13 @@ if __name__ == "__main__":
     print('update_image_check_num: ', a_7)
 
     read_img_from_db(db=mydb, img_id='1', table='Image')
-    img_tmp = img_loader('./puffine.jpg')
+    img_tmp = img_loader('img/puffine.jpg')
     a_8 = update_image_image(db=mydb, obj_id='1', img=img_tmp)
     print('update_image_image: ', a_8)
     read_img_from_db(db=mydb, img_id='1', table='Image')
 
-    a_9 = get_object_id(db=mydb, img_id='1', loc_id='1', category_id='1', iteration='2')
+    a_9 = get_object_id(db=mydb, loc_id='1', category_id='1', iteration='2')
     print(a_9)
-
-
 
     # reset tables
     # reset_table(mydb)

@@ -11,9 +11,30 @@ floor SMALLINT UNSIGNED NOT NULL,
 width SMALLINT UNSIGNED NOT NULL,
 height SMALLINT UNSIGNED NOT NULL,
 depth SMALLINT UNSIGNED NOT NULL,
-PRIMARY KEY(id)
+PRIMARY KEY(id),
+UNIQUE INDEX (ipv4, floor)
 )"""
 initial_queries.append(create_env_sql)
+
+# table Grid
+create_grid_sql="""
+CREATE TABLE Grid(
+id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+width SMALLINT UNSIGNED NOT NULL,
+height SMALLINT UNSIGNED NOT NULL,
+PRIMARY KEY(id),
+UNIQUE INDEX (width, height)
+)"""
+initial_queries.append(create_grid_sql)
+
+# table SuperCategory
+create_superCategories_sql="""
+CREATE TABLE SuperCategory(
+id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+name VARCHAR(100) NOT NULL UNIQUE,
+PRIMARY KEY(id)
+)"""
+initial_queries.append(create_superCategories_sql)
 
 # table Image
 create_img_sql="""
@@ -28,16 +49,6 @@ FOREIGN KEY(env_id) REFERENCES Environment(id)
 )"""
 initial_queries.append(create_img_sql)
 
-# table Grid
-create_grid_sql="""
-CREATE TABLE Grid(
-id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-width SMALLINT UNSIGNED NOT NULL,
-height SMALLINT UNSIGNED NOT NULL,
-PRIMARY KEY(id)
-)"""
-initial_queries.append(create_grid_sql)
-
 # table Location
 create_loc_sql="""
 CREATE TABLE Location(
@@ -46,18 +57,10 @@ id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 x TINYINT UNSIGNED NOT NULL,
 y TINYINT UNSIGNED NOT NULL,
 PRIMARY KEY(id),
-FOREIGN KEY(grid_id) REFERENCES Grid(id)
+FOREIGN KEY(grid_id) REFERENCES Grid(id),
+UNIQUE INDEX (grid_id, x, y)
 )"""
 initial_queries.append(create_loc_sql)
-
-# table super_class
-create_superCategories_sql="""
-CREATE TABLE SuperCategory(
-id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-name VARCHAR(100) NOT NULL,
-PRIMARY KEY(id)
-)"""
-initial_queries.append(create_superCategories_sql)
 
 # table class
 create_categories_sql="""
@@ -71,7 +74,8 @@ depth SMALLINT UNSIGNED NOT NULL,
 iteration TINYINT UNSIGNED NOT NULL,
 thumbnail MEDIUMBLOB NOT NULL,
 PRIMARY KEY(id),
-FOREIGN KEY(super_id) REFERENCES SuperCategory(id)
+FOREIGN KEY(super_id) REFERENCES SuperCategory(id),
+UNIQUE INDEX (name, super_id)
 )"""
 initial_queries.append(create_categories_sql)
 
@@ -86,7 +90,9 @@ iteration SMALLINT UNSIGNED NOT NULL,
 PRIMARY KEY(id),
 FOREIGN KEY(img_id) REFERENCES Image(id) ON UPDATE CASCADE ON DELETE CASCADE,
 FOREIGN KEY(loc_id) REFERENCES Location(id) ON UPDATE CASCADE ON DELETE CASCADE,
-FOREIGN KEY(category_id) REFERENCES Category(id) ON UPDATE CASCADE ON DELETE CASCADE
+FOREIGN KEY(category_id) REFERENCES Category(id) ON UPDATE CASCADE ON DELETE CASCADE,
+UNIQUE INDEX (img_id),
+UNIQUE INDEX (loc_id, category_id, iteration)
 )"""
 initial_queries.append(create_object_sql)
 
@@ -100,7 +106,8 @@ y SMALLINT UNSIGNED NOT NULL,
 width SMALLINT UNSIGNED NOT NULL,
 height SMALLINT UNSIGNED NOT NULL,
 PRIMARY KEY(id),
-FOREIGN KEY(obj_id) REFERENCES Object(id) ON UPDATE CASCADE ON DELETE CASCADE
+FOREIGN KEY(obj_id) REFERENCES Object(id) ON UPDATE CASCADE ON DELETE CASCADE,
+UNIQUE INDEX (obj_id, x, y, width, height)
 )"""
 initial_queries.append(create_bbox_sql)
 
@@ -112,6 +119,7 @@ id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 x SMALLINT UNSIGNED NOT NULL,
 Y SMALLINT UNSIGNED NOT NULL,
 PRIMARY KEY(id),
-FOREIGN KEY(obj_id) REFERENCES Object(id) ON UPDATE CASCADE ON DELETE CASCADE
+FOREIGN KEY(obj_id) REFERENCES Object(id) ON UPDATE CASCADE ON DELETE CASCADE,
+UNIQUE INDEX (obj_id, x, y)
 )"""
 initial_queries.append(create_mask_sql)
