@@ -3,94 +3,102 @@ import DB
 import os
 
 
-def check_Environment(db):
+def img_loader(img_dir):
+    if isinstance(img_dir, str):
+        with open(img_dir, 'rb') as file:
+            img = file.read()
+
+    return img
+
+
+def check_environment(db):
     # check environment fucntions
-    db.set_Environment(ipv4='127.223.444.444', floor='2', width='2', height='3', depth='2')
+    db.set_environment(ipv4='127.223.444.443', floor='1', width='3', height='4', depth='2')
     db.get_table(id='1', table='Environment')
     # db.delete_table(id='1', table='Environment')
-    db.update_Environment(id='1', ipv4='127.223.444.444')
+    db.update_environment(id='1', ipv4='127.223.444.444')
     print('Environment table: ', db.list_table(table='Environment'))
     print('Environment table last id: ', db.last_id_table(table="Environment"))
 
 
-def check_Image(db):
+def check_image(db):
     img_dir = './example.png'
     if isinstance(img_dir, str):
         with open(img_dir, 'rb') as file:
             img = file.read()
 
-    db.set_Image(device_id='1', image=img, type='0', check_num='1')
+    db.set_image(device_id='1', image=img, type='0', check_num='1')
     db.get_table(id='1', table='Image')
     # db.delete_table(id='1', table='Image')
-    db.update_Image(id='1', device_id='5')
+    db.update_image(id='1', device_id='1')
     # print('Image table: ', db.list_table(table='Image'))
     print('Image table last id: ', db.last_id_table(table='Image'))
 
 
-def check_Grid(db):
-    db.set_Grid(width='10', height='10')
+def check_grid(db):
+    db.set_grid(width='3', height='4')
     db.get_table(id='1', table='Grid')
     # db.delete_table(id='1', table='Grid')
-    db.update_Grid(id='1', width='11')
+    db.update_grid(id='1', width='3')
     print('Grid table: ', db.list_table(table='Grid'))
     print('Grid table last id: ', db.last_id_table(table='Grid'))
 
 
-def check_Location(db):
-    db.set_Location(grid_id='1', x='2', y='2')
+def check_location(db):
+    db.set_location(grid_id='1', x='3', y='4')
     db.get_table(id='1', table='Location')
     # db.delete_table(id='1', table='Location')
-    db.update_Location(id='1', x='22')
+    db.update_location(id='1', x='3')
     print('Location table: ', db.list_table(table='Location'))
     print('Location table last id: ', db.last_id_table(table='Location'))
 
 
-def check_SuperCategory(db):
-    db.set_SuperCategory(name='물병')
+def check_supercategory(db):
+    db.set_supercategory(name='hi')
     db.get_table(id='1', table='SuperCategory')
     # db.delete_table(id='1', table='SuperCategory')
-    db.update_SuperCategory(id='1', name='물병2')
+    db.update_supercategory(id='1', name='hi')
     print('SuperCateogry table: ', db.list_table(table='SuperCategory'))
     print('SuperCategory table last id: ', db.last_id_table(table='SuperCategory'))
 
 
-def check_Category(db):
+def check_category(db):
     img_dir = './example.png'
     if isinstance(img_dir, str):
         with open(img_dir, 'rb') as file:
             img = file.read()
 
-    db.set_Category(super_id='1', name='삼다수', width='10', height='10', depth='10', iteration='1', thumbnail=img)
+    db.set_category(super_id='1', name='hi', width='3', height='4', depth='10', iteration='1', thumbnail=img)
     db.get_table(id='1', table='Category')
     # db.delete_table(id='1', table='Category')
-    db.update_Category(id='1', name='삼다수2')
+    db.update_category(id='1', name='hi')
     # print('Category table: ', db.list_table(table='Category'))
     print('Category table last id: ', db.last_id_table(table='Category'))
 
 
-def check_Object(db):
-    db.set_Object(img_id='1', loc_id='1', category_id='1', iteration=2)
+def check_object(db):
+    db.set_object(img_id='1', loc_id='1', category_id='1', iteration=2)
     db.get_table(id='1', table='Object')
     # db.delete_table(id='1', table='Object')
-    db.update_Object(id='1', loc_id='2')
+    db.update_object(id='1', loc_id='1')
     print('Object table: ', db.list_table(table='Object'))
     print('Object table last id: ', db.last_id_table(table='Object'))
 
 
-def check_Bbox(db):
-    db.set_Bbox(obj_id='1', x='10', y='10', width='1', height='1')
+def check_bbox(db):
+    db.set_bbox(obj_id='1', x='10', y='10', width='3', height='4')
     db.get_table(id='1', table='Bbox')
     # db.delete_table(id='1', table='Bbox')
-    db.update_Bbox(id='1', x='15')
+    db.update_bbox(id='1', x='15')
     print('Bbox table: ', db.list_table(table='Bbox'))
     print('Bbox table last id: ', db.last_id_table(table='Bbox'))
 
 
-def check_Mask(db):
-    db.set_Mask(obj_id='1', x='20', y='20')
+def check_mask(db):
+    db.set_mask(obj_id='1', x='20', y='20')
     db.get_table(id='1', table='Mask')
     # db.delete_table(id='1', table='Mask')
-    db.update_Bbox(id='1', x='3333')
+    db.update_mask(id='1', x='3333')
     print('Mask table: ', db.list_table(table='Mask'))
     print('Mask table last id: ', db.last_id_table(table='Mask'))
 
@@ -107,12 +115,12 @@ def reset_table(db):
     db.drop_table(table='SuperCategory')
 
 
-def read_img_from_db(db):
+def read_img_from_db(db, img_id, table):
     import cv2
     import numpy as np
 
-    im = mydb.get_table(id='1', table='Image')
-    img_byte_str = im[0][2]
+    im = db.get_table(id=img_id, table=table)
+    img_byte_str = im[2]
     img_dir = './output.png'
 
     nparr = np.frombuffer(img_byte_str, np.uint8)
@@ -127,7 +135,210 @@ def read_img_from_db(db):
         file.write(img_byte_str)
 
 
+def get_environment_id(db, ipv4, floor):
+    """
+    Environment table ipv4와 floor 정보를받아 Environment table id를 반환
+
+    Args:
+        db (DB class): DB class
+        ipv4 (str): 냉장고 ipv4 정보
+        floor (str): 냉장고 층 정보
+
+    Return:
+        env_id (int): Environment table id
+        None: 조회 실패
+    """
+    env_id = db.get_env_id_from_args(ipv4=ipv4, floor=floor)
+    return env_id
+
+
+def get_grid_id(db, grid_w_h):
+    """
+    Grid table의 width, height를 받아 Grid table id 반환하는 함수
+
+    Args:
+        db (DB class): DB class
+        grid_w_h (str): Grid table의 width height 값 e.g. 3x4
+
+    Return:
+        grid_id (str): Grid table id
+        None: 조회실패
+    """
+    w, h = grid_w_h.split('x')
+    grid_id = db.get_grid_id_from_args(width=w, height=h)
+    return grid_id
+
+
+def get_supercategory_id(db, super_name):
+    """
+    SuperCategory table의 name을 입력으로 받아 SuperCategory table의 id 반환하는 함수
+
+    Args:
+        db (DB class): DB class
+        super_name (str): SuperCategory table의 name
+
+    Return:
+        super_id (int): SuperCategory table의 id
+        None: 조회실패
+    """
+    super_id = db.get_supercategory_id_from_args(name=super_name)
+    return super_id
+
+
+def get_location_id(db, grid_w_h, loc_x_y):
+    """
+    Grid table 정보와 Location table 정보를 받아 Location table id 반환하는 함수
+
+    Args:
+        db (DB class): DB class
+        grid_w_h (str): Grid table의 width height 정보
+        loc_x_y (str): Location table의 x, y 정보
+
+    Return:
+        loc_id (int): Location table의 id
+        None: 조회실패
+    """
+    w, h = grid_w_h.split('x')
+    grid_id = str(db.get_grid_id_from_args(width=w, height=h))
+    if grid_id is None:
+        return None
+
+    x, y = loc_x_y.split('x')
+    loc_id = db.get_location_id_from_args(grid_id=grid_id, x=x, y=y)
+    return loc_id
+
+
+def get_category_id(db, super_name, category_name):
+    """
+    SuperCateogry table name을 통해 SuperCategory table의 id를 얻고
+    이후 Category table의 name과 super_id를 통해 Category table id 반환하는 함수
+
+    Args:
+        db (DB class): DB class
+        super_name (str): SuperCategory table의 name
+        category_name (str): Category table의 name
+
+    Return:
+        category_id (int): Category table의 id
+        None: 조회실패
+    """
+    super_id = str(db.get_supercategory_id_from_args(name=super_name))
+    if super_id is None:
+        return None
+
+    category_id = db.get_category_id_from_args(super_id=super_id, category_name=category_name)
+    return category_id
+
+
+def check_category_id(db, super_name, category_name):
+    """
+    SuperCateogry table의 name을 통해 SuperCategory table의 id를 얻고
+    이후 Category table의 name과 super_id를 통해 Category table에 특정 id가 있는지 check하는 함수
+
+    Args:
+        db (DB class): DB class
+        super_name (str): SuperCategory table의 name
+        category_name (str): Category table의 name
+
+    Return:
+        Bool: Category table에 해당 id가 존재하면 True or False
+    """
+    category_id = get_category_id(db=db, super_name=super_name, category_name=category_name)
+    if category_id is not None:
+        return True
+    else:
+        return False
+
+
+def get_image_check_num(db, obj_id):
+    """
+    Object table의 id를 입력으로 받아 Image table의 check_num 반환하는 함수
+
+    Args:
+        db (DB class): DB class
+        obj_id (str): Object table의 id
+
+    Return:
+        check_num (int): Image table의 check_num
+        None: 조회 실패
+    """
+    img_id = str(db.get_img_id_from_args(obj_id=obj_id))
+    if img_id is None:
+        return None
+
+    img_check_num = db.check_image_check_num(img_id=img_id)
+    return img_check_num
+
+
+def update_image_check_num(db, obj_id, check_num):
+    """
+    Image table의 check_num을 update 하는 함수
+
+    Args:
+        db (DB class): DB class
+        obj_id (str): Object table의 id
+        check_num (str): Image table의 check_num
+
+    Return:
+        Bool: True or False
+    """
+    img_id = str(db.get_img_id_from_args(obj_id=obj_id))
+    if img_id is None:
+        return False
+
+    flag = db.update_image_check_num(img_id=img_id, check_num=check_num)
+    if flag is False:
+        return False
+    else:
+        return True
+
+
+def update_image_image(db, obj_id, img):
+    """
+    Object table의 id를 입력으로 받아 Image table의 image 정보 update하는 함수
+
+    Args:
+        db (DB class): DB class
+        obj_id (str): Object table의 id
+        img (Image): update image 정보
+
+    Return:
+        Bool: True or False
+    """
+    img_id = str(db.get_img_id_from_args(obj_id=obj_id))
+    if img_id is None:
+        return False
+
+    flag = db.update_image_img(img_id=img_id, img=img)
+    if flag is False:
+        return False
+    else:
+        return True
+
+
+def get_object_id(db, img_id, loc_id, category_id, iteration):
+    """
+    Object table id 반환하는 함수
+
+    Args:
+        db (DB): DB class
+        img_id (str): Image table의 id
+        loc_id (str): Location table의 id
+        category_id (str): Category table의 id
+        iteration (str): Object table의 iteration
+
+    Return:
+        obj_id (int): Object table의 id
+        None: 조회 실패
+    """
+
+    obj_id = db.get_obj_id_from_args(img_id=img_id, loc_id=loc_id, category_id=category_id, iteration=iteration)
+    return obj_id
+
+
 if __name__ == "__main__":
+    img = img_loader('./example.png')
+
     # cunnect to MYSQL Server
     mydb = DB.DB(ip='192.168.10.69',
                  port=3306,
@@ -139,34 +350,66 @@ if __name__ == "__main__":
     mydb.init_table()
 
     # Environment table test
-    check_Environment(mydb)
+    check_environment(mydb)
 
-    # Super Category
-    check_SuperCategory(mydb)
+    # SuperCategory table test
+    check_supercategory(mydb)
 
-    # Gird
-    check_Grid(mydb)
+    # Gird table test
+    check_grid(mydb)
 
     # Image table test
-    check_Image(mydb)
+    check_image(mydb)
 
-    # Location
-    check_Location(mydb)
+    # Location table test
+    check_location(mydb)
 
-    # Category
-    check_Category(mydb)
+    # Category table test
+    check_category(mydb)
 
-    # Object
-    check_Object(mydb)
+    # Object table test
+    check_object(mydb)
 
-    # Bbox
-    check_Bbox(mydb)
+    # Bbox table test
+    check_bbox(mydb)
 
-    # Mask
-    check_Mask(mydb)
+    # Mask table test
+    check_mask(mydb)
 
-    # db로 부터 이미지 정보를 가져와 읽는 예
-    read_img_from_db(mydb)
+    a = get_environment_id(db=mydb, ipv4='127.223.444.444', floor='1')
+    print('get_env_id: ', a)
+
+    a_1 = get_grid_id(db=mydb, grid_w_h='3x4')
+    print('get_grid_id: ', a_1)
+
+    a_2 = get_supercategory_id(db=mydb, super_name='hi')
+    print('get_supercategory_id: ', a_2)
+
+    a_3 = get_location_id(db=mydb, grid_w_h='3x4', loc_x_y='3x4')
+    print('get_location_id: ', a_3)
+
+    a_4 = get_category_id(db=mydb, super_name='hi', category_name='hi')
+    print('get_category_id: ', a_4)
+
+    a_5 = check_category_id(db=mydb, super_name='hi', category_name='hi')
+    print('check_category_id: ', a_5)
+
+    a_6 = get_image_check_num(db=mydb, obj_id='1')
+    print('get_image_check_num: ', a_6)
+
+    a_7 = update_image_check_num(db=mydb, obj_id='1', check_num='100')
+    print('update_image_check_num: ', a_7)
+
+    read_img_from_db(db=mydb, img_id='1', table='Image')
+    img_tmp = img_loader('./puffine.jpg')
+    a_8 = update_image_image(db=mydb, obj_id='1', img=img_tmp)
+    print('update_image_image: ', a_8)
+    read_img_from_db(db=mydb, img_id='1', table='Image')
+
+    a_9 = get_object_id(db=mydb, img_id='1', loc_id='1', category_id='1', iteration='2')
+    print(a_9)
+
+
 
     # reset tables
     # reset_table(mydb)
