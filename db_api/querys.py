@@ -82,7 +82,7 @@ initial_queries.append(create_categories_sql)
 # table Object
 create_object_sql="""
 CREATE TABLE Object(
-img_id INT UNSIGNED NOT NULL,
+img_id INT UNSIGNED,
 loc_id INT UNSIGNED NOT NULL,
 category_id INT UNSIGNED NOT NULL,
 id INT UNSIGNED NOT NULL AUTO_INCREMENT,
