@@ -48,13 +48,22 @@ class DB:
                 query = 'CREATE DATABASE ' + db_name
                 cursor.execute(query)
 
-                query = 'SET GLOBAL wait_timeout=31536000;'
+                query = 'SET GLOBAL wait_timeout=31536000'
                 cursor.execute(query)
 
-                query = 'SET GLOBAL interactive_timeout=31536000;'
+                query = 'SET GLOBAL interactive_timeout=31536000'
                 cursor.execute(query)
 
-                query = 'SET GLOBAL max_connections=100000;'
+                query = 'SET GLOBAL max_connections=100000'
+                cursor.execute(query)
+
+                query = 'SET GLOBAL max_connections=100000'
+                cursor.execute(query)
+
+                query = 'SET GLOBAL max_error_count=65535'
+                cursor.execute(query)
+
+                query = 'SET GLOBAL max_connect_errors=	4294967295'
                 cursor.execute(query)
 
         except Exception as e:
