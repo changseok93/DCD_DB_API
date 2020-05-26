@@ -18,7 +18,7 @@ def check_environment(db):
     # db.delete_table(id='1', table='Environment')
     db.update_environment(id='1', ipv4='127.223.444.444')
     print('Environment table: ', db.list_table(table='Environment'))
-    print('Environment table last id: ', db.last_id_table(table="Environment"))
+    print('Environment table last id: ', db.get_last_id(table="Environment"))
 
 
 def check_image(db):
@@ -32,7 +32,7 @@ def check_image(db):
     # db.delete_table(id='1', table='Image')
     db.update_image(id='1', device_id='1')
     # print('Image table: ', db.list_table(table='Image'))
-    print('Image table last id: ', db.last_id_table(table='Image'))
+    print('Image table last id: ', db.get_last_id(table='Image'))
 
 
 def check_grid(db):
@@ -41,7 +41,7 @@ def check_grid(db):
     # db.delete_table(id='1', table='Grid')
     db.update_grid(id='1', width='3')
     print('Grid table: ', db.list_table(table='Grid'))
-    print('Grid table last id: ', db.last_id_table(table='Grid'))
+    print('Grid table last id: ', db.get_last_id(table='Grid'))
 
 
 def check_location(db):
@@ -50,7 +50,7 @@ def check_location(db):
     # db.delete_table(id='1', table='Location')
     db.update_location(id='1', x='3')
     print('Location table: ', db.list_table(table='Location'))
-    print('Location table last id: ', db.last_id_table(table='Location'))
+    print('Location table last id: ', db.get_last_id(table='Location'))
 
 
 def check_supercategory(db):
@@ -59,7 +59,7 @@ def check_supercategory(db):
     # db.delete_table(id='1', table='SuperCategory')
     db.update_supercategory(id='1', name='hi')
     print('SuperCateogry table: ', db.list_table(table='SuperCategory'))
-    print('SuperCategory table last id: ', db.last_id_table(table='SuperCategory'))
+    print('SuperCategory table last id: ', db.get_last_id(table='SuperCategory'))
 
 
 def check_category(db):
@@ -73,7 +73,7 @@ def check_category(db):
     # db.delete_table(id='1', table='Category')
     db.update_category(id='1', name='hi')
     # print('Category table: ', db.list_table(table='Category'))
-    print('Category table last id: ', db.last_id_table(table='Category'))
+    print('Category table last id: ', db.get_last_id(table='Category'))
 
 
 def check_object(db):
@@ -82,7 +82,7 @@ def check_object(db):
     # db.delete_table(id='1', table='Object')
     db.update_object(id='1', loc_id='1')
     print('Object table: ', db.list_table(table='Object'))
-    print('Object table last id: ', db.last_id_table(table='Object'))
+    print('Object table last id: ', db.get_last_id(table='Object'))
 
 
 def check_bbox(db):
@@ -91,7 +91,7 @@ def check_bbox(db):
     # db.delete_table(id='1', table='Bbox')
     db.update_bbox(id='1', x='15')
     print('Bbox table: ', db.list_table(table='Bbox'))
-    print('Bbox table last id: ', db.last_id_table(table='Bbox'))
+    print('Bbox table last id: ', db.get_last_id(table='Bbox'))
 
 
 def check_mask(db):
@@ -100,7 +100,7 @@ def check_mask(db):
     # db.delete_table(id='1', table='Mask')
     db.update_mask(id='1', x='3333')
     print('Mask table: ', db.list_table(table='Mask'))
-    print('Mask table last id: ', db.last_id_table(table='Mask'))
+    print('Mask table last id: ', db.get_last_id(table='Mask'))
 
 
 def reset_table(db):
@@ -145,8 +145,15 @@ if __name__ == "__main__":
               password='return123',
               db_name='test')
 
+    # read_img_from_db(db=mydb, img_id='1', table='Image')
+    # read_img_from_db(db=mydb, img_id='2', table='Image')
+    # read_img_from_db(db=mydb, img_id='3', table='Image')
+    # read_img_from_db(db=mydb, img_id='4', table='Image')
+    # read_img_from_db(db=mydb, img_id='5', table='Image')
+    # read_img_from_db(db=mydb, img_id='6', table='Image')
+
     # reset tables
-    reset_table(mydb)
+    # reset_table(mydb)
 
     # table 초기화
     mydb.init_table()

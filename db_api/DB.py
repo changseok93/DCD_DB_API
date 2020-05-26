@@ -14,7 +14,7 @@ class DB:
 
         pymysql.connect()를 이용해 MySQL과 연결
 
-        database 생성
+        database 생성7
         mysql 서버의 변수 설정
             wait_timeout: 활동하지 않는 커넥션을 끊을때까지 서버가 대기하는 시간
 
@@ -921,7 +921,7 @@ class DB:
             print(e)
             return False
 
-    def last_id_table(self, table):
+    def get_last_id(self, table):
         """
         table의 마지막 id 조회
 
@@ -1018,6 +1018,9 @@ class DB:
             print(e)
             return None
 
+        finally:
+            self.db.commit()
+
     def get_supercategory_id_from_args(self, name):
         """
         SuperCategory table의 id 반환
@@ -1050,6 +1053,7 @@ class DB:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return None
+
 
     def get_location_id_from_args(self, grid_id, x, y):
         """
@@ -1243,6 +1247,9 @@ class DB:
             print(e)
             return False
 
+        finally:
+            self.db.commit()
+
     def update_image_img(self, img_id, img):
         """
         Image table의 image 갱신
@@ -1275,6 +1282,9 @@ class DB:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
 
     def get_obj_from_args(self, category_id, loc_ids):
         """
