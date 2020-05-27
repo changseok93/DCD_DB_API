@@ -1054,7 +1054,6 @@ class DB:
             print(e)
             return None
 
-
     def get_location_id_from_args(self, grid_id, x, y):
         """
         Location table의 id 반환
@@ -1208,6 +1207,7 @@ class DB:
             with self.db.cursor() as cursor:
                 query = 'SELECT check_num FROM Image WHERE id=' + img_id
                 cursor.execute(query)
+                # print('function: {}, query: {}'.format(inspect.stack()[0][3], query))
                 return sum(cursor.fetchall(), ())[0]
 
         except Exception as e:
@@ -1302,12 +1302,14 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query_head = 'SELECT img_id FROM Object WHERE category_id=' + category_id + ' AND '
+                query_head = 'SELECT img_id FROM Object WHERE (category_id=' + category_id + ') AND ('
                 for loc_id in loc_ids:
                     query_head += 'loc_id={} OR '.format(loc_id[0])
 
-                query = query_head[:-4]
+                query = query_head[:-4] + ')'
                 cursor.execute(query)
+                # print('function: {}, query: {}'.format(inspect.stack()[0][3], query))
+
                 return cursor.fetchall()
 
         except Exception as e:
@@ -1330,6 +1332,7 @@ class DB:
             with self.db.cursor() as cursor:
                 query = 'SELECT * FROM Object WHERE img_id=' + img_id
                 cursor.execute(query)
+                # print('function: {}, query: {}'.format(inspect.stack()[0][3], query))
 
                 return cursor.fetchall()
 
@@ -1355,6 +1358,7 @@ class DB:
         try:
             with self.db.cursor() as cursor:
                 query = 'SELECT id FROM Location WHERE grid_id=' + grid_id
+                # print('function: {}, query: {}'.format(inspect.stack()[0][3], query))
                 cursor.execute(query)
 
                 return cursor.fetchall()
@@ -1732,6 +1736,8 @@ def list_object_check_num(db, category_id, grid_id, check_num_state):
     loc_ids = db.get_location_from_grid_id(grid_id=grid_id)
     img_ids = db.get_obj_from_args(category_id=category_id, loc_ids=loc_ids)
 
+    print('loc_ids: ', loc_ids)
+    print('img_ids: ', img_ids)
     obj_list = []
     for img_id in img_ids:
         img_id = str(img_id[0])

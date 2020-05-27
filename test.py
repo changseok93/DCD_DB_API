@@ -145,12 +145,12 @@ if __name__ == "__main__":
               password='return123',
               db_name='test')
 
-    # read_img_from_db(db=mydb, img_id='1', table='Image')
-    # read_img_from_db(db=mydb, img_id='2', table='Image')
-    # read_img_from_db(db=mydb, img_id='3', table='Image')
-    # read_img_from_db(db=mydb, img_id='4', table='Image')
-    # read_img_from_db(db=mydb, img_id='5', table='Image')
-    # read_img_from_db(db=mydb, img_id='6', table='Image')
+    read_img_from_db(db=mydb, img_id='1', table='Image')
+    read_img_from_db(db=mydb, img_id='2', table='Image')
+    read_img_from_db(db=mydb, img_id='3', table='Image')
+    read_img_from_db(db=mydb, img_id='4', table='Image')
+    read_img_from_db(db=mydb, img_id='5', table='Image')
+    read_img_from_db(db=mydb, img_id='6', table='Image')
 
     # reset tables
     # reset_table(mydb)
@@ -202,11 +202,11 @@ if __name__ == "__main__":
     update_image_check_num(db=mydb, obj_id='1', check_num='100')
 
     d = check_object_id(db=mydb, loc_id='1', category_id='1', iteration='1')
-
-    read_img_from_db(db=mydb, img_id='1', table='Image')
-    img_tmp = img_loader('img/puffine.jpg')
-    update_image_image(db=mydb, obj_id='1', img=img_tmp)
-    read_img_from_db(db=mydb, img_id='1', table='Image')
+    #
+    # read_img_from_db(db=mydb, img_id='1', table='Image')
+    # img_tmp = img_loader('img/puffine.jpg')
+    # update_image_image(db=mydb, obj_id='1', img=img_tmp)
+    # read_img_from_db(db=mydb, img_id='1', table='Image')
 
     get_object_id(db=mydb, loc_id='1', category_id='1', iteration='1')
 
@@ -214,4 +214,15 @@ if __name__ == "__main__":
     mydb.set_location(grid_id='2', x='5', y='8')
     set_object_list(db=mydb, category_id='1', grid_id='2', iterations=['3', '4', '5'])
 
-    list_object_check_num(db=mydb, category_id='1', grid_id='2', check_num_state='100')
+    answer = list_object_check_num(db=mydb, category_id='1', grid_id='1', check_num_state='1')
+    print("img_id: {}, loc_id: {}, category_id: {}, id: {}, iteration: {}".format(answer[0][0],
+                                                                                  answer[0][1],
+                                                                                  answer[0][2],
+                                                                                  answer[0][3],
+                                                                                  answer[0][4]))
+
+    print("img_id: {}, loc_id: {}, category_id: {}, id: {}, iteration: {}".format(answer[1][0],
+                                                                                  answer[1][1],
+                                                                                  answer[1][2],
+                                                                                  answer[1][3],
+                                                                                  answer[1][4]))
