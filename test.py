@@ -215,14 +215,3 @@ if __name__ == "__main__":
     set_object_list(db=mydb, category_id='1', grid_id='2', iterations=['3', '4', '5'])
 
     answer = list_object_check_num(db=mydb, category_id='1', grid_id='1', check_num_state='1')
-    print("img_id: {}, loc_id: {}, category_id: {}, id: {}, iteration: {}".format(answer[0][0],
-                                                                                  answer[0][1],
-                                                                                  answer[0][2],
-                                                                                  answer[0][3],
-                                                                                  answer[0][4]))
-
-    print("img_id: {}, loc_id: {}, category_id: {}, id: {}, iteration: {}".format(answer[1][0],
-                                                                                  answer[1][1],
-                                                                                  answer[1][2],
-                                                                                  answer[1][3],
-                                                                                  answer[1][4]))

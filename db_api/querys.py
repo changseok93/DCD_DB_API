@@ -45,7 +45,7 @@ data MEDIUMBLOB NOT NULL,
 type TINYINT UNSIGNED NOT NULL,
 check_num TINYINT UNSIGNED NOT NULL,
 PRIMARY KEY(id),
-FOREIGN KEY(env_id) REFERENCES Environment(id)
+FOREIGN KEY(env_id) REFERENCES Environment(id) ON UPDATE CASCADE ON DELETE CASCADE,
 )"""
 initial_queries.append(create_img_sql)
 
@@ -57,7 +57,7 @@ id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 x TINYINT UNSIGNED NOT NULL,
 y TINYINT UNSIGNED NOT NULL,
 PRIMARY KEY(id),
-FOREIGN KEY(grid_id) REFERENCES Grid(id),
+FOREIGN KEY(grid_id) REFERENCES Grid(id) ON UPDATE CASCADE ON DELETE CASCADE,
 UNIQUE INDEX (grid_id, x, y)
 )"""
 initial_queries.append(create_loc_sql)
@@ -74,7 +74,7 @@ depth SMALLINT UNSIGNED NOT NULL,
 iteration TINYINT UNSIGNED NOT NULL,
 thumbnail MEDIUMBLOB NOT NULL,
 PRIMARY KEY(id),
-FOREIGN KEY(super_id) REFERENCES SuperCategory(id),
+FOREIGN KEY(super_id) REFERENCES SuperCategory(id) ON UPDATE CASCADE ON DELETE CASCADE,
 UNIQUE INDEX (name, super_id)
 )"""
 initial_queries.append(create_categories_sql)
