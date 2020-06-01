@@ -1368,6 +1368,33 @@ class DB:
             print(e)
             return None
 
+    def bbox_info(self, object_id):
+        """
+        입력받은 object [id]를 가지는 Bbox table의
+        [x, y, width, height]들을 2차원 리스트로 반환
+
+        Args:
+            object_id (str): 조회하기 원하는 Bbox table의 object id
+
+        Return:
+            tuple [][]: 입력받은 object [id]를 가지는
+            Bbox table의 [x, y, width, height]값으로 이루어진
+            2차원 튜플
+
+            None: 조회 실패
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "SELECT x, y, width, height from Bbox WHERE obj_id=" + object_id
+                cursor.execute(query)
+
+                return cursor.fetchall(), ()
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return None
+
 
 def get_environment_id(db, ipv4, floor):
     """

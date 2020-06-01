@@ -145,73 +145,78 @@ if __name__ == "__main__":
               password='return123',
               db_name='test')
 
-    read_img_from_db(db=mydb, img_id='1', table='Image')
-    read_img_from_db(db=mydb, img_id='2', table='Image')
-    read_img_from_db(db=mydb, img_id='3', table='Image')
-    read_img_from_db(db=mydb, img_id='4', table='Image')
-    read_img_from_db(db=mydb, img_id='5', table='Image')
-    read_img_from_db(db=mydb, img_id='6', table='Image')
-
-    # reset tables
-    # reset_table(mydb)
-
-    # table 초기화
-    mydb.init_table()
-
-    # Environment table test
-    check_environment(mydb)
-
-    # SuperCategory table test
-    check_supercategory(mydb)
-
-    # Gird table test
-    check_grid(mydb)
-
-    # Image table test
-    check_image(mydb)
-
-    # Location table test
-    check_location(mydb)
-
-    # Category table test
-    check_category(mydb)
-
-    # Object table test
-    check_object(mydb)
-
-    # Bbox table test
-    check_bbox(mydb)
-
-    # Mask table test
-    check_mask(mydb)
-
-    get_environment_id(db=mydb, ipv4='127.223.444.444', floor='1')
-
-    get_grid_id(db=mydb, grid_w_h='3x4')
-
-    get_supercategory_id(db=mydb, super_name='hi')
-
-    get_location_id(db=mydb, grid_w_h='3x4', loc_x_y='3x4')
-
-    get_category_id(db=mydb, super_name='hi', category_name='hi')
-
-    check_category_id(db=mydb, super_name='hi', category_name='hi')
-
-    get_image_check_num(db=mydb, obj_id='1')
-
-    update_image_check_num(db=mydb, obj_id='1', check_num='100')
-
-    d = check_object_id(db=mydb, loc_id='1', category_id='1', iteration='1')
+    # read_img_from_db(db=mydb, img_id='1', table='Image')
+    # read_img_from_db(db=mydb, img_id='2', table='Image')
+    # read_img_from_db(db=mydb, img_id='3', table='Image')
+    # read_img_from_db(db=mydb, img_id='4', table='Image')
+    # read_img_from_db(db=mydb, img_id='5', table='Image')
+    # read_img_from_db(db=mydb, img_id='6', table='Image')
     #
-    # read_img_from_db(db=mydb, img_id='1', table='Image')
-    # img_tmp = img_loader('img/puffine.jpg')
-    # update_image_image(db=mydb, obj_id='1', img=img_tmp)
-    # read_img_from_db(db=mydb, img_id='1', table='Image')
+    # # reset tables
+    # # reset_table(mydb)
+    #
+    # # table 초기화
+    # mydb.init_table()
+    #
+    # # Environment table test
+    # check_environment(mydb)
+    #
+    # # SuperCategory table test
+    # check_supercategory(mydb)
+    #
+    # # Gird table test
+    # check_grid(mydb)
+    #
+    # # Image table test
+    # check_image(mydb)
+    #
+    # # Location table test
+    # check_location(mydb)
+    #
+    # # Category table test
+    # check_category(mydb)
+    #
+    # # Object table test
+    # check_object(mydb)
+    #
+    # # Bbox table test
+    # check_bbox(mydb)
+    #
+    # # Mask table test
+    # check_mask(mydb)
+    #
+    # get_environment_id(db=mydb, ipv4='127.223.444.444', floor='1')
+    #
+    # get_grid_id(db=mydb, grid_w_h='3x4')
+    #
+    # get_supercategory_id(db=mydb, super_name='hi')
+    #
+    # get_location_id(db=mydb, grid_w_h='3x4', loc_x_y='3x4')
+    #
+    # get_category_id(db=mydb, super_name='hi', category_name='hi')
+    #
+    # check_category_id(db=mydb, super_name='hi', category_name='hi')
+    #
+    # get_image_check_num(db=mydb, obj_id='1')
+    #
+    # update_image_check_num(db=mydb, obj_id='1', check_num='100')
+    #
+    # d = check_object_id(db=mydb, loc_id='1', category_id='1', iteration='1')
+    # #
+    # # read_img_from_db(db=mydb, img_id='1', table='Image')
+    # # img_tmp = img_loader('img/puffine.jpg')
+    # # update_image_image(db=mydb, obj_id='1', img=img_tmp)
+    # # read_img_from_db(db=mydb, img_id='1', table='Image')
+    #
+    # get_object_id(db=mydb, loc_id='1', category_id='1', iteration='1')
+    #
+    # mydb.set_grid(width='10', height='10')
+    # mydb.set_location(grid_id='2', x='5', y='8')
+    # set_object_list(db=mydb, category_id='1', grid_id='2', iterations=['3', '4', '5'])
+    #
+    # answer = list_object_check_num(db=mydb, category_id='1', grid_id='1', check_num_state='1')
 
-    get_object_id(db=mydb, loc_id='1', category_id='1', iteration='1')
-
-    mydb.set_grid(width='10', height='10')
-    mydb.set_location(grid_id='2', x='5', y='8')
-    set_object_list(db=mydb, category_id='1', grid_id='2', iterations=['3', '4', '5'])
-
-    answer = list_object_check_num(db=mydb, category_id='1', grid_id='1', check_num_state='1')
+    # update version
+    mydb.set_bbox(obj_id='1', x='10', y='222', width='1', height='1')
+    aa = mydb.bbox_info(object_id='1')
+    print(aa)
