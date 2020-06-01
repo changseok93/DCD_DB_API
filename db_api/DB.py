@@ -1307,6 +1307,7 @@ class DB:
                     query_head += 'loc_id={} OR '.format(loc_id[0])
 
                 query = query_head[:-4] + ')'
+                print(query)
                 cursor.execute(query)
                 # print('function: {}, query: {}'.format(inspect.stack()[0][3], query))
 

@@ -13,7 +13,7 @@ height SMALLINT UNSIGNED NOT NULL,
 depth SMALLINT UNSIGNED NOT NULL,
 PRIMARY KEY(id),
 UNIQUE INDEX (ipv4, floor)
-)"""
+) AUTO_INCREMENT=200000"""
 initial_queries.append(create_env_sql)
 
 # table Grid
@@ -45,7 +45,7 @@ data MEDIUMBLOB NOT NULL,
 type TINYINT UNSIGNED NOT NULL,
 check_num TINYINT UNSIGNED NOT NULL,
 PRIMARY KEY(id),
-FOREIGN KEY(env_id) REFERENCES Environment(id) ON UPDATE CASCADE ON DELETE CASCADE,
+FOREIGN KEY(env_id) REFERENCES Environment(id) ON UPDATE CASCADE ON DELETE CASCADE
 )"""
 initial_queries.append(create_img_sql)
 
