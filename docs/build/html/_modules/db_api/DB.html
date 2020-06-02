@@ -159,7 +159,7 @@
 
 <span class="sd">        pymysql.connect()를 이용해 MySQL과 연결</span>
 
-<span class="sd">        database 생성</span>
+<span class="sd">        database 생성7</span>
 <span class="sd">        mysql 서버의 변수 설정</span>
 <span class="sd">            wait_timeout: 활동하지 않는 커넥션을 끊을때까지 서버가 대기하는 시간</span>
 
@@ -193,13 +193,22 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;CREATE DATABASE &#39;</span> <span class="o">+</span> <span class="n">db_name</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 
-                <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SET GLOBAL wait_timeout=31536000;&#39;</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SET GLOBAL wait_timeout=31536000&#39;</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 
-                <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SET GLOBAL interactive_timeout=31536000;&#39;</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SET GLOBAL interactive_timeout=31536000&#39;</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 
-                <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SET GLOBAL max_connections=100000;&#39;</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SET GLOBAL max_connections=100000&#39;</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+                <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SET GLOBAL max_connections=100000&#39;</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+                <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SET GLOBAL max_error_count=65535&#39;</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+                <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SET GLOBAL max_connect_errors=	4294967295&#39;</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -1057,7 +1066,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="DB.last_id_table"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.last_id_table">[docs]</a>    <span class="k">def</span> <span class="nf">last_id_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
+<div class="viewcode-block" id="DB.get_last_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_last_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_last_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        table의 마지막 id 조회</span>
 
@@ -1152,7 +1161,10 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_supercategory_id_from_args"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_supercategory_id_from_args">[docs]</a>    <span class="k">def</span> <span class="nf">get_supercategory_id_from_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1340,6 +1352,7 @@
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SELECT check_num FROM Image WHERE id=&#39;</span> <span class="o">+</span> <span class="n">img_id</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="c1"># print(&#39;function: {}, query: {}&#39;.format(inspect.stack()[0][3], query))</span>
                 <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -1377,7 +1390,10 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">False</span></div>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.update_image_img"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.update_image_img">[docs]</a>    <span class="k">def</span> <span class="nf">update_image_img</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_id</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1410,7 +1426,10 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">False</span></div>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_obj_from_args"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_obj_from_args">[docs]</a>    <span class="k">def</span> <span class="nf">get_obj_from_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">loc_ids</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1428,12 +1447,15 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
-                <span class="n">query_head</span> <span class="o">=</span> <span class="s1">&#39;SELECT img_id FROM Object WHERE category_id=&#39;</span> <span class="o">+</span> <span class="n">category_id</span> <span class="o">+</span> <span class="s1">&#39; AND &#39;</span>
+                <span class="n">query_head</span> <span class="o">=</span> <span class="s1">&#39;SELECT img_id FROM Object WHERE (category_id=&#39;</span> <span class="o">+</span> <span class="n">category_id</span> <span class="o">+</span> <span class="s1">&#39;) AND (&#39;</span>
                 <span class="k">for</span> <span class="n">loc_id</span> <span class="ow">in</span> <span class="n">loc_ids</span><span class="p">:</span>
                     <span class="n">query_head</span> <span class="o">+=</span> <span class="s1">&#39;loc_id=</span><span class="si">{}</span><span class="s1"> OR &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">loc_id</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-                <span class="n">query</span> <span class="o">=</span> <span class="n">query_head</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="n">query_head</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="c1"># print(&#39;function: {}, query: {}&#39;.format(inspect.stack()[0][3], query))</span>
+
                 <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -1456,6 +1478,7 @@
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SELECT * FROM Object WHERE img_id=&#39;</span> <span class="o">+</span> <span class="n">img_id</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="c1"># print(&#39;function: {}, query: {}&#39;.format(inspect.stack()[0][3], query))</span>
 
                 <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
 
@@ -1481,6 +1504,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SELECT id FROM Location WHERE grid_id=&#39;</span> <span class="o">+</span> <span class="n">grid_id</span>
+                <span class="c1"># print(&#39;function: {}, query: {}&#39;.format(inspect.stack()[0][3], query))</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 
                 <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
@@ -1488,7 +1512,82 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">None</span></div></div>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="DB.bbox_info"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.bbox_info">[docs]</a>    <span class="k">def</span> <span class="nf">bbox_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        입력받은 object [id]를 가지는 Bbox table의</span>
+<span class="sd">        [x, y, width, height]들을 2차원 리스트로 반환</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            object_id (str): 조회하기 원하는 Bbox table의 object id</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">            tuple [][]: 입력받은 object [id]를 가지는</span>
+<span class="sd">            Bbox table의 [x, y, width, height]값으로 이루어진</span>
+<span class="sd">            2차원 튜플</span>
+
+<span class="sd">            None: 조회 실패</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT x, y, width, height from Bbox WHERE obj_id=&quot;</span> <span class="o">+</span> <span class="n">object_id</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+                <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">()</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="DB.delete_bbox_from_obj_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.delete_bbox_from_obj_id">[docs]</a>    <span class="k">def</span> <span class="nf">delete_bbox_from_obj_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Bbox table의 [object_id]를 가지는 모든 row 삭제</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            obj_id (str): Bbox table의 object_id</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">            Bool: True or False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;DELETE FROM Bbox WHERE obj_id=&#39;</span> <span class="o">+</span> <span class="n">obj_id</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DB.delete_mask_from_obj_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.delete_mask_from_obj_id">[docs]</a>    <span class="k">def</span> <span class="nf">delete_mask_from_obj_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Mask table의 [object_id]를 가지는 모든 row 삭제</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            obj_id (str): Mask table의 object_id</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">            Bool: True or False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;DELETE FROM Mask WHERE obj_id=&#39;</span> <span class="o">+</span> <span class="n">obj_id</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div></div>
 
 
 <div class="viewcode-block" id="get_environment_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.get_environment_id">[docs]</a><span class="k">def</span> <span class="nf">get_environment_id</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">ipv4</span><span class="p">,</span> <span class="n">floor</span><span class="p">):</span>
@@ -1858,6 +1957,8 @@
     <span class="n">loc_ids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_location_from_grid_id</span><span class="p">(</span><span class="n">grid_id</span><span class="o">=</span><span class="n">grid_id</span><span class="p">)</span>
     <span class="n">img_ids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_obj_from_args</span><span class="p">(</span><span class="n">category_id</span><span class="o">=</span><span class="n">category_id</span><span class="p">,</span> <span class="n">loc_ids</span><span class="o">=</span><span class="n">loc_ids</span><span class="p">)</span>
 
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;loc_ids: &#39;</span><span class="p">,</span> <span class="n">loc_ids</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;img_ids: &#39;</span><span class="p">,</span> <span class="n">img_ids</span><span class="p">)</span>
     <span class="n">obj_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">img_id</span> <span class="ow">in</span> <span class="n">img_ids</span><span class="p">:</span>
         <span class="n">img_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">img_id</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>

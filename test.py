@@ -13,7 +13,7 @@ def img_loader(img_dir):
 
 def check_environment(db):
     # check environment fucntions
-    db.set_environment(ipv4='127.223.444.443', floor='1', width='3', height='4', depth='2')
+    db.set_environment(ipv4='127.223.444.445', floor='1', width='3', height='4', depth='2')
     db.get_table(id='200000', table='Environment')
     # db.delete_table(id='1', table='Environment')
     db.update_environment(id='200000', ipv4='127.223.444.444')
@@ -151,7 +151,7 @@ if __name__ == "__main__":
     # table 초기화
     mydb.init_table()
 
-    # Environment table test
+    # # Environment table test
     check_environment(mydb)
 
     # SuperCategory table test
@@ -177,31 +177,31 @@ if __name__ == "__main__":
 
     # Mask table test
     check_mask(mydb)
-
-    get_environment_id(db=mydb, ipv4='127.223.444.444', floor='1')
-
-    get_grid_id(db=mydb, grid_w_h='3x4')
-
-    get_supercategory_id(db=mydb, super_name='hi')
-
-    get_location_id(db=mydb, grid_w_h='3x4', loc_x_y='3x4')
-
-    get_category_id(db=mydb, super_name='hi', category_name='hi')
-
-    check_category_id(db=mydb, super_name='hi', category_name='hi')
-
-    get_image_check_num(db=mydb, obj_id='1')
-
-    update_image_check_num(db=mydb, obj_id='1', check_num='100')
-
-    d = check_object_id(db=mydb, loc_id='1', category_id='1', iteration='1')
     #
-    # read_img_from_db(db=mydb, img_id='1', table='Image')
-    # img_tmp = img_loader('img/puffine.jpg')
-    # update_image_image(db=mydb, obj_id='1', img=img_tmp)
-    # read_img_from_db(db=mydb, img_id='1', table='Image')
-
-    get_object_id(db=mydb, loc_id='1', category_id='1', iteration='1')
+    # get_environment_id(db=mydb, ipv4='127.223.444.444', floor='1')
+    #
+    # get_grid_id(db=mydb, grid_w_h='3x4')
+    #
+    # get_supercategory_id(db=mydb, super_name='hi')
+    #
+    # get_location_id(db=mydb, grid_w_h='3x4', loc_x_y='3x4')
+    #
+    # get_category_id(db=mydb, super_name='hi', category_name='hi')
+    #
+    # check_category_id(db=mydb, super_name='hi', category_name='hi')
+    #
+    # get_image_check_num(db=mydb, obj_id='1')
+    #
+    # update_image_check_num(db=mydb, obj_id='1', check_num='100')
+    #
+    # d = check_object_id(db=mydb, loc_id='1', category_id='1', iteration='1')
+    # #
+    # # read_img_from_db(db=mydb, img_id='1', table='Image')
+    # # img_tmp = img_loader('img/puffine.jpg')
+    # # update_image_image(db=mydb, obj_id='1', img=img_tmp)
+    # # read_img_from_db(db=mydb, img_id='1', table='Image')
+    #
+    # get_object_id(db=mydb, loc_id='1', category_id='1', iteration='1')
 
     # mydb.set_grid(width='10', height='10')
     # mydb.set_location(grid_id='2', x='5', y='8')
@@ -213,3 +213,13 @@ if __name__ == "__main__":
     # mydb.set_bbox(obj_id='1', x='10', y='222', width='1', height='1')
     # aa = mydb.bbox_info(object_id='1')
     # print(aa)
+
+    mydb.set_bbox(obj_id='1', x='1', y='2', width='3', height='3')
+    mydb.set_bbox(obj_id='1', x='2', y='3', width='3', height='3')
+    mydb.set_bbox(obj_id='1', x='3', y='4', width='3', height='3')
+    mydb.delete_bbox_from_obj_id(obj_id='1')
+
+    mydb.set_mask(obj_id='1', x='1', y='1')
+    mydb.set_mask(obj_id='1', x='2', y='1')
+    mydb.set_mask(obj_id='1', x='1', y='3')
+    mydb.delete_mask_from_obj_id(obj_id='1')

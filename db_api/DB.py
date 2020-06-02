@@ -1396,6 +1396,54 @@ class DB:
             print(e)
             return None
 
+    def delete_bbox_from_obj_id(self, obj_id):
+        """
+        Bbox table의 [object_id]를 가지는 모든 row 삭제
+
+        Args:
+            obj_id (str): Bbox table의 object_id
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = 'DELETE FROM Bbox WHERE obj_id=' + obj_id
+                cursor.execute(query)
+                return True
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+
+    def delete_mask_from_obj_id(self, obj_id):
+        """
+        Mask table의 [object_id]를 가지는 모든 row 삭제
+
+        Args:
+            obj_id (str): Mask table의 object_id
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = 'DELETE FROM Mask WHERE obj_id=' + obj_id
+                cursor.execute(query)
+                return True
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+
 
 def get_environment_id(db, ipv4, floor):
     """
