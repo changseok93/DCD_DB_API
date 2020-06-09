@@ -223,3 +223,5 @@ if __name__ == "__main__":
     mydb.set_mask(obj_id='1', x='2', y='1')
     mydb.set_mask(obj_id='1', x='1', y='3')
     mydb.delete_mask_from_obj_id(obj_id='1')
+
+    delete_bbox_from_image(db=mydb, img_id='1')

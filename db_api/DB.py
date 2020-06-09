@@ -1330,7 +1330,7 @@ class DB:
             img_id (str): Object table의 img_id
 
         Return:
-            obj_id (str): Object table의 row
+            obj (str): Object table의 row
         """
         try:
             with self.db.cursor() as cursor:
@@ -1339,6 +1339,29 @@ class DB:
                 # print('function: {}, query: {}'.format(inspect.stack()[0][3], query))
 
                 return cursor.fetchall()
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return None
+
+    def get_obj_id_from_img_id(self, img_id):
+        """
+        Object table의 (img_id)를 입력 받아
+        Object table의 (obj_id)를 반환하는 함수
+
+        Args:
+            img_id (str): Object table의 img_id
+
+        Return:
+            obj_id (str): Object table의 row
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = 'SELECT id FROM Object WHERE img_id=' + img_id
+                cursor.execute(query)
+
+                return sum(cursor.fetchall(), ())
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -1425,10 +1448,10 @@ class DB:
 
     def delete_mask_from_obj_id(self, obj_id):
         """
-        Mask table의 [object_id]를 가지는 모든 row 삭제
+        Mask table의 (object_id)를 가지는 모든 row 삭제
 
         Args:
-            obj_id (str): Mask table의 object_id
+            obj_id (str): Mask table의 (object_id)
 
         Return:
             Bool: True or False
@@ -1826,3 +1849,28 @@ def list_object_check_num(db, category_id, grid_id, check_num_state):
             obj_list.append(obj)
 
     return sum(obj_list, ())
+
+
+def delete_bbox_from_image(db, img_id):
+    """
+    Object table의 [img_id]를 통해 Object table의 [id]를 가져옴
+    이를통해 관계된 Bbox table의 [obj_id]를 가지는 모든 bbox 삭제
+
+    Args:
+        db (DB): DB class
+        img_id (str): Object table의 img_id
+
+    Return:
+        Bool: True or False
+    """
+    obj_id = db.get_obj_id_from_img_id(img_id=img_id)
+    if obj_id is None:
+        return False
+
+    flag = db.delete_bbox_from_obj_id(obj_id=str(obj_id[0]))
+    if flag is False:
+        return False
+
+    return True
+
+
