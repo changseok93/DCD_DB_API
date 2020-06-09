@@ -547,7 +547,7 @@ class DB:
         finally:
             self.db.commit()
 
-    def set_object(self, img_id, loc_id, category_id, iteration):
+    def set_object(self, img_id, loc_id, category_id, iteration, mix_num):
         """
         Object table에 row 추가
 
@@ -556,6 +556,7 @@ class DB:
             loc_id (str): Location table의 id(foreigner key)
             category_id (str): Category table의 id(foreigner key)
             iteration (str): 물체를 방향 별로 찍어야하는 횟수
+            mix_num (str): mix 이미지에 대한 정보
 
         Return:
             Bool: True or False
@@ -568,8 +569,8 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'INSERT INTO Object(img_id, loc_id, category_id, iteration) VALUES(%s, %s, %s, %s)'
-                values = (img_id, loc_id, category_id, iteration)
+                query = 'INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) VALUES(%s, %s, %s, %s, %s)'
+                values = (img_id, loc_id, category_id, iteration, mix_num)
                 cursor.execute(query, values)
                 return True
 
@@ -581,7 +582,7 @@ class DB:
         finally:
             self.db.commit()
 
-    def update_object(self, id, img_id=None, loc_id=None, category_id=None, iteration=None):
+    def update_object(self, id, img_id=None, loc_id=None, category_id=None, iteration=None, mix_num=None):
         """
         Object table의 특정 id 정보 갱신
 
@@ -612,7 +613,9 @@ class DB:
                 if category_id != None:
                     query_head += 'Category_id={}, '.format(category_id)
                 if category_id != None:
-                    query_head += 'Category_id={}, '.format(iteration)
+                    query_head += 'iteration={}, '.format(iteration)
+                if mix_num != None:
+                    query_head += 'mix_num={}, '.format(mix_num)
 
                 query = query_head[:-2]
                 query += query_tail

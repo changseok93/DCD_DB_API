@@ -77,7 +77,7 @@ def check_category(db):
 
 
 def check_object(db):
-    db.set_object(img_id='1', loc_id='1', category_id='1', iteration='1')
+    db.set_object(img_id='1', loc_id='1', category_id='1', iteration='1', mix_num='-1')
     db.get_table(id='1', table='Object')
     # db.delete_table(id='1', table='Object')
     db.update_object(id='1', loc_id='1')
