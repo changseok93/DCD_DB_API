@@ -1321,52 +1321,30 @@ class DB:
             print(e)
             return None
 
-    def get_obj_from_img_id(self, img_id):
+    def delete_object_from_img_id(self, img_id):
         """
-        Object table의 (img_id)를 입력 받아
-        Object table의 row를 반환하는 함수
+        Object table의 (img_id)를 받아
+        해당하는 Object table의 모든 row를 삭제
 
         Args:
-            img_id (str): Object table의 img_id
+            img_id (str): Object table의 (img_id)
 
         Return:
-            obj (str): Object table의 row
+            Bool: True or False
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'SELECT * FROM Object WHERE img_id=' + img_id
+                query = 'DELETE FROM Object WHERE img_id=' + img_id
                 cursor.execute(query)
-                # print('function: {}, query: {}'.format(inspect.stack()[0][3], query))
-
-                return cursor.fetchall()
+                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
-            return None
+            return False
 
-    def get_obj_id_from_img_id(self, img_id):
-        """
-        Object table의 (img_id)를 입력 받아
-        Object table의 (id)를 반환하는 함수
-
-        Args:
-            img_id (str): Object table의 img_id
-
-        Return:
-            obj_id (str): Object table의 row
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = 'SELECT id FROM Object WHERE img_id=' + img_id
-                cursor.execute(query)
-
-                return sum(cursor.fetchall(), ())
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return None
+        finally:
+            self.db.commit()
 
     def get_location_from_grid_id(self, grid_id):
         """
@@ -1395,7 +1373,7 @@ class DB:
             print(e)
             return None
 
-    def bbox_info(self, object_id):
+    def get_bbox_info(self, object_id):
         """
         입력받은 object [id]를 가지는 Bbox table의
         [x, y, width, height]들을 2차원 리스트로 반환
@@ -1459,31 +1437,6 @@ class DB:
         try:
             with self.db.cursor() as cursor:
                 query = 'DELETE FROM Mask WHERE obj_id=' + obj_id
-                cursor.execute(query)
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
-
-    def delete_object_from_image(self, img_id):
-        """
-        Object table의 (img_id)를 받아
-        해당하는 Object table의 row를 삭제
-
-        Args:
-            img_id (str): Object table의 (img_id)
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = 'DELETE FROM Object WHERE img_id=' + img_id
                 cursor.execute(query)
                 return True
 
@@ -1863,41 +1816,41 @@ def set_object_list(db, category_id, grid_id, iterations):
     return True
 
 
-def list_object_check_num(db, category_id, grid_id, check_num_state):
-    """
-    Object table의 (category_id) Location table의 (grid_id)를 입력 받아
-    Image table의 (check_num)이 check_state와 같으면 Object table의 row를 반환하는 함수
-
-    Args:
-        db (DB): DB class
-        category_id (str): Object table의 (category_id)
-        grid_id(str): Location table의 (grid_id)
-        check_num_state(str): Image table의 (check_num) 값과 비교될 값
-                          (0 : 검수 미진행, 1 : 완료, 2 : 거절)
-
-    Return:
-        tuple [object][row]: Object table의 row 값들
-
-    Example:
-
-        .. code-block:: python
-
-            list_object_check_num(db=mydb, category_id='1', grid_id='2', check_num_state='100')
-    """
-    loc_ids = db.get_location_from_grid_id(grid_id=grid_id)
-    img_ids = db.get_obj_from_args(category_id=category_id, loc_ids=loc_ids)
-
-    print('loc_ids: ', loc_ids)
-    print('img_ids: ', img_ids)
-    obj_list = []
-    for img_id in img_ids:
-        img_id = str(img_id[0])
-        img_check_num = db.check_image_check_num(img_id=img_id)
-        if str(img_check_num) == check_num_state:
-            obj = db.get_obj_from_img_id(img_id=img_id)
-            obj_list.append(obj)
-
-    return sum(obj_list, ())
+# def list_object_check_num(db, category_id, grid_id, check_num_state):
+#     """
+#     Object table의 (category_id) Location table의 (grid_id)를 입력 받아
+#     Image table의 (check_num)이 check_state와 같으면 Object table의 row를 반환하는 함수
+#
+#     Args:
+#         db (DB): DB class
+#         category_id (str): Object table의 (category_id)
+#         grid_id(str): Location table의 (grid_id)
+#         check_num_state(str): Image table의 (check_num) 값과 비교될 값
+#                           (0 : 검수 미진행, 1 : 완료, 2 : 거절)
+#
+#     Return:
+#         tuple [object][row]: Object table의 row 값들
+#
+#     Example:
+#
+#         .. code-block:: python
+#
+#             list_object_check_num(db=mydb, category_id='1', grid_id='2', check_num_state='100')
+#     """
+#     loc_ids = db.get_location_from_grid_id(grid_id=grid_id)
+#     img_ids = db.get_obj_from_args(category_id=category_id, loc_ids=loc_ids)
+#
+#     print('loc_ids: ', loc_ids)
+#     print('img_ids: ', img_ids)
+#     obj_list = []
+#     for img_id in img_ids:
+#         img_id = str(img_id[0])
+#         img_check_num = db.check_image_check_num(img_id=img_id)
+#         if str(img_check_num) == check_num_state:
+#             obj = db.get_obj_from_img_id(img_id=img_id)
+#             obj_list.append(obj)
+#
+#     return sum(obj_list, ())
 
 
 def delete_bbox_from_image(db, img_id):
@@ -1944,6 +1897,5 @@ def get_bbox_from_img_id(db, img_id):
         return False
 
     return bboxes
-
 
 

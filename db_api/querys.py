@@ -92,7 +92,6 @@ PRIMARY KEY(id),
 FOREIGN KEY(img_id) REFERENCES Image(id) ON UPDATE CASCADE ON DELETE CASCADE,
 FOREIGN KEY(loc_id) REFERENCES Location(id) ON UPDATE CASCADE ON DELETE CASCADE,
 FOREIGN KEY(category_id) REFERENCES Category(id) ON UPDATE CASCADE ON DELETE CASCADE,
-UNIQUE INDEX (img_id),
 UNIQUE INDEX (loc_id, category_id, iteration)
 )"""
 initial_queries.append(create_object_sql)
