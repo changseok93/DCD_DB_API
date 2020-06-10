@@ -217,11 +217,16 @@ if __name__ == "__main__":
     mydb.set_bbox(obj_id='1', x='1', y='2', width='3', height='3')
     mydb.set_bbox(obj_id='1', x='2', y='3', width='3', height='3')
     mydb.set_bbox(obj_id='1', x='3', y='4', width='3', height='3')
-    mydb.delete_bbox_from_obj_id(obj_id='1')
+    # mydb.delete_bbox_from_obj_id(obj_id='1')
 
     mydb.set_mask(obj_id='1', x='1', y='1')
     mydb.set_mask(obj_id='1', x='2', y='1')
     mydb.set_mask(obj_id='1', x='1', y='3')
     mydb.delete_mask_from_obj_id(obj_id='1')
 
-    delete_bbox_from_image(db=mydb, img_id='1')
+    # delete_bbox_from_image(db=mydb, img_id='1')
+
+    # mydb.delete_object_from_image(img_id='1')
+
+    a = get_bbox_from_img_id(db=mydb, img_id='1')
+    print(a)

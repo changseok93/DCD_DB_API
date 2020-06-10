@@ -1348,7 +1348,7 @@ class DB:
     def get_obj_id_from_img_id(self, img_id):
         """
         Object table의 (img_id)를 입력 받아
-        Object table의 (obj_id)를 반환하는 함수
+        Object table의 (id)를 반환하는 함수
 
         Args:
             img_id (str): Object table의 img_id
@@ -1469,6 +1469,55 @@ class DB:
 
         finally:
             self.db.commit()
+
+    def delete_object_from_image(self, img_id):
+        """
+        Object table의 (img_id)를 받아
+        해당하는 Object table의 row를 삭제
+
+        Args:
+            img_id (str): Object table의 (img_id)
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = 'DELETE FROM Object WHERE img_id=' + img_id
+                cursor.execute(query)
+                return True
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+
+    def get_bbox_from_obj_id(self, obj_id):
+        """
+        Bbox table의 (obj_id)를 이용해
+        Bbox table의 모든 row 반환
+
+        Args:
+            obj_id (str): Bbox table의 obj_id
+
+        Return:
+            tuple()(): Bbox table의 row
+            None: 조회 실패
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = 'SELECT * FROM Bbox WHERE obj_id=' + obj_id
+                cursor.execute(query)
+
+                return cursor.fetchall()
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return None
 
 
 def get_environment_id(db, ipv4, floor):
@@ -1872,5 +1921,29 @@ def delete_bbox_from_image(db, img_id):
         return False
 
     return True
+
+
+def get_bbox_from_img_id(db, img_id):
+    """
+    Object table의 (img_id)를 받아 (id)를 가져옴
+    얻은 (obj_id)로 Bbox table의 row를 조회
+
+    Args:
+        img_id (str): Object table의 (img_id)
+
+    Return:
+        tuple ()(): Bbox table의 row
+        False: 조회 실패
+    """
+    obj_id = db.get_obj_id_from_img_id(img_id=img_id)
+    if obj_id is None:
+        return False
+
+    bboxes = db.get_bbox_from_obj_id(obj_id=str(obj_id[0]))
+    if bboxes is None:
+        return False
+
+    return bboxes
+
 
 
