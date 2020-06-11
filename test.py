@@ -214,23 +214,25 @@ if __name__ == "__main__":
     # aa = mydb.get_bbox_info(object_id='1')
     # print(aa)
 
-    # mydb.set_bbox(obj_id='1', x='1', y='2', width='3', height='3')
-    # mydb.set_bbox(obj_id='1', x='2', y='3', width='3', height='3')
-    # mydb.set_bbox(obj_id='1', x='3', y='4', width='3', height='3')
     # mydb.delete_bbox_from_obj_id(obj_id='1')
 
-    # a = get_bbox_from_img_id(db=mydb, img_id='1')
-    # print(a)
+    # mydb.set_mask(obj_id='1', x='1', y='1')
+    # mydb.set_mask(obj_id='1', x='2', y='1')
+    # mydb.set_mask(obj_id='1', x='1', y='3')
+    # mydb.delete_mask_from_obj_id(obj_id='1')
 
-    mydb.set_mask(obj_id='1', x='1', y='1')
-    mydb.set_mask(obj_id='1', x='2', y='1')
-    mydb.set_mask(obj_id='1', x='1', y='3')
-    mydb.delete_mask_from_obj_id(obj_id='1')
+    # # delete_bbox_from_image(db=mydb, img_id='1')
+    # mydb.set_image(device_id='200000', image=img, type='1', check_num='1')
+    # mydb.delete_object_from_img_id(img_id='1')
 
-    # delete_bbox_from_image(db=mydb, img_id='1')
-    mydb.set_image(device_id='200000', image=img, type='1', check_num='1')
     mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='2', mix_num='-1')
     mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='3', mix_num='-1')
     mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='4', mix_num='-1')
-    mydb.delete_object_from_img_id(img_id='1')
+    mydb.set_bbox(obj_id='1', x='1', y='2', width='3', height='3')
+    mydb.set_bbox(obj_id='1', x='2', y='3', width='3', height='3')
+    mydb.set_bbox(obj_id='1', x='3', y='4', width='3', height='3')
+    a = get_bbox_from_img_id(db=mydb, img_id='1')
+    print(a)
+
+    delete_bbox_from_image(db=mydb, img_id='1')
 

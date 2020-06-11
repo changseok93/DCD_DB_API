@@ -932,7 +932,7 @@ class DB:
             table (str): table 이름
 
         Return:
-            list[][]: 마지막 id 값
+            list []: 마지막 id 값
 
             None: 조회 실패
 
@@ -1310,7 +1310,6 @@ class DB:
                     query_head += 'loc_id={} OR '.format(loc_id[0])
 
                 query = query_head[:-4] + ')'
-                print(query)
                 cursor.execute(query)
                 # print('function: {}, query: {}'.format(inspect.stack()[0][3], query))
 
@@ -1349,7 +1348,7 @@ class DB:
     def get_location_from_grid_id(self, grid_id):
         """
         Location table의 (grid_id)를 입력 받아
-        (grid_id)를 값으로 가지는 Location table의 모든 row의 개수 반환하는 함수
+        (grid_id)를 값으로 가지는 Location table의 row 반환 함수
 
         Args:
             grid_id (str): Location table의 grid_id
@@ -1448,7 +1447,29 @@ class DB:
         finally:
             self.db.commit()
 
-    def get_bbox_from_obj_id(self, obj_id):
+    def get_obj_id_from_img_id(self, img_id):
+        """
+        Object table의 (img_id)를 받아 (obj_id)들을 얻음
+
+        Args:
+            img_id (str): Object table의 (img_id)
+
+        Return:
+            tuple ()(): (obj_id)정보들
+            None: 조회 실패
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "SELECT id FROM Object WHERE img_id=" + img_id
+                cursor.execute(query)
+                return sum(cursor.fetchall(), ())
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return None
+
+    def list_bbox_from_obj_id(self, obj_id):
         """
         Bbox table의 (obj_id)를 이용해
         Bbox table의 모든 row 반환
@@ -1865,21 +1886,22 @@ def delete_bbox_from_image(db, img_id):
     Return:
         Bool: True or False
     """
-    obj_id = db.get_obj_id_from_img_id(img_id=img_id)
-    if obj_id is None:
+    obj_ids = db.get_obj_id_from_img_id(img_id=img_id)
+    if obj_ids is None:
         return False
 
-    flag = db.delete_bbox_from_obj_id(obj_id=str(obj_id[0]))
-    if flag is False:
-        return False
+    for obj_id in obj_ids:
+        flag = db.delete_bbox_from_obj_id(obj_id=str(obj_id))
+        if flag is False:
+            return False
 
     return True
 
 
 def get_bbox_from_img_id(db, img_id):
     """
-    Object table의 (img_id)를 받아 (id)를 가져옴
-    얻은 (obj_id)로 Bbox table의 row를 조회
+    Object table의 (img_id)를 받아 (obj_id)들을 가져옴
+    얻은 (obj_id)들로 Bbox table의 row들을 조회
 
     Args:
         img_id (str): Object table의 (img_id)
@@ -1888,14 +1910,16 @@ def get_bbox_from_img_id(db, img_id):
         tuple ()(): Bbox table의 row
         False: 조회 실패
     """
-    obj_id = db.get_obj_id_from_img_id(img_id=img_id)
-    if obj_id is None:
+    obj_ids = db.get_obj_id_from_img_id(img_id=img_id)
+    if obj_ids is None:
         return False
 
-    bboxes = db.get_bbox_from_obj_id(obj_id=str(obj_id[0]))
+    bboxes = []
+    for obj_id in obj_ids:
+        bboxes.extend(db.list_bbox_from_obj_id(obj_id=str(obj_id)))
     if bboxes is None:
         return False
 
-    return bboxes
+    return tuple(bboxes)
 
 
