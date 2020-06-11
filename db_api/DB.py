@@ -1289,6 +1289,31 @@ class DB:
         finally:
             self.db.commit()
 
+    def delete_object_from_img_id(self, img_id):
+        """
+        Object table의 (img_id)를 받아
+        해당하는 Object table의 모든 row를 삭제
+
+        Args:
+            img_id (str): Object table의 (img_id)
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = 'DELETE FROM Object WHERE img_id=' + img_id
+                cursor.execute(query)
+                return True
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+
     def get_obj_from_args(self, category_id, loc_ids):
         """
         Object table의 (category_id, loc_ids)를 입력 받아
@@ -1319,31 +1344,6 @@ class DB:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return None
-
-    def delete_object_from_img_id(self, img_id):
-        """
-        Object table의 (img_id)를 받아
-        해당하는 Object table의 모든 row를 삭제
-
-        Args:
-            img_id (str): Object table의 (img_id)
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = 'DELETE FROM Object WHERE img_id=' + img_id
-                cursor.execute(query)
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
 
     def get_location_from_grid_id(self, grid_id):
         """
@@ -1876,8 +1876,8 @@ def set_object_list(db, category_id, grid_id, iterations):
 
 def delete_bbox_from_image(db, img_id):
     """
-    Object table의 [img_id]를 통해 Object table의 [id]를 가져옴
-    이를통해 관계된 Bbox table의 [obj_id]를 가지는 모든 bbox 삭제
+    Object table의 (img_id)를 통해 Object table의 (id)를 가져옴
+    이를통해 관계된 Bbox table의 (obj_id)를 가지는 모든 bbox 삭제
 
     Args:
         db (DB): DB class
@@ -1921,5 +1921,3 @@ def get_bbox_from_img_id(db, img_id):
         return False
 
     return tuple(bboxes)
-
-
