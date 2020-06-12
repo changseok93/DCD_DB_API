@@ -1159,32 +1159,6 @@ class DB:
             print(e)
             return None
 
-    def get_obj_id_from_args(self, loc_id, category_id, iteration):
-        """
-        Object table의 id를 반환
-
-        Args:
-            loc_id (str): Object table의 loc_id
-            category_id (str): Object table의 category_id
-            iteration (str): Object table의 iteration
-
-        Return:
-            int: Object table의 id
-
-            None: 조회 실패
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "SELECT id FROM Object WHERE loc_id=%s AND category_id=%s AND iteration=%s"
-                value = (loc_id, category_id, iteration)
-                cursor.execute(query, value)
-                return sum(cursor.fetchall(), ())[0]
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return None
-
     def check_image_check_num(self, img_id):
         """
         Image table의 이미지의 check_num을 반환
@@ -1493,6 +1467,32 @@ class DB:
             print(e)
             return None
 
+    def get_obj_id_from_args(self, loc_id, category_id, iteration, mix_num):
+        """
+        Object table의 id를 반환
+
+        Args:
+            loc_id (str): Object table의 loc_id
+            category_id (str): Object table의 category_id
+            iteration (str): Object table의 iteration
+            mix_num (str): Object table의 mix_num
+
+        Return:
+            int: Object table의 id
+            None: 조회 실패
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "SELECT id FROM Object WHERE loc_id=%s AND category_id=%s AND iteration=%s AND mix_num=%s"
+                value = (loc_id, category_id, iteration, mix_num)
+                cursor.execute(query, value)
+                return sum(cursor.fetchall(), ())[0]
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return None
+
 
 def get_environment_id(db, ipv4, floor):
     """
@@ -1564,6 +1564,7 @@ def get_supercategory_id(db, super_name):
         .. code-block:: python
 
             get_supercategory_id(db=mydb, super_name='hi')
+
     """
     super_id = db.get_supercategory_id_from_args(name=super_name)
     return super_id
@@ -1650,6 +1651,7 @@ def get_image_check_num(db, obj_id):
         .. code-block:: python
 
             get_image_check_num(db=mydb, obj_id='1')
+
     """
     img_id = str(db.get_img_id_from_args(obj_id=obj_id))
     if img_id is None:
@@ -1657,60 +1659,6 @@ def get_image_check_num(db, obj_id):
 
     img_check_num = db.check_image_check_num(img_id=img_id)
     return img_check_num
-
-
-def get_object_id(db, loc_id, category_id, iteration):
-    """
-    Object table의 (loc_id, category_id, iteration)를 입력 받아
-    Object table (id) 반환하는 함수
-
-    Args:
-        db (DB): DB class
-        loc_id (str): Location table의 id
-        category_id (str): Category table의 id
-        iteration (str): Object table의 iteration
-
-    Return:
-        obj_id (int): Object table의 id
-
-        None: 조회 실패
-
-    Example:
-
-        .. code-block:: python
-
-            get_object_id(db=mydb, loc_id='1', category_id='1', iteration='1')
-    """
-
-    obj_id = db.get_obj_id_from_args(loc_id=loc_id, category_id=category_id, iteration=iteration)
-    return obj_id
-
-
-def check_object_id(db, loc_id, category_id, iteration):
-    """
-    Object table의 (loc_id, category_id, iteration)를 입력 받아
-    Object table의 특정 (id)를 check 하는 함수
-
-    Args:
-       db (DB): DB class
-       loc_id (str): Location table의 id
-       category_id (str): Category table의 id
-       iteration (str): Object table의 iteration
-
-    Return:
-        Bool: True or False
-
-    Example:
-
-        .. code-block:: python
-
-            check_object_id(db=mydb, loc_id='1', category_id='1', iteration='1')
-    """
-    obj_id = db.get_obj_id_from_args(loc_id=loc_id, category_id=category_id, iteration=iteration)
-    if obj_id is not None:
-        return True
-    else:
-        return False
 
 
 def check_category_id(db, super_name, category_name):
@@ -1731,6 +1679,7 @@ def check_category_id(db, super_name, category_name):
         .. code-block:: python
 
             check_category_id(db=mydb, super_name='hi', category_name='hi')
+
     """
     category_id = get_category_id(db=db, super_name=super_name, category_name=category_name)
     if category_id is not None:
@@ -1801,79 +1750,6 @@ def update_image_image(db, obj_id, img):
         return True
 
 
-def set_object_list(db, category_id, grid_id, iterations):
-    """
-    Location table의 특정 (grid_id)를 가진 row와 Category table의 특정 (id)를 가진 row를 통해
-    [Location table의 특정 grid_id를 가진 row 수 X category table의 특정 category_id를 가진 row 수]만큼
-    Object table에 row 생성
-
-    Args:
-        db (DB): DB class
-        category_id (str): Category table의 id
-        grid_id (str): Location table의 grid_id
-        iterations (list): Object table의 iteration
-
-    Return:
-        Bool: True or False
-
-    Example:
-
-        .. code-block:: python
-
-            set_object_list(db=mydb, category_id='1', grid_id='1', iterations=['3', '4', '5'])
-    """
-    # 특정 grid_id에 해당하는 row만 조사
-    loc_ids = db.get_location_from_grid_id(grid_id=grid_id)
-
-    for loc_id in loc_ids:
-        for iteration in iterations:
-            # 초기화를 위해 NULL(None)을 넣어줌
-            img_id = None
-            loc_id = loc_id
-            flag = db.set_object(img_id=img_id, loc_id=loc_id, category_id=category_id, iteration=iteration)
-            if flag is False:
-                return False
-
-    return True
-
-
-# def list_object_check_num(db, category_id, grid_id, check_num_state):
-#     """
-#     Object table의 (category_id) Location table의 (grid_id)를 입력 받아
-#     Image table의 (check_num)이 check_state와 같으면 Object table의 row를 반환하는 함수
-#
-#     Args:
-#         db (DB): DB class
-#         category_id (str): Object table의 (category_id)
-#         grid_id(str): Location table의 (grid_id)
-#         check_num_state(str): Image table의 (check_num) 값과 비교될 값
-#                           (0 : 검수 미진행, 1 : 완료, 2 : 거절)
-#
-#     Return:
-#         tuple [object][row]: Object table의 row 값들
-#
-#     Example:
-#
-#         .. code-block:: python
-#
-#             list_object_check_num(db=mydb, category_id='1', grid_id='2', check_num_state='100')
-#     """
-#     loc_ids = db.get_location_from_grid_id(grid_id=grid_id)
-#     img_ids = db.get_obj_from_args(category_id=category_id, loc_ids=loc_ids)
-#
-#     print('loc_ids: ', loc_ids)
-#     print('img_ids: ', img_ids)
-#     obj_list = []
-#     for img_id in img_ids:
-#         img_id = str(img_id[0])
-#         img_check_num = db.check_image_check_num(img_id=img_id)
-#         if str(img_check_num) == check_num_state:
-#             obj = db.get_obj_from_img_id(img_id=img_id)
-#             obj_list.append(obj)
-#
-#     return sum(obj_list, ())
-
-
 def delete_bbox_from_image(db, img_id):
     """
     Object table의 (img_id)를 통해 Object table의 (id)를 가져옴
@@ -1885,6 +1761,7 @@ def delete_bbox_from_image(db, img_id):
 
     Return:
         Bool: True or False
+
     """
     obj_ids = db.get_obj_id_from_img_id(img_id=img_id)
     if obj_ids is None:
@@ -1909,6 +1786,7 @@ def get_bbox_from_img_id(db, img_id):
     Return:
         tuple ()(): Bbox table의 row
         False: 조회 실패
+
     """
     obj_ids = db.get_obj_id_from_img_id(img_id=img_id)
     if obj_ids is None:
@@ -1921,3 +1799,98 @@ def get_bbox_from_img_id(db, img_id):
         return False
 
     return tuple(bboxes)
+
+
+def check_object_id(db, loc_id, category_id, iteration, mix_num):
+    """
+    Object table의 (loc_id, category_id, iteration)를 입력 받아
+    Object table의 특정 (id)를 check 하는 함수
+
+    Args:
+       db (DB): DB class
+       loc_id (str): Location table의 id
+       category_id (str): Category table의 id
+       iteration (str): Object table의 iteration
+       mix_num (str): Object table의 mix_num
+
+    Return:
+        Bool: True or False
+
+    Example:
+
+        .. code-block:: python
+
+            check_object_id(db=mydb, loc_id='1', category_id='1', iteration='1')
+
+    """
+    obj_id = db.get_obj_id_from_args(loc_id=loc_id, category_id=category_id, iteration=iteration, mix_num=mix_num)
+    if obj_id is not None:
+        return True
+    else:
+        return False
+
+
+# --------------------------------------- 수정 필요 ---------------------------------------
+def set_object_list(db, category_id, grid_id, iterations, mix_num):
+    """
+    Location table의 특정 (grid_id)를 가진 row와 Category table의 특정 (id)를 가진 row를 통해
+    [Location table의 특정 grid_id를 가진 row 수 X category table의 특정 category_id를 가진 row 수]만큼
+    Object table에 row 생성
+
+    Args:
+        db (DB): DB class
+        category_id (str): Category table의 id
+        grid_id (str): Location table의 grid_id
+        iterations (list): Object table의 iteration
+
+    Return:
+        Bool: True or False
+
+    """
+    # 특정 grid_id에 해당하는 row만 조사
+    loc_ids = db.get_location_from_grid_id(grid_id=grid_id)
+
+    for loc_id in loc_ids:
+        for iteration in iterations:
+            # 초기화를 위해 NULL(None)을 넣어줌
+            img_id = None
+            loc_id = loc_id
+            flag = db.set_object(img_id=img_id, loc_id=loc_id, category_id=category_id,
+                                 iteration=iteration, mix_num=mix_num)
+            if flag is False:
+                return False
+
+    return True
+
+
+def list_object_check_num(db, category_id, grid_id, check_num_state):
+    """
+    Object table의 (category_id)
+    Location table의 (grid_id)를 입력 받아
+    Image table의 (check_num)이 check_state와 같으면 Object table의 row를 반환하는 함수
+
+    Args:
+        db (DB): DB class
+        category_id (str): Object table의 (category_id)
+        grid_id(str): Location table의 (grid_id)
+        check_num_state(str): Image table의 (check_num) 값과 비교될 값
+                          (0 : 검수 미진행, 1 : 완료, 2 : 거절)
+
+    Return:
+        tuple [object][row]: Object table의 row 값들
+
+    """
+    loc_ids = db.get_location_from_grid_id(grid_id=grid_id)
+    img_ids = db.get_obj_from_args(category_id=category_id, loc_ids=loc_ids)
+
+    print('loc_ids: ', loc_ids)
+    print('img_ids: ', img_ids)
+    obj_list = []
+    for img_id in img_ids:
+        img_id = str(img_id[0])
+        img_check_num = db.check_image_check_num(img_id=img_id)
+        if str(img_check_num) == check_num_state:
+            obj = db.get_obj_from_img_id(img_id=img_id)
+            obj_list.append(obj)
+
+    return sum(obj_list, ())

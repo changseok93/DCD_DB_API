@@ -178,8 +178,6 @@ if __name__ == "__main__":
     # Mask table test
     check_mask(mydb)
     #
-    # get_environment_id(db=mydb, ipv4='127.223.444.444', floor='1')
-    #
     # get_grid_id(db=mydb, grid_w_h='3x4')
     #
     # get_supercategory_id(db=mydb, super_name='hi')
@@ -221,7 +219,7 @@ if __name__ == "__main__":
     # mydb.set_mask(obj_id='1', x='1', y='3')
     # mydb.delete_mask_from_obj_id(obj_id='1')
 
-    # # delete_bbox_from_image(db=mydb, img_id='1')
+    # delete_bbox_from_image(db=mydb, img_id='1')
     # mydb.set_image(device_id='200000', image=img, type='1', check_num='1')
     # mydb.delete_object_from_img_id(img_id='1')
 
@@ -234,5 +232,5 @@ if __name__ == "__main__":
     a = get_bbox_from_img_id(db=mydb, img_id='1')
     print(a)
 
-    delete_bbox_from_image(db=mydb, img_id='1')
+    # delete_bbox_from_image(db=mydb, img_id='1')
 
