@@ -140,7 +140,7 @@ if __name__ == "__main__":
 
     # cunnect to MYSQL Server
     mydb = DB(ip='192.168.10.69',
-              port=3306,
+              port=20000,
               user='root',
               password='return123',
               db_name='test')
@@ -223,14 +223,20 @@ if __name__ == "__main__":
     # mydb.set_image(device_id='200000', image=img, type='1', check_num='1')
     # mydb.delete_object_from_img_id(img_id='1')
 
-    mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='2', mix_num='-1')
-    mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='3', mix_num='-1')
-    mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='4', mix_num='-1')
-    mydb.set_bbox(obj_id='1', x='1', y='2', width='3', height='3')
-    mydb.set_bbox(obj_id='1', x='2', y='3', width='3', height='3')
-    mydb.set_bbox(obj_id='1', x='3', y='4', width='3', height='3')
-    a = get_bbox_from_img_id(db=mydb, img_id='1')
-    print(a)
+    # mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='2', mix_num='-1')
+    # mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='3', mix_num='-1')
+    # mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='4', mix_num='-1')
+    # mydb.set_bbox(obj_id='1', x='1', y='2', width='3', height='3')
+    # mydb.set_bbox(obj_id='1', x='2', y='3', width='3', height='3')
+    # mydb.set_bbox(obj_id='1', x='3', y='4', width='3', height='3')
+    # a = get_bbox_from_img_id(db=mydb, img_id='1')
+    # print(a)
 
     # delete_bbox_from_image(db=mydb, img_id='1')
 
+    mydb.set_supercategory('mix')
+    mydb.set_category(super_id='2', name='hh', width='10', height='10', depth='12', iteration='1', thumbnail='tt')
+    mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='1', mix_num='0')
+    mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='1', mix_num='1')
+    mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='1', mix_num='2')
+    delete_nomix_object_from_img_id(db=mydb, img_id='1')

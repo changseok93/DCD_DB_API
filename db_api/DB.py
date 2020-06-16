@@ -14,12 +14,9 @@ class DB:
 
         pymysql.connect()를 이용해 MySQL과 연결
 
-        database 생성7
         mysql 서버의 변수 설정
             wait_timeout: 활동하지 않는 커넥션을 끊을때까지 서버가 대기하는 시간
-
             interactive_timeout: 활동중인 커넥션이 닫히기 전까지 서버가 대기하는 시간
-
             max_connections: 한번에 mysql 서버에 접속할 수 있는 클라이언트 수
 
         Args:
@@ -1355,7 +1352,7 @@ class DB:
             object_id (str): 조회하기 원하는 Bbox table의 object id
 
         Return:
-            tuple [][]: 입력받은 object [id]를 가지는
+            tuple ()(): 입력받은 object [id]를 가지는
             Bbox table의 [x, y, width, height]값으로 이루어진
             2차원 튜플
 
@@ -1366,7 +1363,7 @@ class DB:
                 query = "SELECT x, y, width, height from Bbox WHERE obj_id=" + object_id
                 cursor.execute(query)
 
-                return cursor.fetchall(), ()
+                return cursor.fetchall()
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -1486,6 +1483,74 @@ class DB:
                 query = "SELECT id FROM Object WHERE loc_id=%s AND category_id=%s AND iteration=%s AND mix_num=%s"
                 value = (loc_id, category_id, iteration, mix_num)
                 cursor.execute(query, value)
+                return sum(cursor.fetchall(), ())[0]
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return None
+
+    def get_category_id_from_obj_id(self, obj_id):
+        """
+        Object table의 (obj_id)를 받아 (category_id)를 얻음
+
+        Args:
+            obj_id (str): Object table의 id
+
+        Return:
+            int: (category_id)
+            None: 조회 실패
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "SELECT category_id FROM Object WHERE id=" + obj_id
+                cursor.execute(query)
+                return sum(cursor.fetchall(), ())[0]
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return None
+
+    def get_super_id_from_category_id(self, category_id):
+        """
+        Category table의 (id)를 받아
+        Category table의 (super_id)를 반환
+
+        Args:
+            category_id (str): Category table의 id
+
+        Return:
+            int: (super_id)
+            None: 조회 실패
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "SELECT super_id FROM Category WHERE id=" + category_id
+                cursor.execute(query)
+                return sum(cursor.fetchall(), ())[0]
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return None
+
+    def get_super_name_from_super_id(self, super_id):
+        """
+        SuperCategory table의 (id)를 받아
+        SuperCategory table의 (name)을 반환함
+
+        Args:
+            super_id (str): SuperCategory table의 (id)
+
+        Return:
+            int: (name)
+            None: 조회 실패
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "SELECT name FROM SuperCategory WHERE id=" + super_id
+                cursor.execute(query)
                 return sum(cursor.fetchall(), ())[0]
 
         except Exception as e:
@@ -1828,6 +1893,32 @@ def check_object_id(db, loc_id, category_id, iteration, mix_num):
         return True
     else:
         return False
+
+
+def delete_nomix_object_from_img_id(db, img_id):
+    """
+    Object table의 (img_id)를 받아
+    SuperCategory table의 (name)이 mix가 아닌 Object table의 row 삭제
+
+    Args:
+        img_id (str): Object table의 (img_id)
+
+    Return:
+        Bool: True or False
+    """
+    obj_ids = db.get_obj_id_from_img_id(img_id=img_id)
+    if obj_ids is None:
+        return False
+
+    for obj_id in obj_ids:
+        category_id = db.get_category_id_from_obj_id(obj_id=str(obj_id))
+        super_id = db.get_super_id_from_category_id(category_id=str(category_id))
+        super_name = db.get_super_name_from_super_id(super_id=str(super_id))
+
+        if super_name not in "mix":
+            db.delete_table(id=obj_id, table="Object")
+
+    return True
 
 
 # --------------------------------------- 수정 필요 ---------------------------------------
