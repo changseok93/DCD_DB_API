@@ -241,5 +241,11 @@ if __name__ == "__main__":
     # mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='1', mix_num='2')
     # delete_nomix_object_from_img_id(db=mydb, img_id='1')
     #
-    mydb.set_object(img_id='1', loc_id='100000', category_id='1', iteration='1', mix_num='0')
-    mydb.set_object(img_id='1', loc_id='1111', category_id='1', iteration='1', mix_num='0')
+    # mydb.set_object(img_id='1', loc_id='100000', category_id='1', iteration='1',  mix_num='0')
+    # mydb.set_object(img_id='1', loc_id='1111', category_id='1', iteration='1', mix_num='0')
+
+    mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='1', mix_num='0')
+    mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='1', mix_num='1')
+    mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='1', mix_num='2')
+    a = get_max_mix_num(mydb, loc_id='1', category_id='1', iteration='1')
+    print(a)

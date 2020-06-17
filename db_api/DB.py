@@ -1558,6 +1558,31 @@ class DB:
             print(e)
             return None
 
+    def get_mix_num_from_args(self, loc_id, category_id, iteration):
+        """
+        Object table의 (loc_id), (category_id), (iteration)을 받아
+        Object table의 (mix_num) 값들을 반환
+
+        Args:
+            loc_id (str): Object table의 (loc_id)
+            category_id (str): Object table의 (category_id)
+            iteration (str): Object table의 (iteration)
+
+        Return:
+            tuple ()() : Object_table의 (mix_num) 값들
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "SELECT mix_num FROM Object WHERE loc_id=%s AND category_id=%s AND iteration=%s"
+                value = (loc_id, category_id, iteration)
+                cursor.execute(query, value)
+                return sum(cursor.fetchall(), ())
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return None
+
 
 def get_environment_id(db, ipv4, floor):
     """
@@ -1919,6 +1944,25 @@ def delete_nomix_object_from_img_id(db, img_id):
             db.delete_table(id=obj_id, table="Object")
 
     return True
+
+
+def get_max_mix_num(db, loc_id, category_id, iteration):
+    """
+    Object table의 (loc_id, category_id, iteration)가
+    입력받은 값을 가지는 Object들 중
+    가장 큰 mix_num을 가진 Object table의 (mix_num) 반환
+
+    Args:
+        db (DB): DB class
+        loc_id (str): Object table의 (loc_id)
+        category_id (str): Object table의 (category_id)
+        iteration (str): Object table의 (iteration)
+
+    Return:
+        int: Object table의 args에 맞는 최대 (mix_num) 값
+    """
+    mix_nums = db.get_mix_num_from_args(loc_id=loc_id, category_id=category_id, iteration=iteration)
+    return sorted(mix_nums, reverse=True)[0]
 
 
 # --------------------------------------- 수정 필요한 함수 ---------------------------------------
