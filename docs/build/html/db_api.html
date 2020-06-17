@@ -1419,49 +1419,6 @@ SuperCategory table의 (name)이 mix가 아닌 Object table의 row 삭제</p>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt id="db_api.DB.set_object_list">
-<code class="sig-prename descclassname">db_api.DB.</code><code class="sig-name descname">set_object_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">category_id</span></em>, <em class="sig-param"><span class="n">grid_id</span></em>, <em class="sig-param"><span class="n">iterations</span></em>, <em class="sig-param"><span class="n">mix_num</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#set_object_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.set_object_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>Location table의 특정 (grid_id)를 가진 row와 Category table의 특정 (id)를 가진 row를 통해
-[Location table의 특정 grid_id를 가진 row 수 X category table의 특정 category_id를 가진 row 수]만큼
-Object table에 row 생성</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>db</strong> (<a class="reference internal" href="#db_api.DB.DB" title="db_api.DB.DB"><em>DB</em></a>) – DB class</p></li>
-<li><p><strong>category_id</strong> (<em>str</em>) – Category table의 id</p></li>
-<li><p><strong>grid_id</strong> (<em>str</em>) – Location table의 grid_id</p></li>
-<li><p><strong>iterations</strong> (<em>list</em>) – Object table의 iteration</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>Bool</em> – True or False</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="db_api.DB.list_object_check_num">
-<code class="sig-prename descclassname">db_api.DB.</code><code class="sig-name descname">list_object_check_num</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">category_id</span></em>, <em class="sig-param"><span class="n">grid_id</span></em>, <em class="sig-param"><span class="n">check_num_state</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#list_object_check_num"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.list_object_check_num" title="Permalink to this definition">¶</a></dt>
-<dd><p>Object table의 (category_id)
-Location table의 (grid_id)를 입력 받아
-Image table의 (check_num)이 check_state와 같으면 Object table의 row를 반환하는 함수</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>db</strong> (<a class="reference internal" href="#db_api.DB.DB" title="db_api.DB.DB"><em>DB</em></a>) – DB class</p></li>
-<li><p><strong>category_id</strong> (<em>str</em>) – Object table의 (category_id)</p></li>
-<li><p><strong>grid_id</strong> (<em>str</em>) – Location table의 (grid_id)</p></li>
-<li><p><strong>check_num_state</strong> (<em>str</em>) – Image table의 (check_num) 값과 비교될 값
-(0 : 검수 미진행, 1 : 완료, 2 : 거절)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>tuple [object][row]</em> – Object table의 row 값들</p>
-</dd>
-</dl>
-</dd></dl>
-
 </div>
 
 

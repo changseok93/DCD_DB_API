@@ -2066,70 +2066,71 @@
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
-<span class="c1"># --------------------------------------- 수정 필요 ---------------------------------------</span>
-<div class="viewcode-block" id="set_object_list"><a class="viewcode-back" href="../../db_api.html#db_api.DB.set_object_list">[docs]</a><span class="k">def</span> <span class="nf">set_object_list</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">,</span> <span class="n">iterations</span><span class="p">,</span> <span class="n">mix_num</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Location table의 특정 (grid_id)를 가진 row와 Category table의 특정 (id)를 가진 row를 통해</span>
-<span class="sd">    [Location table의 특정 grid_id를 가진 row 수 X category table의 특정 category_id를 가진 row 수]만큼</span>
-<span class="sd">    Object table에 row 생성</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        db (DB): DB class</span>
-<span class="sd">        category_id (str): Category table의 id</span>
-<span class="sd">        grid_id (str): Location table의 grid_id</span>
-<span class="sd">        iterations (list): Object table의 iteration</span>
-
-<span class="sd">    Return:</span>
-<span class="sd">        Bool: True or False</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># 특정 grid_id에 해당하는 row만 조사</span>
-    <span class="n">loc_ids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_location_from_grid_id</span><span class="p">(</span><span class="n">grid_id</span><span class="o">=</span><span class="n">grid_id</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">loc_id</span> <span class="ow">in</span> <span class="n">loc_ids</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="n">iterations</span><span class="p">:</span>
-            <span class="c1"># 초기화를 위해 NULL(None)을 넣어줌</span>
-            <span class="n">img_id</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="n">loc_id</span> <span class="o">=</span> <span class="n">loc_id</span>
-            <span class="n">flag</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">set_object</span><span class="p">(</span><span class="n">img_id</span><span class="o">=</span><span class="n">img_id</span><span class="p">,</span> <span class="n">loc_id</span><span class="o">=</span><span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="o">=</span><span class="n">category_id</span><span class="p">,</span>
-                                 <span class="n">iteration</span><span class="o">=</span><span class="n">iteration</span><span class="p">,</span> <span class="n">mix_num</span><span class="o">=</span><span class="n">mix_num</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">flag</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">False</span>
-
-    <span class="k">return</span> <span class="kc">True</span></div>
-
-
-<div class="viewcode-block" id="list_object_check_num"><a class="viewcode-back" href="../../db_api.html#db_api.DB.list_object_check_num">[docs]</a><span class="k">def</span> <span class="nf">list_object_check_num</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">,</span> <span class="n">check_num_state</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Object table의 (category_id)</span>
-<span class="sd">    Location table의 (grid_id)를 입력 받아</span>
-<span class="sd">    Image table의 (check_num)이 check_state와 같으면 Object table의 row를 반환하는 함수</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        db (DB): DB class</span>
-<span class="sd">        category_id (str): Object table의 (category_id)</span>
-<span class="sd">        grid_id(str): Location table의 (grid_id)</span>
-<span class="sd">        check_num_state(str): Image table의 (check_num) 값과 비교될 값</span>
-<span class="sd">                          (0 : 검수 미진행, 1 : 완료, 2 : 거절)</span>
-
-<span class="sd">    Return:</span>
-<span class="sd">        tuple [object][row]: Object table의 row 값들</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">loc_ids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_location_from_grid_id</span><span class="p">(</span><span class="n">grid_id</span><span class="o">=</span><span class="n">grid_id</span><span class="p">)</span>
-    <span class="n">img_ids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_obj_from_args</span><span class="p">(</span><span class="n">category_id</span><span class="o">=</span><span class="n">category_id</span><span class="p">,</span> <span class="n">loc_ids</span><span class="o">=</span><span class="n">loc_ids</span><span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;loc_ids: &#39;</span><span class="p">,</span> <span class="n">loc_ids</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;img_ids: &#39;</span><span class="p">,</span> <span class="n">img_ids</span><span class="p">)</span>
-    <span class="n">obj_list</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">img_id</span> <span class="ow">in</span> <span class="n">img_ids</span><span class="p">:</span>
-        <span class="n">img_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">img_id</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">img_check_num</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">check_image_check_num</span><span class="p">(</span><span class="n">img_id</span><span class="o">=</span><span class="n">img_id</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">img_check_num</span><span class="p">)</span> <span class="o">==</span> <span class="n">check_num_state</span><span class="p">:</span>
-            <span class="n">obj</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_obj_from_img_id</span><span class="p">(</span><span class="n">img_id</span><span class="o">=</span><span class="n">img_id</span><span class="p">)</span>
-            <span class="n">obj_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">obj_list</span><span class="p">,</span> <span class="p">())</span></div>
+<span class="c1"># --------------------------------------- 수정이 필요한 함수 ---------------------------------------</span>
+<span class="c1">#</span>
+<span class="c1"># def set_object_list(db, category_id, grid_id, iterations, mix_num):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Location table의 특정 (grid_id)를 가진 row와 Category table의 특정 (id)를 가진 row를 통해</span>
+<span class="c1">#     [Location table의 특정 grid_id를 가진 row 수 X category table의 특정 category_id를 가진 row 수]만큼</span>
+<span class="c1">#     Object table에 row 생성</span>
+<span class="c1">#</span>
+<span class="c1">#     Args:</span>
+<span class="c1">#         db (DB): DB class</span>
+<span class="c1">#         category_id (str): Category table의 id</span>
+<span class="c1">#         grid_id (str): Location table의 grid_id</span>
+<span class="c1">#         iterations (list): Object table의 iteration</span>
+<span class="c1">#</span>
+<span class="c1">#     Return:</span>
+<span class="c1">#         Bool: True or False</span>
+<span class="c1">#</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     # 특정 grid_id에 해당하는 row만 조사</span>
+<span class="c1">#     loc_ids = db.get_location_from_grid_id(grid_id=grid_id)</span>
+<span class="c1">#</span>
+<span class="c1">#     for loc_id in loc_ids:</span>
+<span class="c1">#         for iteration in iterations:</span>
+<span class="c1">#             # 초기화를 위해 NULL(None)을 넣어줌</span>
+<span class="c1">#             img_id = None</span>
+<span class="c1">#             loc_id = loc_id</span>
+<span class="c1">#             flag = db.set_object(img_id=img_id, loc_id=loc_id, category_id=category_id,</span>
+<span class="c1">#                                  iteration=iteration, mix_num=mix_num)</span>
+<span class="c1">#             if flag is False:</span>
+<span class="c1">#                 return False</span>
+<span class="c1">#</span>
+<span class="c1">#     return True</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+<span class="c1"># def list_object_check_num(db, category_id, grid_id, check_num_state):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Object table의 (category_id)</span>
+<span class="c1">#     Location table의 (grid_id)를 입력 받아</span>
+<span class="c1">#     Image table의 (check_num)이 check_state와 같으면 Object table의 row를 반환하는 함수</span>
+<span class="c1">#</span>
+<span class="c1">#     Args:</span>
+<span class="c1">#         db (DB): DB class</span>
+<span class="c1">#         category_id (str): Object table의 (category_id)</span>
+<span class="c1">#         grid_id(str): Location table의 (grid_id)</span>
+<span class="c1">#         check_num_state(str): Image table의 (check_num) 값과 비교될 값</span>
+<span class="c1">#                           (0 : 검수 미진행, 1 : 완료, 2 : 거절)</span>
+<span class="c1">#</span>
+<span class="c1">#     Return:</span>
+<span class="c1">#         tuple [object][row]: Object table의 row 값들</span>
+<span class="c1">#</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     loc_ids = db.get_location_from_grid_id(grid_id=grid_id)</span>
+<span class="c1">#     img_ids = db.get_obj_from_args(category_id=category_id, loc_ids=loc_ids)</span>
+<span class="c1">#</span>
+<span class="c1">#     print(&#39;loc_ids: &#39;, loc_ids)</span>
+<span class="c1">#     print(&#39;img_ids: &#39;, img_ids)</span>
+<span class="c1">#     obj_list = []</span>
+<span class="c1">#     for img_id in img_ids:</span>
+<span class="c1">#         img_id = str(img_id[0])</span>
+<span class="c1">#         img_check_num = db.check_image_check_num(img_id=img_id)</span>
+<span class="c1">#         if str(img_check_num) == check_num_state:</span>
+<span class="c1">#             obj = db.get_obj_from_img_id(img_id=img_id)</span>
+<span class="c1">#             obj_list.append(obj)</span>
+<span class="c1">#</span>
+<span class="c1">#     return sum(obj_list, ())</span>
 </pre></div>
 
            </div>
