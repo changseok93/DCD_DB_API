@@ -1921,7 +1921,7 @@ def delete_nomix_object_from_img_id(db, img_id):
     return True
 
 
-# --------------------------------------- 수정이 필요한 함수 ---------------------------------------
+# --------------------------------------- 수정 필요한 함수 ---------------------------------------
 #
 # def set_object_list(db, category_id, grid_id, iterations, mix_num):
 #     """

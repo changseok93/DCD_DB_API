@@ -234,9 +234,12 @@ if __name__ == "__main__":
 
     # delete_bbox_from_image(db=mydb, img_id='1')
 
-    mydb.set_supercategory(name='mix')
-    mydb.set_category(super_id='2', name='hh', width='10', height='10', depth='12', iteration='1', thumbnail='tt')
-    mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='1', mix_num='0')
-    mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='1', mix_num='1')
-    mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='1', mix_num='2')
-    delete_nomix_object_from_img_id(db=mydb, img_id='1')
+    # mydb.set_supercategory(name='mix')
+    # mydb.set_category(super_id='2', name='hh', width='10', height='10', depth='12', iteration='1', thumbnail='tt')
+    # mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='1', mix_num='0')
+    # mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='1', mix_num='1')
+    # mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='1', mix_num='2')
+    # delete_nomix_object_from_img_id(db=mydb, img_id='1')
+    #
+    mydb.set_object(img_id='1', loc_id='100000', category_id='1', iteration='1', mix_num='0')
+    mydb.set_object(img_id='1', loc_id='1111', category_id='1', iteration='1', mix_num='0')
