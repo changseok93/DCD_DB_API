@@ -159,12 +159,9 @@
 
 <span class="sd">        pymysql.connect()를 이용해 MySQL과 연결</span>
 
-<span class="sd">        database 생성7</span>
 <span class="sd">        mysql 서버의 변수 설정</span>
 <span class="sd">            wait_timeout: 활동하지 않는 커넥션을 끊을때까지 서버가 대기하는 시간</span>
-
 <span class="sd">            interactive_timeout: 활동중인 커넥션이 닫히기 전까지 서버가 대기하는 시간</span>
-
 <span class="sd">            max_connections: 한번에 mysql 서버에 접속할 수 있는 클라이언트 수</span>
 
 <span class="sd">        Args:</span>
@@ -692,7 +689,7 @@
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="DB.set_object"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.set_object">[docs]</a>    <span class="k">def</span> <span class="nf">set_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_id</span><span class="p">,</span> <span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">):</span>
+<div class="viewcode-block" id="DB.set_object"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.set_object">[docs]</a>    <span class="k">def</span> <span class="nf">set_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_id</span><span class="p">,</span> <span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">mix_num</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Object table에 row 추가</span>
 
@@ -701,6 +698,7 @@
 <span class="sd">            loc_id (str): Location table의 id(foreigner key)</span>
 <span class="sd">            category_id (str): Category table의 id(foreigner key)</span>
 <span class="sd">            iteration (str): 물체를 방향 별로 찍어야하는 횟수</span>
+<span class="sd">            mix_num (str): mix 이미지에 대한 정보</span>
 
 <span class="sd">        Return:</span>
 <span class="sd">            Bool: True or False</span>
@@ -713,8 +711,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
-                <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;INSERT INTO Object(img_id, loc_id, category_id, iteration) VALUES(</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">)&#39;</span>
-                <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">img_id</span><span class="p">,</span> <span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">)</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) VALUES(</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">)&#39;</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">img_id</span><span class="p">,</span> <span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">mix_num</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">True</span>
 
@@ -726,7 +724,7 @@
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="DB.update_object"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.update_object">[docs]</a>    <span class="k">def</span> <span class="nf">update_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">img_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">loc_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">category_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">iteration</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DB.update_object"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.update_object">[docs]</a>    <span class="k">def</span> <span class="nf">update_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">img_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">loc_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">category_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">iteration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mix_num</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Object table의 특정 id 정보 갱신</span>
 
@@ -757,7 +755,9 @@
                 <span class="k">if</span> <span class="n">category_id</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">query_head</span> <span class="o">+=</span> <span class="s1">&#39;Category_id=</span><span class="si">{}</span><span class="s1">, &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">category_id</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">category_id</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">query_head</span> <span class="o">+=</span> <span class="s1">&#39;Category_id=</span><span class="si">{}</span><span class="s1">, &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">)</span>
+                    <span class="n">query_head</span> <span class="o">+=</span> <span class="s1">&#39;iteration=</span><span class="si">{}</span><span class="s1">, &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">mix_num</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">query_head</span> <span class="o">+=</span> <span class="s1">&#39;mix_num=</span><span class="si">{}</span><span class="s1">, &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mix_num</span><span class="p">)</span>
 
                 <span class="n">query</span> <span class="o">=</span> <span class="n">query_head</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
                 <span class="n">query</span> <span class="o">+=</span> <span class="n">query_tail</span>
@@ -1074,7 +1074,7 @@
 <span class="sd">            table (str): table 이름</span>
 
 <span class="sd">        Return:</span>
-<span class="sd">            list[][]: 마지막 id 값</span>
+<span class="sd">            list []: 마지막 id 값</span>
 
 <span class="sd">            None: 조회 실패</span>
 
@@ -1301,32 +1301,6 @@
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="DB.get_obj_id_from_args"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_obj_id_from_args">[docs]</a>    <span class="k">def</span> <span class="nf">get_obj_id_from_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Object table의 id를 반환</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            loc_id (str): Object table의 loc_id</span>
-<span class="sd">            category_id (str): Object table의 category_id</span>
-<span class="sd">            iteration (str): Object table의 iteration</span>
-
-<span class="sd">        Return:</span>
-<span class="sd">            int: Object table의 id</span>
-
-<span class="sd">            None: 조회 실패</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
-                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT id FROM Object WHERE loc_id=</span><span class="si">%s</span><span class="s2"> AND category_id=</span><span class="si">%s</span><span class="s2"> AND iteration=</span><span class="si">%s</span><span class="s2">&quot;</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">)</span>
-                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-                <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
-
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">None</span></div>
-
 <div class="viewcode-block" id="DB.check_image_check_num"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.check_image_check_num">[docs]</a>    <span class="k">def</span> <span class="nf">check_image_check_num</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Image table의 이미지의 check_num을 반환</span>
@@ -1431,6 +1405,31 @@
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
+<div class="viewcode-block" id="DB.delete_object_from_img_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.delete_object_from_img_id">[docs]</a>    <span class="k">def</span> <span class="nf">delete_object_from_img_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object table의 (img_id)를 받아</span>
+<span class="sd">        해당하는 Object table의 모든 row를 삭제</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            img_id (str): Object table의 (img_id)</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">            Bool: True or False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;DELETE FROM Object WHERE img_id=&#39;</span> <span class="o">+</span> <span class="n">img_id</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
 <div class="viewcode-block" id="DB.get_obj_from_args"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_obj_from_args">[docs]</a>    <span class="k">def</span> <span class="nf">get_obj_from_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">loc_ids</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Object table의 (category_id, loc_ids)를 입력 받아</span>
@@ -1452,31 +1451,6 @@
                     <span class="n">query_head</span> <span class="o">+=</span> <span class="s1">&#39;loc_id=</span><span class="si">{}</span><span class="s1"> OR &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">loc_id</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
                 <span class="n">query</span> <span class="o">=</span> <span class="n">query_head</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-                <span class="c1"># print(&#39;function: {}, query: {}&#39;.format(inspect.stack()[0][3], query))</span>
-
-                <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
-
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">None</span></div>
-
-<div class="viewcode-block" id="DB.get_obj_from_img_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_obj_from_img_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_obj_from_img_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_id</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Object table의 (img_id)를 입력 받아</span>
-<span class="sd">        Object table의 row를 반환하는 함수</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            img_id (str): Object table의 img_id</span>
-
-<span class="sd">        Return:</span>
-<span class="sd">            obj_id (str): Object table의 row</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
-                <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SELECT * FROM Object WHERE img_id=&#39;</span> <span class="o">+</span> <span class="n">img_id</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="c1"># print(&#39;function: {}, query: {}&#39;.format(inspect.stack()[0][3], query))</span>
 
@@ -1490,7 +1464,7 @@
 <div class="viewcode-block" id="DB.get_location_from_grid_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_location_from_grid_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_location_from_grid_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Location table의 (grid_id)를 입력 받아</span>
-<span class="sd">        (grid_id)를 값으로 가지는 Location table의 모든 row의 개수 반환하는 함수</span>
+<span class="sd">        (grid_id)를 값으로 가지는 Location table의 row 반환 함수</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            grid_id (str): Location table의 grid_id</span>
@@ -1514,7 +1488,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="DB.bbox_info"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.bbox_info">[docs]</a>    <span class="k">def</span> <span class="nf">bbox_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_id</span><span class="p">):</span>
+<div class="viewcode-block" id="DB.get_bbox_info"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_bbox_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_bbox_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        입력받은 object [id]를 가지는 Bbox table의</span>
 <span class="sd">        [x, y, width, height]들을 2차원 리스트로 반환</span>
@@ -1523,7 +1497,7 @@
 <span class="sd">            object_id (str): 조회하기 원하는 Bbox table의 object id</span>
 
 <span class="sd">        Return:</span>
-<span class="sd">            tuple [][]: 입력받은 object [id]를 가지는</span>
+<span class="sd">            tuple ()(): 입력받은 object [id]를 가지는</span>
 <span class="sd">            Bbox table의 [x, y, width, height]값으로 이루어진</span>
 <span class="sd">            2차원 튜플</span>
 
@@ -1534,7 +1508,7 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT x, y, width, height from Bbox WHERE obj_id=&quot;</span> <span class="o">+</span> <span class="n">object_id</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 
-                <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">()</span>
+                <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1567,10 +1541,10 @@
 
 <div class="viewcode-block" id="DB.delete_mask_from_obj_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.delete_mask_from_obj_id">[docs]</a>    <span class="k">def</span> <span class="nf">delete_mask_from_obj_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Mask table의 [object_id]를 가지는 모든 row 삭제</span>
+<span class="sd">        Mask table의 (object_id)를 가지는 모든 row 삭제</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            obj_id (str): Mask table의 object_id</span>
+<span class="sd">            obj_id (str): Mask table의 (object_id)</span>
 
 <span class="sd">        Return:</span>
 <span class="sd">            Bool: True or False</span>
@@ -1587,7 +1561,147 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DB.get_obj_id_from_img_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_obj_id_from_img_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_obj_id_from_img_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object table의 (img_id)를 받아 (obj_id)들을 얻음</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            img_id (str): Object table의 (img_id)</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">            tuple ()(): (obj_id)정보들</span>
+<span class="sd">            None: 조회 실패</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT id FROM Object WHERE img_id=&quot;</span> <span class="o">+</span> <span class="n">img_id</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="DB.list_bbox_from_obj_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.list_bbox_from_obj_id">[docs]</a>    <span class="k">def</span> <span class="nf">list_bbox_from_obj_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Bbox table의 (obj_id)를 이용해</span>
+<span class="sd">        Bbox table의 모든 row 반환</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            obj_id (str): Bbox table의 obj_id</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">            tuple()(): Bbox table의 row</span>
+<span class="sd">            None: 조회 실패</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SELECT * FROM Bbox WHERE obj_id=&#39;</span> <span class="o">+</span> <span class="n">obj_id</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+                <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="DB.get_obj_id_from_args"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_obj_id_from_args">[docs]</a>    <span class="k">def</span> <span class="nf">get_obj_id_from_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">mix_num</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object table의 id를 반환</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            loc_id (str): Object table의 loc_id</span>
+<span class="sd">            category_id (str): Object table의 category_id</span>
+<span class="sd">            iteration (str): Object table의 iteration</span>
+<span class="sd">            mix_num (str): Object table의 mix_num</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">            int: Object table의 id</span>
+<span class="sd">            None: 조회 실패</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT id FROM Object WHERE loc_id=</span><span class="si">%s</span><span class="s2"> AND category_id=</span><span class="si">%s</span><span class="s2"> AND iteration=</span><span class="si">%s</span><span class="s2"> AND mix_num=</span><span class="si">%s</span><span class="s2">&quot;</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">mix_num</span><span class="p">)</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="DB.get_category_id_from_obj_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_category_id_from_obj_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_category_id_from_obj_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object table의 (obj_id)를 받아 (category_id)를 얻음</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            obj_id (str): Object table의 id</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">            int: (category_id)</span>
+<span class="sd">            None: 조회 실패</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT category_id FROM Object WHERE id=&quot;</span> <span class="o">+</span> <span class="n">obj_id</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="DB.get_super_id_from_category_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_super_id_from_category_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_super_id_from_category_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Category table의 (id)를 받아</span>
+<span class="sd">        Category table의 (super_id)를 반환</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            category_id (str): Category table의 id</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">            int: (super_id)</span>
+<span class="sd">            None: 조회 실패</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT super_id FROM Category WHERE id=&quot;</span> <span class="o">+</span> <span class="n">category_id</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="DB.get_super_name_from_super_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_super_name_from_super_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_super_name_from_super_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">super_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        SuperCategory table의 (id)를 받아</span>
+<span class="sd">        SuperCategory table의 (name)을 반환함</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            super_id (str): SuperCategory table의 (id)</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">            int: (name)</span>
+<span class="sd">            None: 조회 실패</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT name FROM SuperCategory WHERE id=&quot;</span> <span class="o">+</span> <span class="n">super_id</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span></div></div>
 
 
 <div class="viewcode-block" id="get_environment_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.get_environment_id">[docs]</a><span class="k">def</span> <span class="nf">get_environment_id</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">ipv4</span><span class="p">,</span> <span class="n">floor</span><span class="p">):</span>
@@ -1660,6 +1774,7 @@
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            get_supercategory_id(db=mydb, super_name=&#39;hi&#39;)</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">super_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_supercategory_id_from_args</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">super_name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">super_id</span></div>
@@ -1746,6 +1861,7 @@
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            get_image_check_num(db=mydb, obj_id=&#39;1&#39;)</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">img_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">get_img_id_from_args</span><span class="p">(</span><span class="n">obj_id</span><span class="o">=</span><span class="n">obj_id</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">img_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1753,60 +1869,6 @@
 
     <span class="n">img_check_num</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">check_image_check_num</span><span class="p">(</span><span class="n">img_id</span><span class="o">=</span><span class="n">img_id</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">img_check_num</span></div>
-
-
-<div class="viewcode-block" id="get_object_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.get_object_id">[docs]</a><span class="k">def</span> <span class="nf">get_object_id</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Object table의 (loc_id, category_id, iteration)를 입력 받아</span>
-<span class="sd">    Object table (id) 반환하는 함수</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        db (DB): DB class</span>
-<span class="sd">        loc_id (str): Location table의 id</span>
-<span class="sd">        category_id (str): Category table의 id</span>
-<span class="sd">        iteration (str): Object table의 iteration</span>
-
-<span class="sd">    Return:</span>
-<span class="sd">        obj_id (int): Object table의 id</span>
-
-<span class="sd">        None: 조회 실패</span>
-
-<span class="sd">    Example:</span>
-
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">            get_object_id(db=mydb, loc_id=&#39;1&#39;, category_id=&#39;1&#39;, iteration=&#39;1&#39;)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">obj_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_obj_id_from_args</span><span class="p">(</span><span class="n">loc_id</span><span class="o">=</span><span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="o">=</span><span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="o">=</span><span class="n">iteration</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">obj_id</span></div>
-
-
-<div class="viewcode-block" id="check_object_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.check_object_id">[docs]</a><span class="k">def</span> <span class="nf">check_object_id</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Object table의 (loc_id, category_id, iteration)를 입력 받아</span>
-<span class="sd">    Object table의 특정 (id)를 check 하는 함수</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">       db (DB): DB class</span>
-<span class="sd">       loc_id (str): Location table의 id</span>
-<span class="sd">       category_id (str): Category table의 id</span>
-<span class="sd">       iteration (str): Object table의 iteration</span>
-
-<span class="sd">    Return:</span>
-<span class="sd">        Bool: True or False</span>
-
-<span class="sd">    Example:</span>
-
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">            check_object_id(db=mydb, loc_id=&#39;1&#39;, category_id=&#39;1&#39;, iteration=&#39;1&#39;)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">obj_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_obj_id_from_args</span><span class="p">(</span><span class="n">loc_id</span><span class="o">=</span><span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="o">=</span><span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="o">=</span><span class="n">iteration</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">obj_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">True</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
 
 
 <div class="viewcode-block" id="check_category_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.check_category_id">[docs]</a><span class="k">def</span> <span class="nf">check_category_id</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">super_name</span><span class="p">,</span> <span class="n">category_name</span><span class="p">):</span>
@@ -1827,6 +1889,7 @@
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            check_category_id(db=mydb, super_name=&#39;hi&#39;, category_name=&#39;hi&#39;)</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">category_id</span> <span class="o">=</span> <span class="n">get_category_id</span><span class="p">(</span><span class="n">db</span><span class="o">=</span><span class="n">db</span><span class="p">,</span> <span class="n">super_name</span><span class="o">=</span><span class="n">super_name</span><span class="p">,</span> <span class="n">category_name</span><span class="o">=</span><span class="n">category_name</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">category_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1897,7 +1960,114 @@
         <span class="k">return</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="set_object_list"><a class="viewcode-back" href="../../db_api.html#db_api.DB.set_object_list">[docs]</a><span class="k">def</span> <span class="nf">set_object_list</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">,</span> <span class="n">iterations</span><span class="p">):</span>
+<div class="viewcode-block" id="delete_bbox_from_image"><a class="viewcode-back" href="../../db_api.html#db_api.DB.delete_bbox_from_image">[docs]</a><span class="k">def</span> <span class="nf">delete_bbox_from_image</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">img_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Object table의 (img_id)를 통해 Object table의 (id)를 가져옴</span>
+<span class="sd">    이를통해 관계된 Bbox table의 (obj_id)를 가지는 모든 bbox 삭제</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        db (DB): DB class</span>
+<span class="sd">        img_id (str): Object table의 img_id</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">        Bool: True or False</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj_ids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_obj_id_from_img_id</span><span class="p">(</span><span class="n">img_id</span><span class="o">=</span><span class="n">img_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">obj_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">for</span> <span class="n">obj_id</span> <span class="ow">in</span> <span class="n">obj_ids</span><span class="p">:</span>
+        <span class="n">flag</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">delete_bbox_from_obj_id</span><span class="p">(</span><span class="n">obj_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">obj_id</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">flag</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="get_bbox_from_img_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.get_bbox_from_img_id">[docs]</a><span class="k">def</span> <span class="nf">get_bbox_from_img_id</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">img_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Object table의 (img_id)를 받아 (obj_id)들을 가져옴</span>
+<span class="sd">    얻은 (obj_id)들로 Bbox table의 row들을 조회</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        img_id (str): Object table의 (img_id)</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">        tuple ()(): Bbox table의 row</span>
+<span class="sd">        False: 조회 실패</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj_ids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_obj_id_from_img_id</span><span class="p">(</span><span class="n">img_id</span><span class="o">=</span><span class="n">img_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">obj_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">bboxes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">obj_id</span> <span class="ow">in</span> <span class="n">obj_ids</span><span class="p">:</span>
+        <span class="n">bboxes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">list_bbox_from_obj_id</span><span class="p">(</span><span class="n">obj_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">obj_id</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">bboxes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">bboxes</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_object_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.check_object_id">[docs]</a><span class="k">def</span> <span class="nf">check_object_id</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">mix_num</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Object table의 (loc_id, category_id, iteration)를 입력 받아</span>
+<span class="sd">    Object table의 특정 (id)를 check 하는 함수</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">       db (DB): DB class</span>
+<span class="sd">       loc_id (str): Location table의 id</span>
+<span class="sd">       category_id (str): Category table의 id</span>
+<span class="sd">       iteration (str): Object table의 iteration</span>
+<span class="sd">       mix_num (str): Object table의 mix_num</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">        Bool: True or False</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            check_object_id(db=mydb, loc_id=&#39;1&#39;, category_id=&#39;1&#39;, iteration=&#39;1&#39;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_obj_id_from_args</span><span class="p">(</span><span class="n">loc_id</span><span class="o">=</span><span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="o">=</span><span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="o">=</span><span class="n">iteration</span><span class="p">,</span> <span class="n">mix_num</span><span class="o">=</span><span class="n">mix_num</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">obj_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="delete_nomix_object_from_img_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.delete_nomix_object_from_img_id">[docs]</a><span class="k">def</span> <span class="nf">delete_nomix_object_from_img_id</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">img_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Object table의 (img_id)를 받아</span>
+<span class="sd">    SuperCategory table의 (name)이 mix가 아닌 Object table의 row 삭제</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        img_id (str): Object table의 (img_id)</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">        Bool: True or False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj_ids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_obj_id_from_img_id</span><span class="p">(</span><span class="n">img_id</span><span class="o">=</span><span class="n">img_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">obj_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">for</span> <span class="n">obj_id</span> <span class="ow">in</span> <span class="n">obj_ids</span><span class="p">:</span>
+        <span class="n">category_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_category_id_from_obj_id</span><span class="p">(</span><span class="n">obj_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">obj_id</span><span class="p">))</span>
+        <span class="n">super_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_super_id_from_category_id</span><span class="p">(</span><span class="n">category_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">category_id</span><span class="p">))</span>
+        <span class="n">super_name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_super_name_from_super_id</span><span class="p">(</span><span class="n">super_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">super_id</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">super_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s2">&quot;mix&quot;</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">delete_table</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">obj_id</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="s2">&quot;Object&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<span class="c1"># --------------------------------------- 수정 필요 ---------------------------------------</span>
+<div class="viewcode-block" id="set_object_list"><a class="viewcode-back" href="../../db_api.html#db_api.DB.set_object_list">[docs]</a><span class="k">def</span> <span class="nf">set_object_list</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">,</span> <span class="n">iterations</span><span class="p">,</span> <span class="n">mix_num</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Location table의 특정 (grid_id)를 가진 row와 Category table의 특정 (id)를 가진 row를 통해</span>
 <span class="sd">    [Location table의 특정 grid_id를 가진 row 수 X category table의 특정 category_id를 가진 row 수]만큼</span>
@@ -1912,11 +2082,6 @@
 <span class="sd">    Return:</span>
 <span class="sd">        Bool: True or False</span>
 
-<span class="sd">    Example:</span>
-
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">            set_object_list(db=mydb, category_id=&#39;1&#39;, grid_id=&#39;1&#39;, iterations=[&#39;3&#39;, &#39;4&#39;, &#39;5&#39;])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># 특정 grid_id에 해당하는 row만 조사</span>
     <span class="n">loc_ids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_location_from_grid_id</span><span class="p">(</span><span class="n">grid_id</span><span class="o">=</span><span class="n">grid_id</span><span class="p">)</span>
@@ -1926,7 +2091,8 @@
             <span class="c1"># 초기화를 위해 NULL(None)을 넣어줌</span>
             <span class="n">img_id</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">loc_id</span> <span class="o">=</span> <span class="n">loc_id</span>
-            <span class="n">flag</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">set_object</span><span class="p">(</span><span class="n">img_id</span><span class="o">=</span><span class="n">img_id</span><span class="p">,</span> <span class="n">loc_id</span><span class="o">=</span><span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="o">=</span><span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="o">=</span><span class="n">iteration</span><span class="p">)</span>
+            <span class="n">flag</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">set_object</span><span class="p">(</span><span class="n">img_id</span><span class="o">=</span><span class="n">img_id</span><span class="p">,</span> <span class="n">loc_id</span><span class="o">=</span><span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="o">=</span><span class="n">category_id</span><span class="p">,</span>
+                                 <span class="n">iteration</span><span class="o">=</span><span class="n">iteration</span><span class="p">,</span> <span class="n">mix_num</span><span class="o">=</span><span class="n">mix_num</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">flag</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
@@ -1935,7 +2101,8 @@
 
 <div class="viewcode-block" id="list_object_check_num"><a class="viewcode-back" href="../../db_api.html#db_api.DB.list_object_check_num">[docs]</a><span class="k">def</span> <span class="nf">list_object_check_num</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">,</span> <span class="n">check_num_state</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Object table의 (category_id) Location table의 (grid_id)를 입력 받아</span>
+<span class="sd">    Object table의 (category_id)</span>
+<span class="sd">    Location table의 (grid_id)를 입력 받아</span>
 <span class="sd">    Image table의 (check_num)이 check_state와 같으면 Object table의 row를 반환하는 함수</span>
 
 <span class="sd">    Args:</span>
@@ -1948,11 +2115,6 @@
 <span class="sd">    Return:</span>
 <span class="sd">        tuple [object][row]: Object table의 row 값들</span>
 
-<span class="sd">    Example:</span>
-
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">            list_object_check_num(db=mydb, category_id=&#39;1&#39;, grid_id=&#39;2&#39;, check_num_state=&#39;100&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">loc_ids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_location_from_grid_id</span><span class="p">(</span><span class="n">grid_id</span><span class="o">=</span><span class="n">grid_id</span><span class="p">)</span>
     <span class="n">img_ids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_obj_from_args</span><span class="p">(</span><span class="n">category_id</span><span class="o">=</span><span class="n">category_id</span><span class="p">,</span> <span class="n">loc_ids</span><span class="o">=</span><span class="n">loc_ids</span><span class="p">)</span>

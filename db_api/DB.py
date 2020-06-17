@@ -1921,67 +1921,68 @@ def delete_nomix_object_from_img_id(db, img_id):
     return True
 
 
-# --------------------------------------- 수정 필요 ---------------------------------------
-def set_object_list(db, category_id, grid_id, iterations, mix_num):
-    """
-    Location table의 특정 (grid_id)를 가진 row와 Category table의 특정 (id)를 가진 row를 통해
-    [Location table의 특정 grid_id를 가진 row 수 X category table의 특정 category_id를 가진 row 수]만큼
-    Object table에 row 생성
-
-    Args:
-        db (DB): DB class
-        category_id (str): Category table의 id
-        grid_id (str): Location table의 grid_id
-        iterations (list): Object table의 iteration
-
-    Return:
-        Bool: True or False
-
-    """
-    # 특정 grid_id에 해당하는 row만 조사
-    loc_ids = db.get_location_from_grid_id(grid_id=grid_id)
-
-    for loc_id in loc_ids:
-        for iteration in iterations:
-            # 초기화를 위해 NULL(None)을 넣어줌
-            img_id = None
-            loc_id = loc_id
-            flag = db.set_object(img_id=img_id, loc_id=loc_id, category_id=category_id,
-                                 iteration=iteration, mix_num=mix_num)
-            if flag is False:
-                return False
-
-    return True
-
-
-def list_object_check_num(db, category_id, grid_id, check_num_state):
-    """
-    Object table의 (category_id)
-    Location table의 (grid_id)를 입력 받아
-    Image table의 (check_num)이 check_state와 같으면 Object table의 row를 반환하는 함수
-
-    Args:
-        db (DB): DB class
-        category_id (str): Object table의 (category_id)
-        grid_id(str): Location table의 (grid_id)
-        check_num_state(str): Image table의 (check_num) 값과 비교될 값
-                          (0 : 검수 미진행, 1 : 완료, 2 : 거절)
-
-    Return:
-        tuple [object][row]: Object table의 row 값들
-
-    """
-    loc_ids = db.get_location_from_grid_id(grid_id=grid_id)
-    img_ids = db.get_obj_from_args(category_id=category_id, loc_ids=loc_ids)
-
-    print('loc_ids: ', loc_ids)
-    print('img_ids: ', img_ids)
-    obj_list = []
-    for img_id in img_ids:
-        img_id = str(img_id[0])
-        img_check_num = db.check_image_check_num(img_id=img_id)
-        if str(img_check_num) == check_num_state:
-            obj = db.get_obj_from_img_id(img_id=img_id)
-            obj_list.append(obj)
-
-    return sum(obj_list, ())
+# --------------------------------------- 수정이 필요한 함수 ---------------------------------------
+#
+# def set_object_list(db, category_id, grid_id, iterations, mix_num):
+#     """
+#     Location table의 특정 (grid_id)를 가진 row와 Category table의 특정 (id)를 가진 row를 통해
+#     [Location table의 특정 grid_id를 가진 row 수 X category table의 특정 category_id를 가진 row 수]만큼
+#     Object table에 row 생성
+#
+#     Args:
+#         db (DB): DB class
+#         category_id (str): Category table의 id
+#         grid_id (str): Location table의 grid_id
+#         iterations (list): Object table의 iteration
+#
+#     Return:
+#         Bool: True or False
+#
+#     """
+#     # 특정 grid_id에 해당하는 row만 조사
+#     loc_ids = db.get_location_from_grid_id(grid_id=grid_id)
+#
+#     for loc_id in loc_ids:
+#         for iteration in iterations:
+#             # 초기화를 위해 NULL(None)을 넣어줌
+#             img_id = None
+#             loc_id = loc_id
+#             flag = db.set_object(img_id=img_id, loc_id=loc_id, category_id=category_id,
+#                                  iteration=iteration, mix_num=mix_num)
+#             if flag is False:
+#                 return False
+#
+#     return True
+#
+#
+# def list_object_check_num(db, category_id, grid_id, check_num_state):
+#     """
+#     Object table의 (category_id)
+#     Location table의 (grid_id)를 입력 받아
+#     Image table의 (check_num)이 check_state와 같으면 Object table의 row를 반환하는 함수
+#
+#     Args:
+#         db (DB): DB class
+#         category_id (str): Object table의 (category_id)
+#         grid_id(str): Location table의 (grid_id)
+#         check_num_state(str): Image table의 (check_num) 값과 비교될 값
+#                           (0 : 검수 미진행, 1 : 완료, 2 : 거절)
+#
+#     Return:
+#         tuple [object][row]: Object table의 row 값들
+#
+#     """
+#     loc_ids = db.get_location_from_grid_id(grid_id=grid_id)
+#     img_ids = db.get_obj_from_args(category_id=category_id, loc_ids=loc_ids)
+#
+#     print('loc_ids: ', loc_ids)
+#     print('img_ids: ', img_ids)
+#     obj_list = []
+#     for img_id in img_ids:
+#         img_id = str(img_id[0])
+#         img_check_num = db.check_image_check_num(img_id=img_id)
+#         if str(img_check_num) == check_num_state:
+#             obj = db.get_obj_from_img_id(img_id=img_id)
+#             obj_list.append(obj)
+#
+#     return sum(obj_list, ())

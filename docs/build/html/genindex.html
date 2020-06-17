@@ -148,7 +148,6 @@
 
 <div class="genindex-jumpbox">
  <a href="#_"><strong>_</strong></a>
- | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#G"><strong>G</strong></a>
@@ -163,14 +162,6 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="db_api.html#db_api.DB.DB.__init__">__init__() (db_api.DB.DB method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="B">B</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="db_api.html#db_api.DB.DB.bbox_info">bbox_info() (db_api.DB.DB method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -201,11 +192,17 @@
         <li><a href="db_api.html#module-db_api.DB">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="db_api.html#db_api.DB.delete_bbox_from_image">delete_bbox_from_image() (in module db_api.DB)</a>
+</li>
       <li><a href="db_api.html#db_api.DB.DB.delete_bbox_from_obj_id">delete_bbox_from_obj_id() (db_api.DB.DB method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="db_api.html#db_api.DB.DB.delete_mask_from_obj_id">delete_mask_from_obj_id() (db_api.DB.DB method)</a>
+</li>
+      <li><a href="db_api.html#db_api.DB.delete_nomix_object_from_img_id">delete_nomix_object_from_img_id() (in module db_api.DB)</a>
+</li>
+      <li><a href="db_api.html#db_api.DB.DB.delete_object_from_img_id">delete_object_from_img_id() (db_api.DB.DB method)</a>
 </li>
       <li><a href="db_api.html#db_api.DB.DB.delete_table">delete_table() (db_api.DB.DB method)</a>
 </li>
@@ -217,9 +214,15 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="db_api.html#db_api.DB.get_bbox_from_img_id">get_bbox_from_img_id() (in module db_api.DB)</a>
+</li>
+      <li><a href="db_api.html#db_api.DB.DB.get_bbox_info">get_bbox_info() (db_api.DB.DB method)</a>
+</li>
       <li><a href="db_api.html#db_api.DB.get_category_id">get_category_id() (in module db_api.DB)</a>
 </li>
       <li><a href="db_api.html#db_api.DB.DB.get_category_id_from_args">get_category_id_from_args() (db_api.DB.DB method)</a>
+</li>
+      <li><a href="db_api.html#db_api.DB.DB.get_category_id_from_obj_id">get_category_id_from_obj_id() (db_api.DB.DB method)</a>
 </li>
       <li><a href="db_api.html#db_api.DB.DB.get_env_id_from_args">get_env_id_from_args() (db_api.DB.DB method)</a>
 </li>
@@ -233,10 +236,10 @@
 </li>
       <li><a href="db_api.html#db_api.DB.DB.get_img_id_from_args">get_img_id_from_args() (db_api.DB.DB method)</a>
 </li>
-      <li><a href="db_api.html#db_api.DB.DB.get_last_id">get_last_id() (db_api.DB.DB method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="db_api.html#db_api.DB.DB.get_last_id">get_last_id() (db_api.DB.DB method)</a>
+</li>
       <li><a href="db_api.html#db_api.DB.DB.get_location_from_grid_id">get_location_from_grid_id() (db_api.DB.DB method)</a>
 </li>
       <li><a href="db_api.html#db_api.DB.get_location_id">get_location_id() (in module db_api.DB)</a>
@@ -245,11 +248,13 @@
 </li>
       <li><a href="db_api.html#db_api.DB.DB.get_obj_from_args">get_obj_from_args() (db_api.DB.DB method)</a>
 </li>
-      <li><a href="db_api.html#db_api.DB.DB.get_obj_from_img_id">get_obj_from_img_id() (db_api.DB.DB method)</a>
-</li>
       <li><a href="db_api.html#db_api.DB.DB.get_obj_id_from_args">get_obj_id_from_args() (db_api.DB.DB method)</a>
 </li>
-      <li><a href="db_api.html#db_api.DB.get_object_id">get_object_id() (in module db_api.DB)</a>
+      <li><a href="db_api.html#db_api.DB.DB.get_obj_id_from_img_id">get_obj_id_from_img_id() (db_api.DB.DB method)</a>
+</li>
+      <li><a href="db_api.html#db_api.DB.DB.get_super_id_from_category_id">get_super_id_from_category_id() (db_api.DB.DB method)</a>
+</li>
+      <li><a href="db_api.html#db_api.DB.DB.get_super_name_from_super_id">get_super_name_from_super_id() (db_api.DB.DB method)</a>
 </li>
       <li><a href="db_api.html#db_api.DB.get_supercategory_id">get_supercategory_id() (in module db_api.DB)</a>
 </li>
@@ -271,10 +276,12 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="db_api.html#db_api.DB.list_object_check_num">list_object_check_num() (in module db_api.DB)</a>
+      <li><a href="db_api.html#db_api.DB.DB.list_bbox_from_obj_id">list_bbox_from_obj_id() (db_api.DB.DB method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="db_api.html#db_api.DB.list_object_check_num">list_object_check_num() (in module db_api.DB)</a>
+</li>
       <li><a href="db_api.html#db_api.DB.DB.list_table">list_table() (db_api.DB.DB method)</a>
 </li>
   </ul></td>
