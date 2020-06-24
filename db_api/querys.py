@@ -13,7 +13,7 @@ height SMALLINT UNSIGNED NOT NULL,
 depth SMALLINT UNSIGNED NOT NULL,
 PRIMARY KEY(id),
 UNIQUE KEY UNIQUE_KEY (ipv4, floor)
-) AUTO_INCREMENT=200000"""
+) AUTO_INCREMENT=20001"""
 initial_queries.append(create_env_sql)
 
 # table Grid

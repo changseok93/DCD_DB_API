@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-import pymysql
 from db_api import querys
+import pymysql
 import inspect
+import time
 
 
 class DB:
@@ -1426,7 +1427,7 @@ class DB:
             img_id (str): Object table의 (img_id)
 
         Return:
-            tuple ()(): (obj_id)정보들
+            tuple (): (obj_id)정보들
             None: 조회 실패
         """
         try:
@@ -1569,7 +1570,7 @@ class DB:
             iteration (str): Object table의 (iteration)
 
         Return:
-            tuple ()() : Object_table의 (mix_num) 값들
+            tuple () : Object_table의 (mix_num) 값들
         """
         try:
             with self.db.cursor() as cursor:
@@ -1582,6 +1583,30 @@ class DB:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return None
+
+    # def get_loc_id_from_args(self, w, h, x, y):
+    #     """
+    #     SQL:
+    #         SELECT loc_id
+    #         FROM Location
+    #         WHERE x=x
+    #               AND y=y
+    #               AND grid_id= (SELECT id
+    #                             FROM Grid
+    #                             WHERE w=w AND h=h)
+    #     """
+    #     try:
+    #         with self.db.cursor() as cursor:
+    #             query = "SELECT id FROM Location WHERE x=%s AND y=%s " \
+    #                     "AND grid_id=(SELECT id FROM Grid WHERE width=%s AND height=%s)"
+    #             value = (x, y, w, h)
+    #             cursor.execute(query, value)
+    #             return sum(cursor.fetchall(), ())[0]
+    #
+    #     except Exception as e:
+    #         print('Error function:', inspect.stack()[0][3])
+    #         print(e)
+    #         return None
 
 
 def get_environment_id(db, ipv4, floor):
@@ -1948,9 +1973,8 @@ def delete_nomix_object_from_img_id(db, img_id):
 
 def get_max_mix_num(db, loc_id, category_id, iteration):
     """
-    Object table의 (loc_id, category_id, iteration)가
-    입력받은 값을 가지는 Object들 중
-    가장 큰 mix_num을 가진 Object table의 (mix_num) 반환
+    Object table의 (loc_id, category_id, iteration)를 입력받아
+    Object table의 가장 큰 mix_num을 가진 (mix_num) 반환
 
     Args:
         db (DB): DB class
