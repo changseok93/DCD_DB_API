@@ -1038,7 +1038,7 @@ Bbox table의 [x, y, width, height]값으로 이루어진
 <dd class="field-odd"><p><strong>img_id</strong> (<em>str</em>) – Object table의 (img_id)</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>tuple ()()</em> – (obj_id)정보들
+<dd class="field-even"><p><em>tuple ()</em> – (obj_id)정보들
 None: 조회 실패</p>
 </dd>
 </dl>
@@ -1123,6 +1123,25 @@ SuperCategory table의 (name)을 반환함</p>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>int</em> – (name)
 None: 조회 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_mix_num_from_args">
+<code class="sig-name descname">get_mix_num_from_args</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loc_id</span></em>, <em class="sig-param"><span class="n">category_id</span></em>, <em class="sig-param"><span class="n">iteration</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_mix_num_from_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_mix_num_from_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (loc_id), (category_id), (iteration)을 받아
+Object table의 (mix_num) 값들을 반환</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loc_id</strong> (<em>str</em>) – Object table의 (loc_id)</p></li>
+<li><p><strong>category_id</strong> (<em>str</em>) – Object table의 (category_id)</p></li>
+<li><p><strong>iteration</strong> (<em>str</em>) – Object table의 (iteration)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>tuple ()</em> – Object_table의 (mix_num) 값들</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1415,6 +1434,26 @@ SuperCategory table의 (name)이 mix가 아닌 Object table의 row 삭제</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="db_api.DB.get_max_mix_num">
+<code class="sig-prename descclassname">db_api.DB.</code><code class="sig-name descname">get_max_mix_num</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span></em>, <em class="sig-param"><span class="n">loc_id</span></em>, <em class="sig-param"><span class="n">category_id</span></em>, <em class="sig-param"><span class="n">iteration</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#get_max_mix_num"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.get_max_mix_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (loc_id, category_id, iteration)를 입력받아
+Object table의 가장 큰 mix_num을 가진 (mix_num) 반환</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>db</strong> (<a class="reference internal" href="#db_api.DB.DB" title="db_api.DB.DB"><em>DB</em></a>) – DB class</p></li>
+<li><p><strong>loc_id</strong> (<em>str</em>) – Object table의 (loc_id)</p></li>
+<li><p><strong>category_id</strong> (<em>str</em>) – Object table의 (category_id)</p></li>
+<li><p><strong>iteration</strong> (<em>str</em>) – Object table의 (iteration)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>int</em> – Object table의 args에 맞는 최대 (mix_num) 값</p>
 </dd>
 </dl>
 </dd></dl>

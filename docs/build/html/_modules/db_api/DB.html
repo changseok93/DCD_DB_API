@@ -144,9 +144,10 @@
             
   <h1>Source code for db_api.DB</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="kn">import</span> <span class="nn">pymysql</span>
 <span class="kn">from</span> <span class="nn">db_api</span> <span class="kn">import</span> <span class="n">querys</span>
+<span class="kn">import</span> <span class="nn">pymysql</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">time</span>
 
 
 <div class="viewcode-block" id="DB"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB">[docs]</a><span class="k">class</span> <span class="nc">DB</span><span class="p">:</span>
@@ -1571,7 +1572,7 @@
 <span class="sd">            img_id (str): Object table의 (img_id)</span>
 
 <span class="sd">        Return:</span>
-<span class="sd">            tuple ()(): (obj_id)정보들</span>
+<span class="sd">            tuple (): (obj_id)정보들</span>
 <span class="sd">            None: 조회 실패</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1701,7 +1702,56 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="DB.get_mix_num_from_args"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_mix_num_from_args">[docs]</a>    <span class="k">def</span> <span class="nf">get_mix_num_from_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Object table의 (loc_id), (category_id), (iteration)을 받아</span>
+<span class="sd">        Object table의 (mix_num) 값들을 반환</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            loc_id (str): Object table의 (loc_id)</span>
+<span class="sd">            category_id (str): Object table의 (category_id)</span>
+<span class="sd">            iteration (str): Object table의 (iteration)</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">            tuple () : Object_table의 (mix_num) 값들</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT mix_num FROM Object WHERE loc_id=</span><span class="si">%s</span><span class="s2"> AND category_id=</span><span class="si">%s</span><span class="s2"> AND iteration=</span><span class="si">%s</span><span class="s2">&quot;</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">)</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span></div></div>
+
+    <span class="c1"># def get_loc_id_from_args(self, w, h, x, y):</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     SQL:</span>
+    <span class="c1">#         SELECT loc_id</span>
+    <span class="c1">#         FROM Location</span>
+    <span class="c1">#         WHERE x=x</span>
+    <span class="c1">#               AND y=y</span>
+    <span class="c1">#               AND grid_id= (SELECT id</span>
+    <span class="c1">#                             FROM Grid</span>
+    <span class="c1">#                             WHERE w=w AND h=h)</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     try:</span>
+    <span class="c1">#         with self.db.cursor() as cursor:</span>
+    <span class="c1">#             query = &quot;SELECT id FROM Location WHERE x=%s AND y=%s &quot; \</span>
+    <span class="c1">#                     &quot;AND grid_id=(SELECT id FROM Grid WHERE width=%s AND height=%s)&quot;</span>
+    <span class="c1">#             value = (x, y, w, h)</span>
+    <span class="c1">#             cursor.execute(query, value)</span>
+    <span class="c1">#             return sum(cursor.fetchall(), ())[0]</span>
+    <span class="c1">#</span>
+    <span class="c1">#     except Exception as e:</span>
+    <span class="c1">#         print(&#39;Error function:&#39;, inspect.stack()[0][3])</span>
+    <span class="c1">#         print(e)</span>
+    <span class="c1">#         return None</span>
 
 
 <div class="viewcode-block" id="get_environment_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.get_environment_id">[docs]</a><span class="k">def</span> <span class="nf">get_environment_id</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">ipv4</span><span class="p">,</span> <span class="n">floor</span><span class="p">):</span>
@@ -2066,7 +2116,25 @@
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
-<span class="c1"># --------------------------------------- 수정이 필요한 함수 ---------------------------------------</span>
+<div class="viewcode-block" id="get_max_mix_num"><a class="viewcode-back" href="../../db_api.html#db_api.DB.get_max_mix_num">[docs]</a><span class="k">def</span> <span class="nf">get_max_mix_num</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Object table의 (loc_id, category_id, iteration)를 입력받아</span>
+<span class="sd">    Object table의 가장 큰 mix_num을 가진 (mix_num) 반환</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        db (DB): DB class</span>
+<span class="sd">        loc_id (str): Object table의 (loc_id)</span>
+<span class="sd">        category_id (str): Object table의 (category_id)</span>
+<span class="sd">        iteration (str): Object table의 (iteration)</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">        int: Object table의 args에 맞는 최대 (mix_num) 값</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mix_nums</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_mix_num_from_args</span><span class="p">(</span><span class="n">loc_id</span><span class="o">=</span><span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="o">=</span><span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="o">=</span><span class="n">iteration</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">mix_nums</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<span class="c1"># --------------------------------------- 수정 필요한 함수 ---------------------------------------</span>
 <span class="c1">#</span>
 <span class="c1"># def set_object_list(db, category_id, grid_id, iterations, mix_num):</span>
 <span class="c1">#     &quot;&quot;&quot;</span>

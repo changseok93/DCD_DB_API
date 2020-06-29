@@ -140,7 +140,7 @@ if __name__ == "__main__":
 
     # cunnect to MYSQL Server
     mydb = DB(ip='192.168.10.69',
-              port=20000,
+              port=3306,
               user='root',
               password='return123',
               db_name='test')
