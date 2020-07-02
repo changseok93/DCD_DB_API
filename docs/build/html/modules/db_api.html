@@ -616,7 +616,7 @@ mysql 서버의 변수 설정</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>tuple()</em> – 해당 id의 row 값</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -657,7 +657,7 @@ mysql 서버의 변수 설정</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>tuple()()</em> – 특정 table의 모든 값</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -697,7 +697,7 @@ mysql 서버의 변수 설정</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>list[][]</em> – 마지막 id 값</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -720,7 +720,7 @@ mysql 서버의 변수 설정</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>int</em> – Environment table id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -746,7 +746,7 @@ mysql 서버의 변수 설정</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>int</em> – Grid table id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -769,7 +769,7 @@ mysql 서버의 변수 설정</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>int</em> – name에 해당하는 id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -796,7 +796,7 @@ mysql 서버의 변수 설정</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>int</em> – 해당 location의 id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -822,7 +822,7 @@ mysql 서버의 변수 설정</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>int</em> – 해당 category의 id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -845,7 +845,7 @@ mysql 서버의 변수 설정</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>int</em> – 해당하는 Object table의 image id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -872,7 +872,7 @@ mysql 서버의 변수 설정</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>int</em> – Object table의 id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -888,7 +888,7 @@ mysql 서버의 변수 설정</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>int (0, 1, 2)</em> – 해당 object의 이미지 검수여부 반환</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -964,7 +964,7 @@ mysql 서버의 변수 설정</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>tuple()()</em> – Location table의 id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -996,7 +996,7 @@ Object table의 row를 반환하는 함수</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>tuple()()</em> – Location table의 id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -1019,7 +1019,7 @@ Environment table의 (id)를 반환</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>env_id (int)</em> – Environment table id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -1141,7 +1141,7 @@ Image table의 (check_num) 반환하는 함수</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>check_num (int)</em> – Image table의 check_num</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -1167,7 +1167,7 @@ Object table (id) 반환하는 함수</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>obj_id (int)</em> – Object table의 id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>

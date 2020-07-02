@@ -943,7 +943,7 @@
 <span class="sd">        Return:</span>
 <span class="sd">            tuple(): 해당 id의 row 값</span>
 
-<span class="sd">            None: 조회 실패</span>
+<span class="sd">            None: 쿼리 실패</span>
 
 <span class="sd">        Example:</span>
 
@@ -1005,7 +1005,7 @@
 <span class="sd">        Return:</span>
 <span class="sd">            tuple()(): 특정 table의 모든 값</span>
 
-<span class="sd">            None: 조회 실패</span>
+<span class="sd">            None: 쿼리 실패</span>
 
 <span class="sd">        Example:</span>
 
@@ -1077,7 +1077,7 @@
 <span class="sd">        Return:</span>
 <span class="sd">            list []: 마지막 id 값</span>
 
-<span class="sd">            None: 조회 실패</span>
+<span class="sd">            None: 쿼리 실패</span>
 
 <span class="sd">        Example:</span>
 
@@ -1107,7 +1107,7 @@
 <span class="sd">        Return:</span>
 <span class="sd">            int: Environment table id</span>
 
-<span class="sd">            None: 조회 실패</span>
+<span class="sd">            None: 쿼리 실패</span>
 
 <span class="sd">        Example:</span>
 
@@ -1141,7 +1141,7 @@
 <span class="sd">        Return:</span>
 <span class="sd">            int: Grid table id</span>
 
-<span class="sd">            None: 조회 실패</span>
+<span class="sd">            None: 쿼리 실패</span>
 
 <span class="sd">        Example:</span>
 
@@ -1177,7 +1177,7 @@
 <span class="sd">        Return:</span>
 <span class="sd">            int: name에 해당하는 id</span>
 
-<span class="sd">            None: 조회 실패</span>
+<span class="sd">            None: 쿼리 실패</span>
 
 <span class="sd">        Example:</span>
 
@@ -1212,7 +1212,7 @@
 <span class="sd">        Return:</span>
 <span class="sd">            int: 해당 location의 id</span>
 
-<span class="sd">            None: 조회 실패</span>
+<span class="sd">            None: 쿼리 실패</span>
 
 <span class="sd">        Example:</span>
 
@@ -1246,7 +1246,7 @@
 <span class="sd">        Return:</span>
 <span class="sd">            int: 해당 category의 id</span>
 
-<span class="sd">            None: 조회 실패</span>
+<span class="sd">            None: 쿼리 실패</span>
 
 <span class="sd">        Example:</span>
 
@@ -1279,7 +1279,7 @@
 <span class="sd">        Return:</span>
 <span class="sd">            int: 해당하는 Object table의 image id</span>
 
-<span class="sd">            None: 조회 실패</span>
+<span class="sd">            None: 쿼리 실패</span>
 
 <span class="sd">        Example:</span>
 
@@ -1312,7 +1312,7 @@
 <span class="sd">        Return:</span>
 <span class="sd">            int (0, 1, 2): 해당 object의 이미지 검수여부 반환</span>
 
-<span class="sd">            None: 조회 실패</span>
+<span class="sd">            None: 쿼리 실패</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">        .. code-block:: python</span>
@@ -1443,7 +1443,7 @@
 <span class="sd">        Return:</span>
 <span class="sd">            tuple()(): Location table의 id</span>
 
-<span class="sd">            None: 조회 실패</span>
+<span class="sd">            None: 쿼리 실패</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
@@ -1473,7 +1473,7 @@
 <span class="sd">        Return:</span>
 <span class="sd">            tuple()(): Location table의 id</span>
 
-<span class="sd">            None: 조회 실패</span>
+<span class="sd">            None: 쿼리 실패</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1502,7 +1502,7 @@
 <span class="sd">            Bbox table의 [x, y, width, height]값으로 이루어진</span>
 <span class="sd">            2차원 튜플</span>
 
-<span class="sd">            None: 조회 실패</span>
+<span class="sd">            None: 쿼리 실패</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
@@ -1573,7 +1573,7 @@
 
 <span class="sd">        Return:</span>
 <span class="sd">            tuple (): (obj_id)정보들</span>
-<span class="sd">            None: 조회 실패</span>
+<span class="sd">            None: 쿼리 실패</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
@@ -1596,7 +1596,7 @@
 
 <span class="sd">        Return:</span>
 <span class="sd">            tuple()(): Bbox table의 row</span>
-<span class="sd">            None: 조회 실패</span>
+<span class="sd">            None: 쿼리 실패</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
@@ -1622,7 +1622,7 @@
 
 <span class="sd">        Return:</span>
 <span class="sd">            int: Object table의 id</span>
-<span class="sd">            None: 조회 실패</span>
+<span class="sd">            None: 쿼리 실패</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
@@ -1645,7 +1645,7 @@
 
 <span class="sd">        Return:</span>
 <span class="sd">            int: (category_id)</span>
-<span class="sd">            None: 조회 실패</span>
+<span class="sd">            None: 쿼리 실패</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
@@ -1668,7 +1668,7 @@
 
 <span class="sd">        Return:</span>
 <span class="sd">            int: (super_id)</span>
-<span class="sd">            None: 조회 실패</span>
+<span class="sd">            None: 쿼리 실패</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
@@ -1691,7 +1691,7 @@
 
 <span class="sd">        Return:</span>
 <span class="sd">            int: (name)</span>
-<span class="sd">            None: 조회 실패</span>
+<span class="sd">            None: 쿼리 실패</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
@@ -1767,7 +1767,7 @@
 <span class="sd">    Return:</span>
 <span class="sd">        env_id (int): Environment table id</span>
 
-<span class="sd">        None: 조회 실패</span>
+<span class="sd">        None: 쿼리 실패</span>
 
 <span class="sd">    Example:</span>
 
@@ -1904,7 +1904,7 @@
 <span class="sd">    Return:</span>
 <span class="sd">        check_num (int): Image table의 check_num</span>
 
-<span class="sd">        None: 조회 실패</span>
+<span class="sd">        None: 쿼리 실패</span>
 
 <span class="sd">    Example:</span>
 

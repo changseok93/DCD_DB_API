@@ -192,7 +192,8 @@ if __name__ == "__main__":
     #
     # update_image_check_num(db=mydb, obj_id='1', check_num='100')
     #
-    # d = check_object_id(db=mydb, loc_id='1', category_id='1', iteration='1')
+    d = check_object_id(db=mydb, loc_id='1', category_id='1', iteration='1', mix_num='-1')
+    print(d)
     # #
     # # read_img_from_db(db=mydb, img_id='1', table='Image')
     # # img_tmp = img_loader('img/puffine.jpg')

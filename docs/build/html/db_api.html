@@ -616,7 +616,7 @@ max_connections: 한번에 mysql 서버에 접속할 수 있는 클라이언트 
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>tuple()</em> – 해당 id의 row 값</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -657,7 +657,7 @@ max_connections: 한번에 mysql 서버에 접속할 수 있는 클라이언트 
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>tuple()()</em> – 특정 table의 모든 값</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -697,7 +697,7 @@ max_connections: 한번에 mysql 서버에 접속할 수 있는 클라이언트 
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>list []</em> – 마지막 id 값</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -720,7 +720,7 @@ max_connections: 한번에 mysql 서버에 접속할 수 있는 클라이언트 
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>int</em> – Environment table id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -746,7 +746,7 @@ max_connections: 한번에 mysql 서버에 접속할 수 있는 클라이언트 
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>int</em> – Grid table id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -769,7 +769,7 @@ max_connections: 한번에 mysql 서버에 접속할 수 있는 클라이언트 
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>int</em> – name에 해당하는 id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -796,7 +796,7 @@ max_connections: 한번에 mysql 서버에 접속할 수 있는 클라이언트 
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>int</em> – 해당 location의 id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -822,7 +822,7 @@ max_connections: 한번에 mysql 서버에 접속할 수 있는 클라이언트 
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>int</em> – 해당 category의 id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -845,7 +845,7 @@ max_connections: 한번에 mysql 서버에 접속할 수 있는 클라이언트 
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>int</em> – 해당하는 Object table의 image id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -868,7 +868,7 @@ max_connections: 한번에 mysql 서버에 접속할 수 있는 클라이언트 
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>int (0, 1, 2)</em> – 해당 object의 이미지 검수여부 반환</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -959,7 +959,7 @@ max_connections: 한번에 mysql 서버에 접속할 수 있는 클라이언트 
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>tuple()()</em> – Location table의 id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -976,7 +976,7 @@ max_connections: 한번에 mysql 서버에 접속할 수 있는 클라이언트 
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>tuple()()</em> – Location table의 id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -995,7 +995,7 @@ max_connections: 한번에 mysql 서버에 접속할 수 있는 클라이언트 
 <dd class="field-even"><p><p><em>tuple ()()</em> – 입력받은 object [id]를 가지는
 Bbox table의 [x, y, width, height]값으로 이루어진
 2차원 튜플</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -1039,7 +1039,7 @@ Bbox table의 [x, y, width, height]값으로 이루어진
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>tuple ()</em> – (obj_id)정보들
-None: 조회 실패</p>
+None: 쿼리 실패</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1055,7 +1055,7 @@ Bbox table의 모든 row 반환</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>tuple()()</em> – Bbox table의 row
-None: 조회 실패</p>
+None: 쿼리 실패</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1075,7 +1075,7 @@ None: 조회 실패</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>int</em> – Object table의 id
-None: 조회 실패</p>
+None: 쿼리 실패</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1090,7 +1090,7 @@ None: 조회 실패</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>int</em> – (category_id)
-None: 조회 실패</p>
+None: 쿼리 실패</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1106,7 +1106,7 @@ Category table의 (super_id)를 반환</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>int</em> – (super_id)
-None: 조회 실패</p>
+None: 쿼리 실패</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1122,7 +1122,7 @@ SuperCategory table의 (name)을 반환함</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>int</em> – (name)
-None: 조회 실패</p>
+None: 쿼리 실패</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1163,7 +1163,7 @@ Environment table의 (id)를 반환</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>env_id (int)</em> – Environment table id</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>
@@ -1285,7 +1285,7 @@ Image table의 (check_num) 반환하는 함수</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>check_num (int)</em> – Image table의 check_num</p>
-<p>None: 조회 실패</p>
+<p>None: 쿼리 실패</p>
 </p>
 </dd>
 </dl>

@@ -798,7 +798,7 @@ class DB:
         Return:
             tuple(): 해당 id의 row 값
 
-            None: 조회 실패
+            Mask패패
 
         Example:
 
@@ -860,7 +860,7 @@ class DB:
         Return:
             tuple()(): 특정 table의 모든 값
 
-            None: 조회 실패
+            None: 쿼리 실패
 
         Example:
 
@@ -931,14 +931,7 @@ class DB:
 
         Return:
             list []: 마지막 id 값
-
-            None: 조회 실패
-
-        Example:
-
-        .. code-block:: python
-
-            mydb.last_id_table(table='Mask')
+            None: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
@@ -961,24 +954,13 @@ class DB:
 
         Return:
             int: Environment table id
-
-            None: 조회 실패
-
-        Example:
-
-        .. code-block:: python
-
-            mydb.get_env_id_from_args(ipv4='127.223.444.443', floor='1')
-
-        .. code-block:: sql
-
-            SELECT * FROM Environment WHERE ipv4='123.123.12.12' AND floor=2
+            None: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
                 query = "SELECT id FROM Environment WHERE ipv4='" + ipv4 + "' AND floor=" + floor
                 cursor.execute(query)
-                return sum(cursor.fetchall(), ())[0]
+                return sum(cursor.fetchall(), ())
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -995,18 +977,7 @@ class DB:
 
         Return:
             int: Grid table id
-
-            None: 조회 실패
-
-        Example:
-
-        .. code-block:: python
-
-            mydb.get_grid_id_from_args(width='3', height='3')
-
-        .. code-block:: SQL
-
-            SELECT id FROM Grid WHERE width=3 AND height=3
+            None: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
@@ -1031,18 +1002,7 @@ class DB:
 
         Return:
             int: name에 해당하는 id
-
-            None: 조회 실패
-
-        Example:
-
-        .. code-block:: python
-
-            mydb.supercategory_id_from_args(name='스낵')
-
-        .. code-block:: SQL
-
-            SELECT id FROM SuperCategory WHERE name='스낵'
+            None: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
@@ -1066,18 +1026,7 @@ class DB:
 
         Return:
             int: 해당 location의 id
-
-            None: 조회 실패
-
-        Example:
-
-        .. code-block:: python
-
-            mydb.get_location_id_from_args(grid_id=grid_id, x='22', y='2')
-
-        .. code-block:: SQL
-
-            SELECT id FROM Lcation WHERE grid_id=1 AND x=22 AND y=2
+            None: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
@@ -1100,18 +1049,7 @@ class DB:
 
         Return:
             int: 해당 category의 id
-
-            None: 조회 실패
-
-        Example:
-
-        .. code-block:: python
-
-            mydb.get_category_id_from_args(super_id=super_id, category_name='ee2')
-
-        .. code-block:: SQL
-
-            SELECT id FROM Category WHERE super_id=1 AND name='hi3'
+            None: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
@@ -1133,18 +1071,7 @@ class DB:
 
         Return:
             int: 해당하는 Object table의 image id
-
-            None: 조회 실패
-
-        Example:
-
-        .. code-block:: python
-
-            mydb.check_img_check_num(img_id=img_id)
-
-        .. code-block:: SQL
-
-            SELECT img_id FROM Object WEHRE id=1
+            None: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
@@ -1166,17 +1093,7 @@ class DB:
 
         Return:
             int (0, 1, 2): 해당 object의 이미지 검수여부 반환
-
-            None: 조회 실패
-
-        Example:
-        .. code-block:: python
-
-            mydb.check_img_check_num(img_id=img_id)
-
-        .. code-block:: SQL
-
-            SELECT check_num FROM Image WHERE id=1
+            None: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
@@ -1190,102 +1107,6 @@ class DB:
             print(e)
             return None
 
-    def update_image_check_num(self, img_id, check_num):
-        """
-        Image table의 check_num 갱신
-
-        Args:
-            img_id (str): 수정하기 원하는 Object table의 id
-            check_num (str): 수정하기 원하는 Image table의 check_num
-
-        Return:
-            Bool: True or False
-
-        Example:
-
-        .. code-block:: python
-
-            mydb.update_img_check_num(img_id=img_id, check_num=check_num)
-
-        .. code-block:: SQL
-
-            UPDATE Image SET check_num=100 WHERE id=1
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "UPDATE Image SET check_num=" + check_num + " WHERE id=" + img_id
-                cursor.execute(query)
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
-
-    def update_image_img(self, img_id, img):
-        """
-        Image table의 image 갱신
-
-        Args:
-            img_id (str): Image table의 id
-            img (Image): update할 image 데이터
-
-        Return:
-            Bool: True or False
-
-        Example:
-
-        .. code-block:: python
-
-            db.update_image_img(img_id=img_id, img=img)
-
-        .. code-block:: SQL
-
-            UPDATE Image SET data=image WHERE id=1
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "UPDATE Image SET data=%s WHERE id=%s"
-                value = (img, img_id)
-                cursor.execute(query, value)
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
-
-    def delete_object_from_img_id(self, img_id):
-        """
-        Object table의 (img_id)를 받아
-        해당하는 Object table의 모든 row를 삭제
-
-        Args:
-            img_id (str): Object table의 (img_id)
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = 'DELETE FROM Object WHERE img_id=' + img_id
-                cursor.execute(query)
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
-
     def get_obj_from_args(self, category_id, loc_ids):
         """
         Object table의 (category_id, loc_ids)를 입력 받아
@@ -1298,7 +1119,7 @@ class DB:
         Return:
             tuple()(): Location table의 id
 
-            None: 조회 실패
+            None: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
@@ -1328,7 +1149,7 @@ class DB:
         Return:
             tuple()(): Location table의 id
 
-            None: 조회 실패
+            None: 쿼리 실패
 
         """
         try:
@@ -1357,7 +1178,7 @@ class DB:
             Bbox table의 [x, y, width, height]값으로 이루어진
             2차원 튜플
 
-            None: 조회 실패
+            None: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
@@ -1371,54 +1192,6 @@ class DB:
             print(e)
             return None
 
-    def delete_bbox_from_obj_id(self, obj_id):
-        """
-        Bbox table의 [object_id]를 가지는 모든 row 삭제
-
-        Args:
-            obj_id (str): Bbox table의 object_id
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = 'DELETE FROM Bbox WHERE obj_id=' + obj_id
-                cursor.execute(query)
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
-
-    def delete_mask_from_obj_id(self, obj_id):
-        """
-        Mask table의 (object_id)를 가지는 모든 row 삭제
-
-        Args:
-            obj_id (str): Mask table의 (object_id)
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = 'DELETE FROM Mask WHERE obj_id=' + obj_id
-                cursor.execute(query)
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
-
     def get_obj_id_from_img_id(self, img_id):
         """
         Object table의 (img_id)를 받아 (obj_id)들을 얻음
@@ -1428,37 +1201,13 @@ class DB:
 
         Return:
             tuple (): (obj_id)정보들
-            None: 조회 실패
+            None: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
                 query = "SELECT id FROM Object WHERE img_id=" + img_id
                 cursor.execute(query)
                 return sum(cursor.fetchall(), ())
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return None
-
-    def list_bbox_from_obj_id(self, obj_id):
-        """
-        Bbox table의 (obj_id)를 이용해
-        Bbox table의 모든 row 반환
-
-        Args:
-            obj_id (str): Bbox table의 obj_id
-
-        Return:
-            tuple()(): Bbox table의 row
-            None: 조회 실패
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = 'SELECT * FROM Bbox WHERE obj_id=' + obj_id
-                cursor.execute(query)
-
-                return cursor.fetchall()
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -1477,14 +1226,14 @@ class DB:
 
         Return:
             int: Object table의 id
-            None: 조회 실패
+            None: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
                 query = "SELECT id FROM Object WHERE loc_id=%s AND category_id=%s AND iteration=%s AND mix_num=%s"
                 value = (loc_id, category_id, iteration, mix_num)
                 cursor.execute(query, value)
-                return sum(cursor.fetchall(), ())[0]
+                return sum(sum(cursor.fetchall(), ()), ())
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -1500,7 +1249,7 @@ class DB:
 
         Return:
             int: (category_id)
-            None: 조회 실패
+            None: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
@@ -1523,7 +1272,7 @@ class DB:
 
         Return:
             int: (super_id)
-            None: 조회 실패
+            None: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
@@ -1546,7 +1295,7 @@ class DB:
 
         Return:
             int: (name)
-            None: 조회 실패
+            None: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
@@ -1605,6 +1354,155 @@ class DB:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return None
+
+    def list_bbox_from_obj_id(self, obj_id):
+        """
+        Bbox table의 (obj_id)를 이용해
+        Bbox table의 모든 row 반환
+
+        Args:
+            obj_id (str): Bbox table의 obj_id
+
+        Return:
+            tuple()(): Bbox table의 row
+            None: 쿼리 실패
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = 'SELECT * FROM Bbox WHERE obj_id=' + obj_id
+                cursor.execute(query)
+
+                return cursor.fetchall()
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return None
+
+    def update_image_check_num(self, img_id, check_num):
+        """
+        Image table의 check_num 갱신
+
+        Args:
+            img_id (str): 수정하기 원하는 Object table의 id
+            check_num (str): 수정하기 원하는 Image table의 check_num
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "UPDATE Image SET check_num=" + check_num + " WHERE id=" + img_id
+                cursor.execute(query)
+                return True
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+
+    def update_image_img(self, img_id, img):
+        """
+        Image table의 image 갱신
+
+        Args:
+            img_id (str): Image table의 id
+            img (Image): update할 image 데이터
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "UPDATE Image SET data=%s WHERE id=%s"
+                value = (img, img_id)
+                cursor.execute(query, value)
+                return True
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+
+    def delete_object_from_img_id(self, img_id):
+        """
+        Object table의 (img_id)를 받아
+        해당하는 Object table의 모든 row를 삭제
+
+        Args:
+            img_id (str): Object table의 (img_id)
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = 'DELETE FROM Object WHERE img_id=' + img_id
+                cursor.execute(query)
+                return True
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+
+    def delete_bbox_from_obj_id(self, obj_id):
+        """
+        Bbox table의 [object_id]를 가지는 모든 row 삭제
+
+        Args:
+            obj_id (str): Bbox table의 object_id
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = 'DELETE FROM Bbox WHERE obj_id=' + obj_id
+                cursor.execute(query)
+                return True
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+
+    def delete_mask_from_obj_id(self, obj_id):
+        """
+        Mask table의 (object_id)를 가지는 모든 row 삭제
+
+        Args:
+            obj_id (str): Mask table의 (object_id)
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = 'DELETE FROM Mask WHERE obj_id=' + obj_id
+                cursor.execute(query)
+                return True
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+
 
     # def get_loc_id_from_args(self, w, h, x, y):
     #     """
@@ -1668,7 +1566,7 @@ def get_grid_id(db, grid_w_h):
     Return:
         grid_id (str): Grid table id
 
-        None: 조회실패
+        None: 조회 실패
 
     Example:
 
@@ -1694,7 +1592,7 @@ def get_supercategory_id(db, super_name):
     Return:
         super_id (int): SuperCategory table의 id
 
-        None: 조회실패
+        None: 조회 실패
 
     Example:
 
@@ -1720,7 +1618,7 @@ def get_location_id(db, grid_w_h, loc_x_y):
     Return:
         loc_id (int): Location table의 id
 
-        None: 조회실패
+        None: 조회 실패
 
     Example:
 
@@ -1752,7 +1650,7 @@ def get_category_id(db, super_name, category_name):
     Return:
         category_id (int): Category table의 id
 
-        None: 조회실패
+        None: 조회 실패
 
     Example:
 
@@ -1781,7 +1679,7 @@ def get_image_check_num(db, obj_id):
     Return:
         check_num (int): Image table의 check_num
 
-        None: 조회 실패
+        None: 조회 실
 
     Example:
 
@@ -1961,6 +1859,7 @@ def check_object_id(db, loc_id, category_id, iteration, mix_num):
 
     """
     obj_id = db.get_obj_id_from_args(loc_id=loc_id, category_id=category_id, iteration=iteration, mix_num=mix_num)
+    print(obj_id)
     if len(obj_id) is not 0 and obj_id is not None:
         return True
     else:
