@@ -1584,6 +1584,28 @@ class DB:
             print(e)
             return None
 
+    def get_obj_id_from_category_id(self, category_id):
+        """
+        Object table의 (category id)를 입력 받아
+        Object table의 (obj id)들 반환
+
+        Args:
+            category_id (str): Object table의 (category id)
+
+        Return:
+            tuple () : Object_table의 (obj id) 값들
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "SELECT id FROM Object WHERE category_id=" + category_id + " AND mix_num=" + "-1"
+                cursor.execute(query)
+                return sum(cursor.fetchall(), ())
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return None
+
     # def get_loc_id_from_args(self, w, h, x, y):
     #     """
     #     SQL:
@@ -1709,7 +1731,7 @@ def get_location_id(db, grid_w_h, loc_x_y):
     """
     w, h = grid_w_h.split('x')
     grid_id = str(db.get_grid_id_from_args(width=w, height=h))
-    if grid_id is None:
+    if len(grid_id) is 0 and grid_id is None:
         return None
 
     x, y = loc_x_y.split('x')
@@ -1740,7 +1762,7 @@ def get_category_id(db, super_name, category_name):
 
     """
     super_id = str(db.get_supercategory_id_from_args(name=super_name))
-    if super_id is None:
+    if len(super_id) is 0 and super_id is None:
         return None
 
     category_id = db.get_category_id_from_args(super_id=super_id, category_name=category_name)
@@ -1769,7 +1791,7 @@ def get_image_check_num(db, obj_id):
 
     """
     img_id = str(db.get_img_id_from_args(obj_id=obj_id))
-    if img_id is None:
+    if len(img_id) is 0 and img_id is None:
         return None
 
     img_check_num = db.check_image_check_num(img_id=img_id)
@@ -1797,7 +1819,7 @@ def check_category_id(db, super_name, category_name):
 
     """
     category_id = get_category_id(db=db, super_name=super_name, category_name=category_name)
-    if category_id is not None:
+    if len(category_id) is not 0 and category_id is not None:
         return True
     else:
         return False
@@ -1824,7 +1846,7 @@ def update_image_check_num(db, obj_id, check_num):
 
     """
     img_id = str(db.get_img_id_from_args(obj_id=obj_id))
-    if img_id is None:
+    if len(img_id) is 0 and img_id is None:
         return False
 
     flag = db.update_image_check_num(img_id=img_id, check_num=check_num)
@@ -1855,7 +1877,7 @@ def update_image_image(db, obj_id, img):
 
     """
     img_id = str(db.get_img_id_from_args(obj_id=obj_id))
-    if img_id is None:
+    if len(img_id) is 0 and img_id is None:
         return False
 
     flag = db.update_image_img(img_id=img_id, img=img)
@@ -1879,7 +1901,7 @@ def delete_bbox_from_image(db, img_id):
 
     """
     obj_ids = db.get_obj_id_from_img_id(img_id=img_id)
-    if obj_ids is None:
+    if len(obj_ids) is 0 and obj_ids is None:
         return False
 
     for obj_id in obj_ids:
@@ -1904,7 +1926,7 @@ def get_bbox_from_img_id(db, img_id):
 
     """
     obj_ids = db.get_obj_id_from_img_id(img_id=img_id)
-    if obj_ids is None:
+    if len(obj_ids) is 0 and obj_ids is None:
         return False
 
     bboxes = []
@@ -1939,7 +1961,7 @@ def check_object_id(db, loc_id, category_id, iteration, mix_num):
 
     """
     obj_id = db.get_obj_id_from_args(loc_id=loc_id, category_id=category_id, iteration=iteration, mix_num=mix_num)
-    if obj_id is not None:
+    if len(obj_id) is not 0 and obj_id is not None:
         return True
     else:
         return False
@@ -1957,7 +1979,7 @@ def delete_nomix_object_from_img_id(db, img_id):
         Bool: True or False
     """
     obj_ids = db.get_obj_id_from_img_id(img_id=img_id)
-    if obj_ids is None:
+    if len(obj_ids) is 0 and obj_ids is None:
         return False
 
     for obj_id in obj_ids:
@@ -1987,6 +2009,41 @@ def get_max_mix_num(db, loc_id, category_id, iteration):
     """
     mix_nums = db.get_mix_num_from_args(loc_id=loc_id, category_id=category_id, iteration=iteration)
     return sorted(mix_nums, reverse=True)[0]
+
+
+def process_check(db, category_id):
+    """
+    Object table의 (category_id)가 입력받은 값을 가지고 (mix_num)이 -1인 Object table의 row가 존재하고
+    해당하는 모든 Object table의 row에 대한 Bbox table의 row와 Mask table의 row가 둘다 존재할 경우 True 반환
+    이외의 경우 False 반환
+    Args:
+        db (DB): DB class
+        category_id (str): Object table의 (category_id)
+    Return:
+        Boolean: True or False
+    """
+    # obj_id들 조회
+    obj_ids = db.get_obj_id_from_category_id(category_id=category_id)
+    if obj_ids is None:
+        return False
+
+    mask_flag, bbox_flag = False, False
+    for obj_id in obj_ids:
+        obj_id = str(obj_id)
+        # Bbox 테이블 조회
+        bbox = db.get_table(id=obj_id, table='Bbox')
+        if len(bbox) is not 0 and bbox is None:
+            bbox_flag = True
+
+        # Mask 테이블 조회
+        mask = db.get_table(id=obj_id, table='Mask')
+        if len(mask) is not 0 and bbox is None:
+            mask_flag = True
+
+    if mask_flag is True and bbox_flag is True:
+        return True
+    else:
+        return False
 
 
 # --------------------------------------- 수정 필요한 함수 ---------------------------------------

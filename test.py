@@ -14,9 +14,9 @@ def img_loader(img_dir):
 def check_environment(db):
     # check environment fucntions
     db.set_environment(ipv4='127.223.444.445', floor='1', width='3', height='4', depth='2')
-    db.get_table(id='200000', table='Environment')
+    db.get_table(id='20001', table='Environment')
     # db.delete_table(id='1', table='Environment')
-    db.update_environment(id='200000', ipv4='127.223.444.444')
+    db.update_environment(id='20001', ipv4='127.223.444.444')
     print('Environment table: ', db.list_table(table='Environment'))
     print('Environment table last id: ', db.get_last_id(table="Environment"))
 
@@ -27,10 +27,10 @@ def check_image(db):
         with open(img_dir, 'rb') as file:
             img = file.read()
 
-    db.set_image(device_id='200000', image=img, type='0', check_num='1')
+    db.set_image(device_id='20001', image=img, type='0', check_num='1')
     db.get_table(id='1', table='Image')
     # db.delete_table(id='1', table='Image')
-    db.update_image(id='1', device_id='200000')
+    db.update_image(id='1', device_id='20001')
     # print('Image table: ', db.list_table(table='Image'))
     print('Image table last id: ', db.get_last_id(table='Image'))
 
@@ -140,7 +140,7 @@ if __name__ == "__main__":
 
     # cunnect to MYSQL Server
     mydb = DB(ip='192.168.10.69',
-              port=3306,
+              port=20000,
               user='root',
               password='return123',
               db_name='test')
@@ -249,4 +249,10 @@ if __name__ == "__main__":
     # mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='1', mix_num='2')
     # a = get_max_mix_num(mydb, loc_id='1', category_id='1', iteration='1')
     # print(a)
+
+    # mydb.set_location(grid_id='1', x='10', y='10')
+    # mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
+    mydb.delete_table(id='1', table='Bbox')
+    a = process_check(mydb, category_id='1')
+    print(a)
 
