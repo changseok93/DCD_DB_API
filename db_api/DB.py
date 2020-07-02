@@ -972,7 +972,7 @@ class DB:
         Grid table의 id 반환
 
         Args:
-            width (str): gird 가로 칸 수
+            width (str): grid 가로 칸 수
             height (str): grid 세로 칸 수
 
         Return:
@@ -983,7 +983,7 @@ class DB:
             with self.db.cursor() as cursor:
                 query = "SELECT id FROM Grid WHERE width=" + width + " AND height=" + height
                 cursor.execute(query)
-                return sum(cursor.fetchall(), ())[0]
+                return sum(cursor.fetchall(), ())
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -1032,7 +1032,7 @@ class DB:
             with self.db.cursor() as cursor:
                 query = "SELECT id FROM Location WHERE grid_id=" + grid_id + " AND x=" + x + " AND y=" + y
                 cursor.execute(query)
-                return sum(cursor.fetchall(), ())[0]
+                return sum(cursor.fetchall(), ())
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -1118,7 +1118,6 @@ class DB:
 
         Return:
             tuple()(): Location table의 id
-
             None: 쿼리 실패
         """
         try:
@@ -1148,7 +1147,6 @@ class DB:
 
         Return:
             tuple()(): Location table의 id
-
             None: 쿼리 실패
 
         """
@@ -1174,10 +1172,7 @@ class DB:
             object_id (str): 조회하기 원하는 Bbox table의 object id
 
         Return:
-            tuple ()(): 입력받은 object [id]를 가지는
-            Bbox table의 [x, y, width, height]값으로 이루어진
-            2차원 튜플
-
+            tuple ()(): 입력받은 object [id]를 가지는 Bbox table의 [x, y, width, height]값으로 이루어진 2차원 튜플
             None: 쿼리 실패
         """
         try:
@@ -1233,7 +1228,7 @@ class DB:
                 query = "SELECT id FROM Object WHERE loc_id=%s AND category_id=%s AND iteration=%s AND mix_num=%s"
                 value = (loc_id, category_id, iteration, mix_num)
                 cursor.execute(query, value)
-                return sum(sum(cursor.fetchall(), ()), ())
+                return sum(cursor.fetchall(), ())
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -1541,14 +1536,6 @@ def get_environment_id(db, ipv4, floor):
 
     Return:
         env_id (int): Environment table id
-
-        None: 조회 실패
-
-    Example:
-
-        .. code-block:: python
-
-            get_environment_id(db=mydb, ipv4='127.223.444.444', floor='1')
     """
     env_id = db.get_env_id_from_args(ipv4=ipv4, floor=floor)
     return env_id
@@ -1565,15 +1552,6 @@ def get_grid_id(db, grid_w_h):
 
     Return:
         grid_id (str): Grid table id
-
-        None: 조회 실패
-
-    Example:
-
-        .. code-block:: python
-
-            get_grid_id(db=mydb, grid_w_h='3x4')
-
     """
     w, h = grid_w_h.split('x')
     grid_id = db.get_grid_id_from_args(width=w, height=h)
@@ -1591,15 +1569,6 @@ def get_supercategory_id(db, super_name):
 
     Return:
         super_id (int): SuperCategory table의 id
-
-        None: 조회 실패
-
-    Example:
-
-        .. code-block:: python
-
-            get_supercategory_id(db=mydb, super_name='hi')
-
     """
     super_id = db.get_supercategory_id_from_args(name=super_name)
     return super_id
@@ -1617,23 +1586,17 @@ def get_location_id(db, grid_w_h, loc_x_y):
 
     Return:
         loc_id (int): Location table의 id
-
-        None: 조회 실패
-
-    Example:
-
-        .. code-block:: python
-
-            get_location_id(db=mydb, grid_w_h='3x4', loc_x_y='3x4')
-
     """
     w, h = grid_w_h.split('x')
-    grid_id = str(db.get_grid_id_from_args(width=w, height=h))
-    if len(grid_id) is 0 and grid_id is None:
+    grid_id = db.get_grid_id_from_args(width=w, height=h)
+    if len(grid_id) is 0:
         return None
 
     x, y = loc_x_y.split('x')
-    loc_id = db.get_location_id_from_args(grid_id=grid_id, x=x, y=y)
+    loc_id = db.get_location_id_from_args(grid_id=str(grid_id), x=x, y=y)
+    if len(loc_id) is 0:
+        return None
+
     return loc_id
 
 
@@ -1649,15 +1612,7 @@ def get_category_id(db, super_name, category_name):
 
     Return:
         category_id (int): Category table의 id
-
         None: 조회 실패
-
-    Example:
-
-        .. code-block:: python
-
-            get_category_id(db=mydb, super_name='hi', category_name='hi')
-
     """
     super_id = str(db.get_supercategory_id_from_args(name=super_name))
     if len(super_id) is 0 and super_id is None:
@@ -1678,15 +1633,7 @@ def get_image_check_num(db, obj_id):
 
     Return:
         check_num (int): Image table의 check_num
-
-        None: 조회 실
-
-    Example:
-
-        .. code-block:: python
-
-            get_image_check_num(db=mydb, obj_id='1')
-
+        None: 조회 실패
     """
     img_id = str(db.get_img_id_from_args(obj_id=obj_id))
     if len(img_id) is 0 and img_id is None:
@@ -1708,13 +1655,6 @@ def check_category_id(db, super_name, category_name):
 
     Return:
         Bool: True or False
-
-    Example:
-
-        .. code-block:: python
-
-            check_category_id(db=mydb, super_name='hi', category_name='hi')
-
     """
     category_id = get_category_id(db=db, super_name=super_name, category_name=category_name)
     if len(category_id) is not 0 and category_id is not None:
@@ -1735,13 +1675,6 @@ def update_image_check_num(db, obj_id, check_num):
 
     Return:
         Bool: True or False
-
-    Example:
-
-        .. code-block:: python
-
-            update_image_check_num(db=mydb, obj_id='1', check_num='100')
-
     """
     img_id = str(db.get_img_id_from_args(obj_id=obj_id))
     if len(img_id) is 0 and img_id is None:
@@ -1766,13 +1699,6 @@ def update_image_image(db, obj_id, img):
 
     Return:
         Bool: True or False
-
-    Example:
-
-        .. code-block:: python
-
-            update_image_image(db=mydb, obj_id='1', img=img_tmp)
-
     """
     img_id = str(db.get_img_id_from_args(obj_id=obj_id))
     if len(img_id) is 0 and img_id is None:
@@ -1796,7 +1722,6 @@ def delete_bbox_from_image(db, img_id):
 
     Return:
         Bool: True or False
-
     """
     obj_ids = db.get_obj_id_from_img_id(img_id=img_id)
     if len(obj_ids) is 0 and obj_ids is None:
@@ -1821,7 +1746,6 @@ def get_bbox_from_img_id(db, img_id):
     Return:
         tuple ()(): Bbox table의 row
         False: 조회 실패
-
     """
     obj_ids = db.get_obj_id_from_img_id(img_id=img_id)
     if len(obj_ids) is 0 and obj_ids is None:
@@ -1850,20 +1774,17 @@ def check_object_id(db, loc_id, category_id, iteration, mix_num):
 
     Return:
         Bool: True or False
-
-    Example:
-
-        .. code-block:: python
-
-            check_object_id(db=mydb, loc_id='1', category_id='1', iteration='1')
-
     """
     obj_id = db.get_obj_id_from_args(loc_id=loc_id, category_id=category_id, iteration=iteration, mix_num=mix_num)
     print(obj_id)
-    if len(obj_id) is not 0 and obj_id is not None:
-        return True
-    else:
+    # 조회 실패시
+    if obj_id is None:
         return False
+    # 조회된 값이 없을 시
+    if len(obj_id) is 0:
+        return False
+    else:
+        return True
 
 
 def delete_nomix_object_from_img_id(db, img_id):
@@ -1918,8 +1839,9 @@ def process_check(db, category_id):
     Args:
         db (DB): DB class
         category_id (str): Object table의 (category_id)
+
     Return:
-        Boolean: True or False
+        Bool: True or False
     """
     # obj_id들 조회
     obj_ids = db.get_obj_id_from_category_id(category_id=category_id)
@@ -1943,6 +1865,45 @@ def process_check(db, category_id):
         return True
     else:
         return False
+
+
+def get_aug_image(db, category_id, grid_id):
+    """
+    Object table의 (category_id)와
+    Location의 (grid_id)를 받아
+    Location table의 (x)
+    Location table의 (y)
+    Object table의 (iteration)
+    Image table의 (data) 반환
+
+    Args:
+        category_id (str): category table의 id(Primary Key)
+        grid_id (str): Grid table의 id
+
+    Return:
+        tuple ()()()(): (Location table의 x)(Location table의 y)(Object table의 iteration)(Image table의 data)
+    """
+
+
+def get_aug_mask(db, category_id, grid_id):
+    """
+    Object table의 (category_id)와
+    Location의 (grid_id)를 받아
+    Location table의 (x)
+    Location table의 (y)
+    Object table의 (iteration)
+    Mask table의 (x)
+    Mask table의 (y) 반환
+
+    Args:
+        category_id (str): category table의 id
+        grid_width (str): grid table의 width
+        grid_height (str): grid table의 height
+
+    Return:
+        tuple ()()()()():(Location table의 x)(Location table의 y)(Object table의 iteration)(Mask table의 x)(Mask table의 y)
+    """
+
 
 
 # --------------------------------------- 수정 필요한 함수 ---------------------------------------

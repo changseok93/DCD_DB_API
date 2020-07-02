@@ -192,8 +192,7 @@ if __name__ == "__main__":
     #
     # update_image_check_num(db=mydb, obj_id='1', check_num='100')
     #
-    d = check_object_id(db=mydb, loc_id='1', category_id='1', iteration='1', mix_num='-1')
-    print(d)
+
     # #
     # # read_img_from_db(db=mydb, img_id='1', table='Image')
     # # img_tmp = img_loader('img/puffine.jpg')
@@ -253,6 +252,19 @@ if __name__ == "__main__":
 
     # mydb.set_location(grid_id='1', x='10', y='10')
     # mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
+
+    p1 = get_environment_id(mydb, ipv4='127.223.444.444', floor='2')
+    print('env_id: ', p1)
+
+    p3 = get_grid_id(mydb, grid_w_h='3x5')
+    print('grid_id: ', p3)
+
+    p2 = check_object_id(db=mydb, loc_id='1', category_id='1', iteration='1', mix_num='1')
+    print('obj_id: ', p2)
+
+    p4 = get_location_id(mydb, grid_w_h='3x4', loc_x_y='3x2')
+    print('loc_id: ', p4)
+
     mydb.delete_table(id='1', table='Bbox')
     a = process_check(mydb, category_id='1')
     print(a)
