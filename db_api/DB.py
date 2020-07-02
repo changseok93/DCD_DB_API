@@ -1364,7 +1364,7 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT id FROM Mask WHERE obj_id=" + object_id
+                query = "SELECT id FROM Mask WHERE obj_id=" + obj_id
                 cursor.execute(query)
                 return sum(cursor.fetchall(), ())
 
@@ -1585,6 +1585,8 @@ def get_environment_id(db, ipv4, floor):
     """
     env_id = db.get_env_id_from_args(ipv4=ipv4, floor=floor)
     if not env_id:
+        print('Error function:', inspect.stack()[0][3])
+        print('Error: env_id가 존재하지 않습니다.')
         return None
 
     return env_id[0]
@@ -1606,6 +1608,8 @@ def get_grid_id(db, grid_w_h):
     w, h = grid_w_h.split('x')
     grid_id = db.get_grid_id_from_args(width=w, height=h)
     if not grid_id:
+        print('Error function:', inspect.stack()[0][3])
+        print('Error: grid_id가 존재하지 않습니다.')
         return None
 
     return grid_id
@@ -1626,6 +1630,8 @@ def get_supercategory_id(db, super_name):
     """
     super_id = db.get_supercategory_id_from_args(name=super_name)
     if not super_id:
+        print('Error function:', inspect.stack()[0][3])
+        print('Error: super_id가 존재하지 않습니다.')
         return None
 
     return super_id[0]
@@ -1648,11 +1654,15 @@ def get_location_id(db, grid_w_h, loc_x_y):
     w, h = grid_w_h.split('x')
     grid_id = db.get_grid_id_from_args(width=w, height=h)
     if not grid_id:
+        print('Error function:', inspect.stack()[0][3])
+        print('Error: grid_id가 존재하지 않습니다.')
         return None
 
     x, y = loc_x_y.split('x')
     loc_id = db.get_location_id_from_args(grid_id=str(grid_id[0]), x=x, y=y)
     if not loc_id:
+        print('Error function:', inspect.stack()[0][3])
+        print('Error: loc_id가 존재하지 않습니다.')
         return None
 
     return loc_id[0]
@@ -1674,10 +1684,14 @@ def get_category_id(db, super_name, category_name):
     """
     super_id = db.get_supercategory_id_from_args(name=super_name)
     if not super_id:
+        print('Error function:', inspect.stack()[0][3])
+        print('Error: super_id가 존재하지 않습니다.')
         return None
 
     category_id = db.get_category_id_from_args(super_id=str(super_id[0]), category_name=category_name)
     if not category_id:
+        print('Error function:', inspect.stack()[0][3])
+        print('Error: category_id가 존재하지 않습니다.')
         return None
 
     return category_id[0]
@@ -1698,10 +1712,14 @@ def get_image_check_num(db, obj_id):
     """
     img_id = db.get_img_id_from_args(obj_id=obj_id)
     if not img_id:
+        print('Error function: ', inspect.stack()[0][3])
+        print('Error: img_id가 존재하지 않습니다.')
         return None
 
     img_check_num = db.check_image_check_num(img_id=str(img_id[0]))
     if not img_check_num:
+        print('Error function:', inspect.stack()[0][3])
+        print('Error: img_check_num이 존재하지 않습니다.')
         return None
 
     return img_check_num[0]
@@ -1742,6 +1760,8 @@ def update_image_check_num(db, obj_id, check_num):
     """
     img_id = db.get_img_id_from_args(obj_id=obj_id)
     if not img_id:
+        print('Error function:', inspect.stack()[0][3])
+        print('Error: img_id가 존재하지 않습니다.')
         return False
 
     flag = db.update_image_check_num(img_id=str(img_id[0]), check_num=check_num)
@@ -1764,6 +1784,8 @@ def update_image_image(db, obj_id, img):
     """
     img_id = db.get_img_id_from_args(obj_id=obj_id)
     if not img_id:
+        print('Error function:', inspect.stack()[0][3])
+        print('Error: img_id가 존재하지 않습니다.')
         return False
 
     flag = db.update_image_img(img_id=str(img_id[0]), img=img)
@@ -1784,7 +1806,8 @@ def delete_bbox_from_image(db, img_id):
     """
     obj_ids = db.get_obj_id_from_img_id(img_id=img_id)
     if not obj_ids:
-        # print('Error: There are no object table ids')
+        print('Error function:', inspect.stack()[0][3])
+        print('Error: obj_ids가 존재하지 않습니다.')
         return False
 
     for obj_id in obj_ids:
@@ -1807,6 +1830,8 @@ def get_bbox_from_img_id(db, img_id):
     """
     obj_ids = db.get_obj_id_from_img_id(img_id=img_id)
     if not obj_ids:
+        print('Error function:', inspect.stack()[0][3])
+        print('Error: obj_ids가 존재하지 않습니다.')
         return False
 
     bboxes = []
@@ -1854,6 +1879,8 @@ def delete_nomix_object_from_img_id(db, img_id):
     """
     obj_ids = db.get_obj_id_from_img_id(img_id=img_id)
     if not obj_ids:
+        print('Error function:', inspect.stack()[0][3])
+        print('Error: obj_ids가 존재하지 않습니다.')
         return None
 
     for obj_id in obj_ids:
@@ -1884,6 +1911,8 @@ def get_max_mix_num(db, loc_id, category_id, iteration):
     """
     mix_nums = db.get_mix_num_from_args(loc_id=loc_id, category_id=category_id, iteration=iteration)
     if not mix_nums:
+        print('Error function:', inspect.stack()[0][3])
+        print('Error: mix_num이 존재하지 않습니다.')
         return None
 
     return sorted(mix_nums, reverse=True)[0]
@@ -1904,6 +1933,8 @@ def process_check(db, category_id):
     # obj_id들 조회
     obj_ids = db.get_obj_id_from_category_id(category_id=category_id)
     if not obj_ids:
+        print('Error function:', inspect.stack()[0][3])
+        print('Error: obj_ids가 존재하지 않습니다.')
         return False
 
     mask_flag, bbox_flag = False, False

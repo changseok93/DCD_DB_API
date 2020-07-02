@@ -178,7 +178,7 @@ if __name__ == "__main__":
     # Mask table test
     check_mask(mydb)
 
-    # p0 = get_environment_id(db=mydb, ipv4='127.223.444.444', floor='1')
+    # p0 = get_environment_id(db=mydb, ipv4='127.223.444.444', floor='10')
     # print('env_id: ', p0)
 
     # p1 = get_location_id(mydb, grid_w_h='3x4', loc_x_y='3x2')
@@ -206,6 +206,6 @@ if __name__ == "__main__":
     # print('no mix: ', p8)
 
     # mydb.delete_table(id='1', table='Bbox')
-    # a = process_check(mydb, category_id='1')
-    # print(a)
+    # p9 = process_check(mydb, category_id='1')
+    # print(p9)
 
