@@ -177,95 +177,35 @@ if __name__ == "__main__":
 
     # Mask table test
     check_mask(mydb)
-    #
-    # get_grid_id(db=mydb, grid_w_h='3x4')
-    #
-    # get_supercategory_id(db=mydb, super_name='hi')
-    #
-    # get_location_id(db=mydb, grid_w_h='3x4', loc_x_y='3x4')
-    #
-    # get_category_id(db=mydb, super_name='hi', category_name='hi')
-    #
-    # check_category_id(db=mydb, super_name='hi', category_name='hi')
-    #
-    # get_image_check_num(db=mydb, obj_id='1')
-    #
-    # update_image_check_num(db=mydb, obj_id='1', check_num='100')
-    #
 
-    # #
-    # # read_img_from_db(db=mydb, img_id='1', table='Image')
-    # # img_tmp = img_loader('img/puffine.jpg')
-    # # update_image_image(db=mydb, obj_id='1', img=img_tmp)
-    # # read_img_from_db(db=mydb, img_id='1', table='Image')
-    #
-    # get_object_id(db=mydb, loc_id='1', category_id='1', iteration='1')
+    # p0 = get_environment_id(db=mydb, ipv4='127.223.444.444', floor='1')
+    # print('env_id: ', p0)
 
-    # mydb.set_grid(width='10', height='10')
-    # mydb.set_location(grid_id='2', x='5', y='8')
-    # set_object_list(db=mydb, category_id='1', grid_id='2', iterations=['3', '4', '5'])
-    #
-    # answer = list_object_check_num(db=mydb, category_id='1', grid_id='1', check_num_state='1')
-    # print(answer)
-    # # update version
-    # mydb.set_bbox(obj_id='1', x='10', y='222', width='1', height='1')
-    # aa = mydb.get_bbox_info(object_id='1')
-    # print(aa)
+    # p1 = get_location_id(mydb, grid_w_h='3x4', loc_x_y='3x2')
+    # print('loc_id: ', p1)
 
-    # mydb.delete_bbox_from_obj_id(obj_id='1')
+    # p2 = get_category_id(db=mydb, super_name='h', category_name='hi')
+    # print('cat id: ', p2)
 
-    # mydb.set_mask(obj_id='1', x='1', y='1')
-    # mydb.set_mask(obj_id='1', x='2', y='1')
-    # mydb.set_mask(obj_id='1', x='1', y='3')
-    # mydb.delete_mask_from_obj_id(obj_id='1')
+    # p3 = get_image_check_num(db=mydb, obj_id='2')
+    # print('check_num: ', p3)
 
-    # delete_bbox_from_image(db=mydb, img_id='1')
-    # mydb.set_image(device_id='200000', image=img, type='1', check_num='1')
-    # mydb.delete_object_from_img_id(img_id='1')
+    # p4 = check_category_id(db=mydb, super_name='hi', category_name='hi')
+    # print('cat_id: ', p4)
 
-    # mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='2', mix_num='-1')
-    # mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='3', mix_num='-1')
-    # mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='4', mix_num='-1')
-    # mydb.set_bbox(obj_id='1', x='1', y='2', width='3', height='3')
-    # mydb.set_bbox(obj_id='1', x='2', y='3', width='3', height='3')
-    # mydb.set_bbox(obj_id='1', x='3', y='4', width='3', height='3')
-    # a = get_bbox_from_img_id(db=mydb, img_id='1')
+    # p5 = update_image_check_num(db=mydb, obj_id='10', check_num='1')
+    # print("check: ", p5)
+
+    # p6 = update_image_image(db=mydb, obj_id='1', img='1')
+    # print('update image: ', p6)
+
+    # p7 = delete_bbox_from_image(db=mydb, img_id='10')
+    # print(p7)
+
+    # p8 = delete_nomix_object_from_img_id(db=mydb, img_id='1')
+    # print('no mix: ', p8)
+
+    # mydb.delete_table(id='1', table='Bbox')
+    # a = process_check(mydb, category_id='1')
     # print(a)
-
-    # delete_bbox_from_image(db=mydb, img_id='1')
-
-    # mydb.set_supercategory(name='mix')
-    # mydb.set_category(super_id='2', name='hh', width='10', height='10', depth='12', iteration='1', thumbnail='tt')
-    # mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='1', mix_num='0')
-    # mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='1', mix_num='1')
-    # mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='1', mix_num='2')
-    # delete_nomix_object_from_img_id(db=mydb, img_id='1')
-    #
-    # mydb.set_object(img_id='1', loc_id='100000', category_id='1', iteration='1',  mix_num='0')
-    # mydb.set_object(img_id='1', loc_id='1111', category_id='1', iteration='1', mix_num='0')
-    #
-    # mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='1', mix_num='0')
-    # mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='1', mix_num='1')
-    # mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='1', mix_num='2')
-    # a = get_max_mix_num(mydb, loc_id='1', category_id='1', iteration='1')
-    # print(a)
-
-    # mydb.set_location(grid_id='1', x='10', y='10')
-    # mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
-
-    p1 = get_environment_id(mydb, ipv4='127.223.444.444', floor='2')
-    print('env_id: ', p1)
-
-    p3 = get_grid_id(mydb, grid_w_h='3x5')
-    print('grid_id: ', p3)
-
-    p2 = check_object_id(db=mydb, loc_id='1', category_id='1', iteration='1', mix_num='1')
-    print('obj_id: ', p2)
-
-    p4 = get_location_id(mydb, grid_w_h='3x4', loc_x_y='3x2')
-    print('loc_id: ', p4)
-
-    mydb.delete_table(id='1', table='Bbox')
-    a = process_check(mydb, category_id='1')
-    print(a)
 
