@@ -1246,7 +1246,7 @@ class DB():
             iteration (str): Object table의 (iteration)
 
         Return:
-            tuple () : Object_table의 (mix_num) 값들
+            int : Object_table의 (mix_num) 값들
             None: 값 없음
             False: 쿼리 실패
         """
@@ -1810,8 +1810,7 @@ class DB():
         finally:
             self.db.commit()
 
-
-#-------------------------------수정 필요-----------------------------------
+# -------------------------------수정 필요-----------------------------------
     def delete_nomix_img(self, img_id) -> bool:
         """
         Object table의 (img_id)를 받아
@@ -1825,13 +1824,18 @@ class DB():
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT name FROM SuperCategory "\
-                        "WHERE name IN " \
+                query = "DELETE FROM Object WHERE id IN "\
+                        "(SELECT id FROM Object WHERE img_id=%s AND category_id IN "\
+                        "(SELECT id FROM Category WHERE super_id IN "\
+                        "(CASE WHEN NOT name='mix' THEN SuperCategory.id END "\
+                        "SELECT name FROM SuperCategory "\
+                        "WHERE id IN " \
                         "(SELECT super_id FROM Category " \
                         "WHERE id IN " \
-                        "(SELECT category_id FROM Object WHERE img_id=%s))"
+                        "(SELECT category_id FROM Object WHERE img_id=%s)))))"
 
-                value = (img_id)
+                "SELECT IF(SuperCategory.name='mix', None, SuperCategory.id) FROM SuperCategory WHERE IN (SELECT name FROM SuperCategory WHERE id IN (SELECT super_id FROM Category WHERE id IN (SELECT category_id FROM Object WHERE img_id)))"
+                value = (img_id, img_id)
                 cursor.execute(query, value)
                 return True
 
@@ -1843,99 +1847,28 @@ class DB():
         finally:
             self.db.commit()
 
+    def get_aug_image(self, category_id, grid_id):
+        """
+        Object table의 (category_id)와 Location의 (grid_id)를 받아
+        Location table의 (x), (y), Object table의 (iteration), Image table의 (data) 반환
 
-def get_aug_image(db, category_id, grid_id):
-    """
-    Object table의 (category_id)와 Location의 (grid_id)를 받아
-    Location table의 (x), (y), Object table의 (iteration), Image table의 (data) 반환
+        Args:
+            category_id (str): category table의 (id)
+            grid_id (str): Grid table의 (id)
 
-    Args:
-        db (DB): DB class
-        category_id (str): category table의 (id)
-        grid_id (str): Grid table의 (id)
+        Return:
+            tuple ()()()(): (Location table의 x)(Location table의 y)(Object table의 iteration)(Image table의 data)
+        """
 
-    Return:
-        tuple ()()()(): (Location table의 x)(Location table의 y)(Object table의 iteration)(Image table의 data)
-    """
+    def get_aug_mask(self, category_id, grid_id):
+        """
+        Object table의 (category_id), Location의 (grid_id)를 받아
+        Location table의 (x), (y), Object table의 (iteration), Mask table의 (x), (y)
 
+        Args:
+            category_id (str): category table의 (id)
+            grid_id (str): Grid table의 (id)
 
-def get_aug_mask(db, category_id, grid_id):
-    """
-    Object table의 (category_id), Location의 (grid_id)를 받아
-    Location table의 (x), (y), Object table의 (iteration), Mask table의 (x), (y)
-
-    Args:
-        db (DB): DB class
-        category_id (str): category table의 (id)
-        grid_id (str): Grid table의 (id)
-
-    Return:
-        tuple ()()()()():(Location table의 x)(Location table의 y)(Object table의 iteration)(Mask table의 x)(Mask table의 y)
-    """
-
-
-# --------------------------------------- 수정 필요한 함수 ---------------------------------------
-#
-# def set_object_list(db, category_id, grid_id, iterations, mix_num):
-#     """
-#     Location table의 특정 (grid_id)를 가진 row와 Category table의 특정 (id)를 가진 row를 통해
-#     [Location table의 특정 grid_id를 가진 row 수 X category table의 특정 category_id를 가진 row 수]만큼
-#     Object table에 row 생성
-#
-#     Args:
-#         db (DB): DB class
-#         category_id (str): Category table의 id
-#         grid_id (str): Location table의 grid_id
-#         iterations (list): Object table의 iteration
-#
-#     Return:
-#         Bool: True or False
-#
-#     """
-#     # 특정 grid_id에 해당하는 row만 조사
-#     loc_ids = db.get_location_from_grid_id(grid_id=grid_id)
-#
-#     for loc_id in loc_ids:
-#         for iteration in iterations:
-#             # 초기화를 위해 NULL(None)을 넣어줌
-#             img_id = None
-#             loc_id = loc_id
-#             flag = db.set_object(img_id=img_id, loc_id=loc_id, category_id=category_id,
-#                                  iteration=iteration, mix_num=mix_num)
-#             if flag is False:
-#                 return False
-#
-#     return True
-#
-#
-# def list_object_check_num(db, category_id, grid_id, check_num_state):
-#     """
-#     Object table의 (category_id)
-#     Location table의 (grid_id)를 입력 받아
-#     Image table의 (check_num)이 check_state와 같으면 Object table의 row를 반환하는 함수
-#
-#     Args:
-#         db (DB): DB class
-#         category_id (str): Object table의 (category_id)
-#         grid_id(str): Location table의 (grid_id)
-#         check_num_state(str): Image table의 (check_num) 값과 비교될 값
-#                           (0 : 검수 미진행, 1 : 완료, 2 : 거절)
-#
-#     Return:
-#         tuple [object][row]: Object table의 row 값들
-#
-#     """
-#     loc_ids = db.get_location_from_grid_id(grid_id=grid_id)
-#     img_ids = db.get_obj_from_args(category_id=category_id, loc_ids=loc_ids)
-#
-#     print('loc_ids: ', loc_ids)
-#     print('img_ids: ', img_ids)
-#     obj_list = []
-#     for img_id in img_ids:
-#         img_id = str(img_id[0])
-#         img_check_num = db.check_image_check_num(img_id=img_id)
-#         if str(img_check_num) == check_num_state:
-#             obj = db.get_obj_from_img_id(img_id=img_id)
-#             obj_list.append(obj)
-#
-#     return sum(obj_list, ())
+        Return:
+            tuple ()()()()():(Location table의 x)(Location table의 y)(Object table의 iteration)(Mask table의 x)(Mask table의 y)
+        """

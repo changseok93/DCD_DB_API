@@ -196,7 +196,7 @@ if __name__ == "__main__":
     mydb.set_bbox(obj_id='2', x='2', y='3', width='3', height='5')
     mydb.set_bbox(obj_id='2', x='2', y='3', width='4', height='5')
 
-    # print(mydb.delete_nomix_img(img_id='1'))
+    print(mydb.delete_nomix_img(img_id='1'))
 
 
 
