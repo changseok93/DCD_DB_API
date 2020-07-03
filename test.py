@@ -178,9 +178,14 @@ if __name__ == "__main__":
     # Mask table test
     check_mask(mydb)
 
-    print(mydb.check_cat_id(super_name='hi', cat_name='h'))
-    # print(mydb.get_img_check_num(obj_id='2'))
-    # print(mydb.get_grid_id(grid_w_h='3x3'))
+    print(mydb.update_img_img_obj_id(obj_id='1', img='1'))
+
+
+
+
+
+
+
 
 
 
