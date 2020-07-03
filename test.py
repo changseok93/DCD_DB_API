@@ -68,7 +68,7 @@ def check_category(db):
         with open(img_dir, 'rb') as file:
             img = file.read()
 
-    db.set_category(super_id='1', name='hi', width='3', height='4', depth='10', iteration='1', thumbnail=img)
+    db.set_category(super_id='1', name='hi', width='3', height='4', depth='10', iteration='1', thumbnail='1')
     db.get_table(id='1', table='Category')
     # db.delete_table(id='1', table='Category')
     db.update_category(id='1', name='hi')
@@ -178,34 +178,10 @@ if __name__ == "__main__":
     # Mask table test
     check_mask(mydb)
 
-    # p0 = get_environment_id(db=mydb, ipv4='127.223.444.444', floor='10')
-    # print('env_id: ', p0)
+    print(mydb.check_cat_id(super_name='hi', cat_name='h'))
+    # print(mydb.get_img_check_num(obj_id='2'))
+    # print(mydb.get_grid_id(grid_w_h='3x3'))
 
-    # p1 = get_location_id(mydb, grid_w_h='3x4', loc_x_y='3x2')
-    # print('loc_id: ', p1)
 
-    # p2 = get_category_id(db=mydb, super_name='h', category_name='hi')
-    # print('cat id: ', p2)
 
-    # p3 = get_image_check_num(db=mydb, obj_id='2')
-    # print('check_num: ', p3)
-
-    # p4 = check_category_id(db=mydb, super_name='hi', category_name='hi')
-    # print('cat_id: ', p4)
-
-    # p5 = update_image_check_num(db=mydb, obj_id='10', check_num='1')
-    # print("check: ", p5)
-
-    # p6 = update_image_image(db=mydb, obj_id='1', img='1')
-    # print('update image: ', p6)
-
-    # p7 = delete_bbox_from_image(db=mydb, img_id='10')
-    # print(p7)
-
-    # p8 = delete_nomix_object_from_img_id(db=mydb, img_id='1')
-    # print('no mix: ', p8)
-
-    # mydb.delete_table(id='1', table='Bbox')
-    # p9 = process_check(mydb, category_id='1')
-    # print(p9)
 
