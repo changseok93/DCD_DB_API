@@ -1824,19 +1824,22 @@ class DB():
         """
         try:
             with self.db.cursor() as cursor:
-                query = "DELETE FROM Object WHERE id IN "\
-                        "(SELECT id FROM Object WHERE img_id=%s AND category_id IN "\
-                        "(SELECT id FROM Category WHERE super_id IN "\
-                        "(CASE WHEN NOT name='mix' THEN SuperCategory.id END "\
-                        "SELECT name FROM SuperCategory "\
-                        "WHERE id IN " \
-                        "(SELECT super_id FROM Category " \
-                        "WHERE id IN " \
-                        "(SELECT category_id FROM Object WHERE img_id=%s)))))"
+                query = "SELECT name FROM SuperCategory WHERE id IN " \
+                        "(SELECT super_id FROM Category WHERE id IN " \
+                        "(SELECT category_id FROM Object WHERE img_id=%s))"
+                value = (img_id)
+                super_name = str(cursor.execute(query, value))
 
-                "SELECT IF(SuperCategory.name='mix', None, SuperCategory.id) FROM SuperCategory WHERE IN (SELECT name FROM SuperCategory WHERE id IN (SELECT super_id FROM Category WHERE id IN (SELECT category_id FROM Object WHERE img_id)))"
-                value = (img_id, img_id)
+                query = "SELECT id FROM Object WHERE img_id=%s AND category_id IN " \
+                        "(SELECT id FROM Category WHERE super_id IN " \
+                        "(SELECT id FROM SuperCategory WHERE NOT name=%s))"
+                value = (img_id, super_name)
+                obj_id = cursor.execute(query, value)
+
+                query = "DELETE FROM Object WHERE img_id=%s AND id=%s"
+                value = (img_id, obj_id)
                 cursor.execute(query, value)
+
                 return True
 
         except Exception as e:
