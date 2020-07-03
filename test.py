@@ -187,8 +187,9 @@ if __name__ == "__main__":
     mydb.set_location(grid_id='1', x='3', y='5')
     mydb.set_image(device_id='20001', image='dddfd', type='3', check_num='2')
 
-    mydb.set_object(img_id='2', loc_id='3', category_id='1', iteration='3', mix_num='-1')
-    mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='3', mix_num='-1')
+    mydb.set_object(img_id='1', loc_id='3', category_id='1', iteration='3', mix_num='-1')
+    mydb.set_object(img_id='1', loc_id='4', category_id='1', iteration='3', mix_num='-1')
+    mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='3', mix_num='-1')
     mydb.set_bbox(obj_id='1', x='2', y='3', width='3', height='3')
     mydb.set_bbox(obj_id='1', x='2', y='3', width='3', height='4')
     mydb.set_bbox(obj_id='1', x='2', y='3', width='3', height='5')

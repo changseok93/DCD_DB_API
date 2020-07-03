@@ -1810,6 +1810,7 @@ class DB():
         finally:
             self.db.commit()
 
+
 #-------------------------------수정 필요-----------------------------------
     def delete_nomix_img(self, img_id) -> bool:
         """
@@ -1824,8 +1825,12 @@ class DB():
         """
         try:
             with self.db.cursor() as cursor:
-                query = "DELETE FROM Object " \
-                        "WHERE id=()"
+                query = "SELECT name FROM SuperCategory "\
+                        "WHERE name IN " \
+                        "(SELECT super_id FROM Category " \
+                        "WHERE id IN " \
+                        "(SELECT category_id FROM Object WHERE img_id=%s))"
+
                 value = (img_id)
                 cursor.execute(query, value)
                 return True
