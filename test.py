@@ -178,7 +178,24 @@ if __name__ == "__main__":
     # Mask table test
     check_mask(mydb)
 
-    print(mydb.update_img_img_obj_id(obj_id='1', img='1'))
+    mydb.set_supercategory(name='h')
+    mydb.set_supercategory(name='ee')
+    mydb.set_category(super_id='1', name='hhh', width='1', height='1', depth='1', iteration='1', thumbnail='1')
+    mydb.set_category(super_id='1', name='hhss', width='23', height='1', depth='1', iteration='1', thumbnail='1')
+    mydb.set_location(grid_id='1', x='1', y='2')
+    mydb.set_location(grid_id='1', x='2', y='7')
+    mydb.set_location(grid_id='1', x='3', y='5')
+    mydb.set_image(device_id='20001', image='dddfd', type='3', check_num='2')
+
+    mydb.set_object(img_id='2', loc_id='3', category_id='1', iteration='3', mix_num='-1')
+    mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='3', mix_num='-1')
+    mydb.set_bbox(obj_id='1', x='2', y='3', width='3', height='3')
+    mydb.set_bbox(obj_id='1', x='2', y='3', width='3', height='4')
+    mydb.set_bbox(obj_id='1', x='2', y='3', width='3', height='5')
+    mydb.set_bbox(obj_id='2', x='2', y='3', width='3', height='5')
+    mydb.set_bbox(obj_id='2', x='2', y='3', width='4', height='5')
+
+    # print(mydb.delete_nomix_img(img_id='1'))
 
 
 

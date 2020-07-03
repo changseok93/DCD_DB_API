@@ -1322,37 +1322,6 @@ class DB():
             print(e)
             return False
 
-    def get_cat_id(self, super_name, cat_name):
-        """
-        SuperCateogry table의 (name)과 Category table의 (name)을 받아
-        Category table의 (id) 반환
-
-        Args:
-            super_name (str): SuperCategory table의 (name)
-            cat_name (str): Category table의 (name)
-
-        Return:
-            category_id (int): Category table의 (id)
-            None: 값 없음
-            False: 쿼리 실패
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "SELECT id FROM Category WHERE name=%s AND " \
-                        "super_id=(SELECT id FROM SuperCategory WHERE name=%s)"
-                value = (super_name, cat_name)
-                cursor.execute(query, value)
-                v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
     def get_img_check_num(self, obj_id):
         """
         Object table의 (id)를 입력 받아
@@ -1398,12 +1367,43 @@ class DB():
         try:
             with self.db.cursor() as cursor:
                 query = "SELECT * FROM Bbox " \
-                        "WHERE obj_id=(SELECT id FROM Object WHERE img_id=%s)"
+                        "WHERE obj_id IN (SELECT id FROM Object WHERE img_id=%s)"
                 value = (img_id)
                 cursor.execute(query, value)
                 v = cursor.fetchall()
                 if v:
                     return v
+                else:
+                    return None
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+    def get_cat_id(self, super_name, cat_name):
+        """
+        SuperCateogry table의 (name)과 Category table의 (name)을 받아
+        Category table의 (id) 반환
+
+        Args:
+            super_name (str): SuperCategory table의 (name)
+            cat_name (str): Category table의 (name)
+
+        Return:
+            category_id (int): Category table의 (id)
+            None: 값 없음
+            False: 쿼리 실패
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "SELECT id FROM Category WHERE name=%s AND " \
+                        "super_id=(SELECT id FROM SuperCategory WHERE name=%s)"
+                value = (super_name, cat_name)
+                cursor.execute(query, value)
+                v = sum(cursor.fetchall(), ())
+                if v:
+                    return v[0]
                 else:
                     return None
 
@@ -1531,35 +1531,6 @@ class DB():
             print(e)
             return False
 
-    def check_cat_id(self, super_name, cat_name) -> bool:
-        """
-        SuperCateogry table의 (name)과 Category table의 (name)을 입력받아
-        Category table의 특정 (id)가 존재하는지 check하는 함수
-
-        Args:
-            super_name (str): SuperCategory table의 name
-            cat_name (str): Category table의 name
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "SELECT id FROM Category WHERE name=%s AND " \
-                        "super_id=(SELECT id FROM SuperCategory WHERE name=%s)"
-                value = (super_name, cat_name)
-                cursor.execute(query, value)
-                v = sum(cursor.fetchall(), ())
-                if v:
-                    return True
-                else:
-                    return False
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
     def check_process(self, category_id) -> bool:
         """
         Object table의 (category_id)가 입력받은 값을 가지고 (mix_num)이 -1인 Object table의 row가 존재하고
@@ -1576,19 +1547,48 @@ class DB():
                 # Bbox query
                 category_id = int(category_id)
                 query = "SELECT id FROM Bbox " \
-                        "WHERE obj_id=(SELECT id FROM Object WHERE category_id=%s AND mix_num=-1)"
+                        "WHERE obj_id IN (SELECT id FROM Object WHERE category_id=%s AND mix_num=-1)"
                 value = (category_id)
                 cursor.execute(query, value)
                 bbox_ids = cursor.fetchall()
 
                 # Mask query
                 query = "SELECT id FROM Mask " \
-                        "WHERE obj_id=(SELECT id FROM Object WHERE category_id=%s AND mix_num=-1)"
+                        "WHERE obj_id IN (SELECT id FROM Object WHERE category_id=%s AND mix_num=-1)"
                 value = (category_id)
                 cursor.execute(query, value)
                 mask_ids = cursor.fetchall()
 
                 if bbox_ids and mask_ids:
+                    return True
+                else:
+                    return False
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+    def check_cat_id(self, super_name, cat_name) -> bool:
+        """
+        SuperCateogry table의 (name)과 Category table의 (name)을 입력받아
+        Category table의 특정 (id)가 존재하는지 check하는 함수
+
+        Args:
+            super_name (str): SuperCategory table의 name
+            cat_name (str): Category table의 name
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "SELECT id FROM Category WHERE name=%s AND " \
+                        "super_id IN (SELECT id FROM SuperCategory WHERE name=%s)"
+                value = (super_name, cat_name)
+                cursor.execute(query, value)
+                v = sum(cursor.fetchall(), ())
+                if v:
                     return True
                 else:
                     return False
@@ -1609,7 +1609,6 @@ class DB():
 
         Return:
             True: 갱신 성공
-            None: 갱신하려는 값 없음
             False: 쿼리 실패
         """
         try:
@@ -1638,7 +1637,6 @@ class DB():
 
         Return:
             True: 갱신 성공
-            None: 갱신하려는 값 없음
             False: 쿼리 실패
         """
         try:
@@ -1667,7 +1665,6 @@ class DB():
 
         Return:
             True: 갱신 성공
-            None: 갱신하려는 값 없음
             False: 쿼리 실패
         """
         try:
@@ -1696,7 +1693,6 @@ class DB():
 
         Return:
             True: 갱신 성공
-            None: 갱신하려는 값 없음
             False: 쿼리 실패
         """
         try:
@@ -1801,7 +1797,7 @@ class DB():
         try:
             with self.db.cursor() as cursor:
                 query = "DELETE FROM Bbox WHERE " \
-                        "obj_id=(SELECT id FROM Object WHERE img_id=%s)"
+                        "obj_id IN (SELECT id FROM Object WHERE img_id=%s)"
                 value = (img_id)
                 cursor.execute(query, value)
                 return True
@@ -1814,6 +1810,7 @@ class DB():
         finally:
             self.db.commit()
 
+#-------------------------------수정 필요-----------------------------------
     def delete_nomix_img(self, img_id) -> bool:
         """
         Object table의 (img_id)를 받아
