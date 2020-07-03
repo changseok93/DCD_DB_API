@@ -1824,7 +1824,7 @@ class DB():
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT name FROM SuperCategory WHERE id IN " \
+                query = "SELECT name FROM SuperCategory WHERE NOT id IN " \
                         "(SELECT super_id FROM Category WHERE id IN " \
                         "(SELECT category_id FROM Object WHERE img_id=%s))"
                 value = (img_id)
