@@ -1849,7 +1849,7 @@ class DB():
         finally:
             self.db.commit()
 
-# -------------------------------수정 필요-----------------------------------
+# -----------------------augumentation 함수-----------------------------------
     def get_aug_image(self, grid_id, category_id):
         """
         Object table의 (category_id)와 Location의 (grid_id)를 받아
