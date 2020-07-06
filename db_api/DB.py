@@ -1810,7 +1810,6 @@ class DB():
         finally:
             self.db.commit()
 
-# -------------------------------수정 필요-----------------------------------
     def delete_nomix_img(self, img_id) -> bool:
         """
         Object table의 (img_id)를 받아
@@ -1850,18 +1849,45 @@ class DB():
         finally:
             self.db.commit()
 
-    def get_aug_image(self, category_id, grid_id):
+# -------------------------------수정 필요-----------------------------------
+    def get_aug_image(self, grid_id, category_id):
         """
         Object table의 (category_id)와 Location의 (grid_id)를 받아
         Location table의 (x), (y), Object table의 (iteration), Image table의 (data) 반환
 
         Args:
-            category_id (str): category table의 (id)
             grid_id (str): Grid table의 (id)
+            category_id (str): category table의 (id)
 
         Return:
             tuple ()()()(): (Location table의 x)(Location table의 y)(Object table의 iteration)(Image table의 data)
+            None: 값 없음
+            False: 쿼리 실패
         """
+        try:
+            with self.db.cursor() as cursor:
+                # Location 테이블과 특정 category_id만을 가진 Object table join
+                query = "SELECT Location.x, Location.y, Object.iteration, Object.img_id" \
+                        "FROM " \
+                        "RIGHT OUTER JOIN JOIN TABLE Object ON "
+                value = ()
+                cursor.execute(query, value)
+                img_id = cursor.fetchall()
+
+                # 조인된 table에서 img_id 값을 통해 img 가져옴
+                query = ""
+                value = ()
+                img = cursor.execute(query, value)
+
+                # if v:
+                #     return v
+                # else:
+                #     return None
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
 
     def get_aug_mask(self, category_id, grid_id):
         """
@@ -1875,3 +1901,19 @@ class DB():
         Return:
             tuple ()()()()():(Location table의 x)(Location table의 y)(Object table의 iteration)(Mask table의 x)(Mask table의 y)
         """
+        try:
+            with self.db.cursor() as cursor:
+                query = ""
+                value = ()
+                cursor.execute(query, value)
+                img_id = cursor.fetchall()
+
+                # if v:
+                #     return v
+                # else:
+                #     return None
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False

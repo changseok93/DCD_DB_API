@@ -187,6 +187,7 @@ if __name__ == "__main__":
     mydb.set_image(device_id='20001', image='dddfd', type='3', check_num='2')
 
     mydb.set_object(img_id='1', loc_id='3', category_id='2', iteration='3', mix_num='-1')
+    mydb.set_object(img_id='1', loc_id='3', category_id='2', iteration='3', mix_num='-1')
     # mydb.set_object(img_id='1', loc_id='3', category_id='2', iteration='3', mix_num='-1')
     # mydb.set_object(img_id='1', loc_id='4', category_id='2', iteration='3', mix_num='-1')
     # mydb.set_object(img_id='1', loc_id='2', category_id='2', iteration='3', mix_num='-1')

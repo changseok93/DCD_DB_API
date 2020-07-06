@@ -107,7 +107,6 @@ width SMALLINT UNSIGNED NOT NULL,
 height SMALLINT UNSIGNED NOT NULL,
 PRIMARY KEY(id),
 FOREIGN KEY FOREIGN_KEY (obj_id) REFERENCES Object(id) ON UPDATE CASCADE ON DELETE CASCADE,
-UNIQUE KEY UNIQUE_KEY (obj_id, x, y, width, height)
 )"""
 initial_queries.append(create_bbox_sql)
 
@@ -120,6 +119,5 @@ x SMALLINT UNSIGNED NOT NULL,
 Y SMALLINT UNSIGNED NOT NULL,
 PRIMARY KEY(id),
 FOREIGN KEY FOREIGN_KEY (obj_id) REFERENCES Object(id) ON UPDATE CASCADE ON DELETE CASCADE,
-UNIQUE KEY UNIQUE_KEY (obj_id, x, y)
 )"""
 initial_queries.append(create_mask_sql)
