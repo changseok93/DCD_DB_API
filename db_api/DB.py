@@ -4,7 +4,7 @@ import pymysql
 import inspect
 
 
-class DB():
+class DB:
     """
     MySQL server와 정보를 주고받는 class 입니다.
     """
@@ -1810,6 +1810,85 @@ class DB():
         finally:
             self.db.commit()
 
+    # --------------------------------------- 수정 필요한 함수 --------------------------------------
+    def set_obj_list(self, img_id, grid_id, category_id, iteration, mix_num) -> bool:
+        """
+        Location table의 (grid_id)를 가진 row와 Category table의 (id)를 가진 row를 통해
+        (Location table의 특정 (grid_id)를 가진 row 수) X (category table의 특정 (category_id)를 가진 row 수)만큼
+        Object table에 row 생성
+
+        Args:
+            img_id (str): Object table의 (img_id)
+            grid_id (str): Location table의 (grid_id)
+            category_id (str): Category table의 (id)
+            iteration (str): Object table의 (iteration)
+            mix_num (str): Object table의 (mix_num)
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) " \
+                        "VALUES(%s, loc_id, cat_id, %s, %s)"\
+                        "SELECT loc_id, cat_id " \
+                        "FROM (SELECT id as loc_id FROM Location WHERE grid_id=%s) AS Loc " \
+                        "INNER JOIN (SELECT id as cat_id FROM Category WHERE id=%s) AS Cat " \
+                        "ON Loc.loc_id=Cat.cat_id"
+                value = (img_id, iteration, mix_num, grid_id, category_id)
+                cursor.execute(query, value)
+
+                return True
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+
+    def list_obj_check_num(self, grid_id, category_id, check_num):
+        """
+        Object table의 (category_id), Location table의 (grid_id)를 입력 받아
+        Image table의 (check_num)이 check_num과 같으면
+        Object table의 row를 반환하는 함수
+
+        Args:
+            grid_id(str): Location table의 (grid_id)
+            category_id (str): Object table의 (category_id)
+            check_num(str): Image table의 (check_num) 값과 비교될 값 -> (0 : 완료, 1 : 미진행, 2 : 거절)
+
+        Return:
+            tuple ()(): Object table의 row
+            None: 값 없음
+            False: 쿼리 실패
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "SELECT * FROM Object WHERE id IN (SELECT C.obj_id " \
+                        "   FROM (SELECT tmp.obj_id, Image.check_num " \
+                        "       FROM (SELECT Obj.obj_id, Obj.img_id " \
+                        "           FROM (SELECT id AS obj_id, img_id, loc_id " \
+                        "               FROM Object WHERE category_id=%s) AS Obj " \
+                        "           INNER JOIN (SELECT id AS loc_id FROM Location WHERE grid_id=%s) AS Loc " \
+                        "           ON Loc.loc_id=Obj.loc_id) AS tmp " \
+                        "       INNER JOIN Image ON Image.id=tmp.img_id) AS C " \
+                        "WHERE check_num=%s)"
+                value = (category_id, grid_id, check_num)
+                cursor.execute(query, value)
+                v = cursor.fetchall()
+
+                if v:
+                    return v
+                else:
+                    return None
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
     def delete_nomix_img(self, img_id) -> bool:
         """
         Object table의 (img_id)를 받아
@@ -1823,16 +1902,14 @@ class DB():
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT name FROM SuperCategory WHERE NOT id IN " \
-                        "(SELECT super_id FROM Category WHERE id IN " \
-                        "(SELECT category_id FROM Object WHERE img_id=%s))"
-                value = (img_id)
-                super_name = str(cursor.execute(query, value))
 
-                query = "SELECT id FROM Object WHERE img_id=%s AND category_id IN " \
-                        "(SELECT id FROM Category WHERE super_id IN " \
-                        "(SELECT id FROM SuperCategory WHERE NOT name=%s))"
-                value = (img_id, super_name)
+                query = "SELECT id FROM Object WHERE img_id=%s AND category_id " \
+                        "   IN (SELECT id FROM Category WHERE super_id " \
+                        "       IN (SELECT id FROM SuperCategory WHERE NOT name " \
+                        "           IN (SELECT name FROM SuperCategory WHERE NOT id " \
+                        "               IN (SELECT super_id FROM Category WHERE id " \
+                        "                   IN (SELECT category_id FROM Object WHERE img_id=%s)))))"
+                value = (img_id, img_id)
                 obj_id = cursor.execute(query, value)
 
                 query = "DELETE FROM Object WHERE img_id=%s AND id=%s"
@@ -1849,8 +1926,7 @@ class DB():
         finally:
             self.db.commit()
 
-# -----------------------augumentation 함수-----------------------------------
-    def get_aug_image(self, grid_id, category_id):
+    def get_aug_img(self, grid_id, category_id):
         """
         Object table의 (category_id)와 Location의 (grid_id)를 받아
         Location table의 (x), (y), Object table의 (iteration), Image table의 (data) 반환
@@ -1869,8 +1945,8 @@ class DB():
                 # Location 테이블과 특정 category_id만을 가진 Object table join
                 query = "SELECT tmp.x, tmp.y, tmp.iteration, Image.data " \
                         "FROM (SELECT Obj.img_id, Obj.iteration, Loc.x, Loc.y " \
-                        "      FROM (SELECT img_id, iteration, loc_id From Object Where category_id=%s) AS Obj " \
-                        "      LEFT JOIN (SELECT x, y, id FROM Location WHERE grid_id=%s) AS Loc " \
+                        "      FROM (SELECT img_id, iteration, loc_id FROM Object WHERE category_id=%s) AS Obj " \
+                        "      INNER JOIN (SELECT x, y, id FROM Location WHERE grid_id=%s) AS Loc " \
                         "      ON Loc.id=Obj.loc_id) AS tmp " \
                         "INNER JOIN Image ON Image.id=tmp.img_id"
                 value = (category_id, grid_id)
@@ -1906,7 +1982,7 @@ class DB():
                 query = "SELECT tmp.x, tmp.y, tmp.iteration, Mask.x, Mask.y " \
                         "FROM (SELECT Obj.id, Obj.iteration, Loc.x, Loc.y " \
                         "      FROM (SELECT id, iteration, loc_id From Object Where category_id=%s) AS Obj " \
-                        "      LEFT JOIN (SELECT x, y, id FROM Location WHERE grid_id=%s) AS Loc " \
+                        "      INNER JOIN (SELECT x, y, id FROM Location WHERE grid_id=%s) AS Loc " \
                         "      ON Loc.id=Obj.loc_id) AS tmp " \
                         "INNER JOIN Mask ON Mask.obj_id=tmp.id"
                 value = (category_id, grid_id)
