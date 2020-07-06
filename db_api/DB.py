@@ -1860,58 +1860,63 @@ class DB():
             category_id (str): category table의 (id)
 
         Return:
-            tuple ()()()(): (Location table의 x)(Location table의 y)(Object table의 iteration)(Image table의 data)
+            tuple ()(): (Location table의 x, Location table의 y, Object table의 iteration, Image table의 data)
             None: 값 없음
             False: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
                 # Location 테이블과 특정 category_id만을 가진 Object table join
-                query = "SELECT Location.x, Location.y, Object.iteration, Object.img_id" \
-                        "FROM " \
-                        "RIGHT OUTER JOIN JOIN TABLE Object ON "
-                value = ()
+                query = "SELECT tmp.x, tmp.y, tmp.iteration, Image.data " \
+                        "FROM (SELECT Obj.img_id, Obj.iteration, Loc.x, Loc.y " \
+                        "      FROM (SELECT img_id, iteration, loc_id From Object Where category_id=%s) AS Obj " \
+                        "      LEFT JOIN (SELECT x, y, id FROM Location WHERE grid_id=%s) AS Loc " \
+                        "      ON Loc.id=Obj.loc_id) AS tmp " \
+                        "INNER JOIN Image ON Image.id=tmp.img_id"
+                value = (category_id, grid_id)
                 cursor.execute(query, value)
-                img_id = cursor.fetchall()
+                v = cursor.fetchall()
 
-                # 조인된 table에서 img_id 값을 통해 img 가져옴
-                query = ""
-                value = ()
-                img = cursor.execute(query, value)
-
-                # if v:
-                #     return v
-                # else:
-                #     return None
+                if v:
+                    return v
+                else:
+                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
 
-    def get_aug_mask(self, category_id, grid_id):
+    def get_aug_mask(self, grid_id, category_id):
         """
-        Object table의 (category_id), Location의 (grid_id)를 받아
+       Object table의 (category_id), Location의 (grid_id)를 받아
         Location table의 (x), (y), Object table의 (iteration), Mask table의 (x), (y)
 
         Args:
-            category_id (str): category table의 (id)
             grid_id (str): Grid table의 (id)
+            category_id (str): category table의 (id)
 
         Return:
-            tuple ()()()()():(Location table의 x)(Location table의 y)(Object table의 iteration)(Mask table의 x)(Mask table의 y)
+            tuple ()():(Location table의 x, Location table의 y, Object table의 iteration, Mask table의 x, Mask table의 y)
+            None: 값 없음
+            False: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
-                query = ""
-                value = ()
+                query = "SELECT tmp.x, tmp.y, tmp.iteration, Mask.x, Mask.y " \
+                        "FROM (SELECT Obj.id, Obj.iteration, Loc.x, Loc.y " \
+                        "      FROM (SELECT id, iteration, loc_id From Object Where category_id=%s) AS Obj " \
+                        "      LEFT JOIN (SELECT x, y, id FROM Location WHERE grid_id=%s) AS Loc " \
+                        "      ON Loc.id=Obj.loc_id) AS tmp " \
+                        "INNER JOIN Mask ON Mask.obj_id=tmp.id"
+                value = (category_id, grid_id)
                 cursor.execute(query, value)
-                img_id = cursor.fetchall()
+                v = cursor.fetchall()
 
-                # if v:
-                #     return v
-                # else:
-                #     return None
+                if v:
+                    return v
+                else:
+                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])

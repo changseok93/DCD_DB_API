@@ -27,7 +27,7 @@ def check_image(db):
         with open(img_dir, 'rb') as file:
             img = file.read()
 
-    db.set_image(device_id='20001', image=img, type='0', check_num='1')
+    db.set_image(device_id='20001', image='1', type='0', check_num='1')
     db.get_table(id='1', table='Image')
     # db.delete_table(id='1', table='Image')
     db.update_image(id='1', device_id='20001')
@@ -179,25 +179,16 @@ if __name__ == "__main__":
     check_mask(mydb)
 
     mydb.set_supercategory(name='mix')
-    mydb.set_category(super_id='2', name='ddd', width='1', height='1', depth='1', iteration='1', thumbnail='1')
     mydb.set_category(super_id='2', name='dd', width='23', height='1', depth='1', iteration='1', thumbnail='1')
     mydb.set_location(grid_id='1', x='1', y='2')
-    mydb.set_location(grid_id='1', x='2', y='7')
-    mydb.set_location(grid_id='1', x='3', y='5')
     mydb.set_image(device_id='20001', image='dddfd', type='3', check_num='2')
-
-    mydb.set_object(img_id='1', loc_id='3', category_id='2', iteration='3', mix_num='-1')
-    mydb.set_object(img_id='1', loc_id='3', category_id='2', iteration='3', mix_num='-1')
-    # mydb.set_object(img_id='1', loc_id='3', category_id='2', iteration='3', mix_num='-1')
-    # mydb.set_object(img_id='1', loc_id='4', category_id='2', iteration='3', mix_num='-1')
-    # mydb.set_object(img_id='1', loc_id='2', category_id='2', iteration='3', mix_num='-1')
-    # mydb.set_bbox(obj_id='1', x='2', y='3', width='3', height='3')
-    # mydb.set_bbox(obj_id='1', x='2', y='3', width='3', height='4')
-    # mydb.set_bbox(obj_id='1', x='2', y='3', width='3', height='5')
-    # mydb.set_bbox(obj_id='2', x='2', y='3', width='3', height='5')
-    # mydb.set_bbox(obj_id='2', x='2', y='3', width='4', height='5')
+    mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='3', mix_num='-1')
+    mydb.set_bbox(obj_id='1', x='2', y='3', width='3', height='3')
 
     print(mydb.delete_nomix_img(img_id='1'))
+
+    print(mydb.get_aug_image(grid_id='1', category_id='1'))
+    print(mydb.get_aug_mask(grid_id='1', category_id='1'))
 
 
 
