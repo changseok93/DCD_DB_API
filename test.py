@@ -95,10 +95,10 @@ def check_bbox(db):
 
 
 def check_mask(db):
-    db.set_mask(obj_id='1', x='20', y='20')
+    db.set_mask(obj_id='1', x='1', y='1')
     db.get_table(id='1', table='Mask')
     # db.delete_table(id='1', table='Mask')
-    db.update_mask(id='1', x='3333')
+    db.update_mask(id='1', x='1')
     print('Mask table: ', db.list_table(table='Mask'))
     print('Mask table last id: ', db.get_last_id(table='Mask'))
 
@@ -180,14 +180,25 @@ if __name__ == "__main__":
 
     mydb.set_supercategory(name='mix')
     mydb.set_category(super_id='2', name='dd', width='23', height='1', depth='1', iteration='1', thumbnail='1')
+
     mydb.set_location(grid_id='1', x='1', y='2')
-    mydb.set_image(device_id='20001', image='dddfd', type='3', check_num='2')
-    mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='3', mix_num='-1')
+    mydb.set_location(grid_id='1', x='1', y='3')
+    mydb.set_location(grid_id='1', x='1', y='4')
+    mydb.set_image(device_id='20001', image='100', type='3', check_num='2')
+    mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='1', mix_num='-1')
+    mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='2', mix_num='-1')
+    mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='3', mix_num='-1')
+    mydb.set_object(img_id='2', loc_id='2', category_id='2', iteration='3', mix_num='-1')
     mydb.set_bbox(obj_id='1', x='2', y='3', width='3', height='3')
 
-    print(mydb.delete_nomix_img(img_id='1'))
+    mydb.set_mask(obj_id='1', x='1', y='2')
+    mydb.set_mask(obj_id='1', x='1', y='3')
+    mydb.set_mask(obj_id='1', x='1', y='4')
+    mydb.set_mask(obj_id='5', x='1', y='4')
 
-    print(mydb.get_aug_image(grid_id='1', category_id='1'))
+    # print(mydb.delete_nomix_img(img_id='1'))
+
+    # print(mydb.get_aug_image(grid_id='1', category_id='1'))
     print(mydb.get_aug_mask(grid_id='1', category_id='1'))
 
 
