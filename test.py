@@ -178,21 +178,32 @@ if __name__ == "__main__":
     # Mask table test
     check_mask(mydb)
 
-    # mydb.set_supercategory(name='d')
-    # mydb.set_location(grid_id='1', x='1', y='3')
-    # mydb.set_location(grid_id='1', x='1', y='4')
-    # mydb.set_image(device_id='20001', image='100', type='3', check_num='1')
-    # mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='2', mix_num='-1')
+    # # list_obj_check_num test 코드
+    # mydb.set_environment(ipv4='127.223.444.445', floor='1', width='3', height='5', depth='2')
+    # mydb.set_image(device_id='20002', image='1ddd', type='2', check_num='1')
+    # mydb.set_location(grid_id='1', x='1', y='2')
+    # mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
     # mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='3', mix_num='-1')
-    # mydb.set_object(img_id='2', loc_id='2', category_id='2', iteration='3', mix_num='-1')
+    # print(mydb.list_obj_check_num(grid_id='1', category_id='1', check_num='1'))
 
-    # get_aug_mask test 코드
-    mydb.set_location(grid_id='1', x='1', y='2')
-    mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
-    mydb.set_mask(obj_id='1', x='1', y='2')
-    mydb.set_mask(obj_id='2', x='1', y='1')
-    mydb.set_mask(obj_id='2', x='1', y='2')
-    print(mydb.get_aug_mask(grid_id='1', category_id='1'))
+    # # get_aug_img test 코드
+    # mydb.set_environment(ipv4='127.223.444.445', floor='1', width='3', height='5', depth='2')
+    # mydb.set_image(device_id='20002', image='1ddd', type='2', check_num='3')
+    # mydb.set_location(grid_id='1', x='1', y='2')
+    # mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
+    # mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='3', mix_num='-1')
+    # print(mydb.get_aug_img(grid_id='1', category_id='1'))
+
+    # # get_aug_mask test 코드
+    # mydb.set_location(grid_id='1', x='1', y='2')
+    # mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
+    # mydb.set_mask(obj_id='1', x='1', y='2')
+    # mydb.set_mask(obj_id='2', x='1', y='1')
+    # mydb.set_mask(obj_id='2', x='1', y='2')
+    # print(mydb.get_aug_mask(grid_id='1', category_id='1'))
+
+    # set_obj_list test 코드
+    print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='1', mix_num='1'))
 
 
 

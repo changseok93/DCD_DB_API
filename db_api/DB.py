@@ -1848,7 +1848,6 @@ class DB:
             self.db.commit()
 
     # --------------------------------------- 수정/확인 필요한 함수 --------------------------------------
-
     def set_obj_list(self, grid_id, category_id, iteration, mix_num, img_id='NULL') -> bool:
         """
         Location table의 (grid_id)를 가진 row와 Category table의 (id)를 가진 row를 통해
@@ -1936,7 +1935,8 @@ class DB:
             category_id (str): category table의 (id)
 
         Return:
-            tuple ()(): (Location table의 x, Location table의 y, Object table의 iteration, Image table의 data)
+            tuple ()(): ((Location table의 x, Location table의 y, Object table의 iteration, Image table의 data),
+                         (...))
             None: 값 없음
             False: 쿼리 실패
         """
@@ -1972,22 +1972,30 @@ class DB:
             category_id (str): category table의 (id)
 
         Return:
-            tuple ()():(Location table의 x, Location table의 y, Object table의 iteration, Mask table의 x, Mask table의 y)
+            tuple ()(): ((Location table의 x, Location table의 y, Object table의 iteration, Mask table의 x, Mask table의 y),
+                         (...))
             None: 값 없음
             False: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT tmp.loc_x, tmp.loc_y, tmp.iteration, Mask.x, Mask.y " \
-                        "FROM (SELECT Obj.obj_id, Obj.iteration, Loc.x AS loc_x, Loc.y AS loc_y " \
+                # query = "SELECT tmp.loc_x, tmp.loc_y, tmp.iteration, Mask.x, Mask.y " \
+                #         "FROM (SELECT Obj.obj_id, Obj.iteration, Loc.x AS loc_x, Loc.y AS loc_y " \
+                #         "      FROM (SELECT id AS obj_id, iteration, loc_id From Object Where category_id=%s) AS Obj " \
+                #         "      INNER JOIN (SELECT x, y, id AS loc_id FROM Location WHERE grid_id=%s) AS Loc " \
+                #         "      ON Loc.loc_id=Obj.loc_id) AS tmp " \
+                #         "INNER JOIN Mask ON Mask.obj_id=tmp.obj_id"
+                # value = (category_id, grid_id)
+
+                query = "SELECT tmp.loc_x, tmp.loc_y, tmp.iteration, tmp.obj_id " \
+                        "FROM (SELECT Obj.obj_id, Obj.iteration, Loc.loc_x, Loc.loc_y " \
                         "      FROM (SELECT id AS obj_id, iteration, loc_id From Object Where category_id=%s) AS Obj " \
-                        "      INNER JOIN (SELECT x, y, id AS loc_id FROM Location WHERE grid_id=%s) AS Loc " \
-                        "      ON Loc.loc_id=Obj.loc_id) AS tmp " \
-                        "INNER JOIN Mask ON Mask.obj_id=tmp.obj_id"
+                        "      INNER JOIN (SELECT x AS loc_x, y AS loc_y, id AS loc_id " \
+                        "                  FROM Location WHERE grid_id=%s) AS Loc " \
+                        "      ON Loc.loc_id=Obj.loc_id) AS tmp"
                 value = (category_id, grid_id)
                 cursor.execute(query, value)
                 v = cursor.fetchall()
-
                 if v:
                     return v
                 else:
