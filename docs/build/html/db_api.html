@@ -1,0 +1,1374 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>DB_API &mdash; Python  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to DP APIs documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Python
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">DB_API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Python</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>DB_API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/db_api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-db_api.DB">
+<span id="db-api"></span><h1>DB_API<a class="headerlink" href="#module-db_api.DB" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="db_api.DB.DB">
+<em class="property">class </em><code class="sig-prename descclassname">db_api.DB.</code><code class="sig-name descname">DB</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ip</span></em>, <em class="sig-param"><span class="n">port</span></em>, <em class="sig-param"><span class="n">user</span></em>, <em class="sig-param"><span class="n">password</span></em>, <em class="sig-param"><span class="n">db_name</span></em>, <em class="sig-param"><span class="n">charset</span><span class="o">=</span><span class="default_value">'utf8mb4'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MySQL server와 정보를 주고받는 class 입니다.</p>
+<dl class="py method">
+<dt id="db_api.DB.DB.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ip</span></em>, <em class="sig-param"><span class="n">port</span></em>, <em class="sig-param"><span class="n">user</span></em>, <em class="sig-param"><span class="n">password</span></em>, <em class="sig-param"><span class="n">db_name</span></em>, <em class="sig-param"><span class="n">charset</span><span class="o">=</span><span class="default_value">'utf8mb4'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>DB class를 초기화하는 함수</p>
+<p>pymysql.connect()를 이용해 MySQL과 연결</p>
+<dl class="simple">
+<dt>mysql 서버의 변수 설정</dt><dd><p>wait_timeout: 활동하지 않는 커넥션을 끊을때까지 서버가 대기하는 시간
+interactive_timeout: 활동중인 커넥션이 닫히기 전까지 서버가 대기하는 시간
+max_connections: 한번에 mysql 서버에 접속할 수 있는 클라이언트 수</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ip</strong> (<em>str</em>) – MySQL 서버에 로그인하기위한 ip 주소</p></li>
+<li><p><strong>port</strong> (<em>int</em>) – 포트 포워딩을 위한 포트</p></li>
+<li><p><strong>user</strong> (<em>str</em>) – MySQL 서버에 로그인을 위한 아이디</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – MySQL 서버에 로그인을 위한 비밀번호</p></li>
+<li><p><strong>db_name</strong> (<em>str</em>) – 데이터베이스 네임</p></li>
+<li><p><strong>charset</strong> (<em>str</em>) – 문자 인코딩 방식</p></li>
+</ul>
+</dd>
+</dl>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mydb</span> <span class="o">=</span> <span class="n">DB</span><span class="p">(</span><span class="n">ip</span><span class="o">=</span><span class="s1">&#39;192.168.10.69&#39;</span><span class="p">,</span>
+          <span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span>
+          <span class="n">user</span><span class="o">=</span><span class="s1">&#39;root&#39;</span><span class="p">,</span>
+          <span class="n">password</span><span class="o">=</span><span class="s1">&#39;return123&#39;</span><span class="p">,</span>
+          <span class="n">db_name</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.set_environment">
+<code class="sig-name descname">set_environment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ipv4</span></em>, <em class="sig-param"><span class="n">floor</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em>, <em class="sig-param"><span class="n">depth</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.set_environment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.set_environment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Environment table에 row 추가</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ipv4</strong> (<em>str</em>) – 연결된 냉장고의 ip</p></li>
+<li><p><strong>floor</strong> (<em>str</em>) – 냉장고 층</p></li>
+<li><p><strong>width</strong> (<em>str</em>) – 냉장고 층 가로길이</p></li>
+<li><p><strong>height</strong> (<em>str</em>) – 냉장고 층 세로길이</p></li>
+<li><p><strong>depth</strong> (<em>str</em>) – 냉장고 층 높이</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.update_environment">
+<code class="sig-name descname">update_environment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">ipv4</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">floor</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">height</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">depth</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.update_environment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.update_environment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enviroment table의 특정 id의 row 값 갱신</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – Enviroment table의 특정 id(primary key)</p></li>
+<li><p><strong>ipv4</strong> (<em>str</em>) – 냉장고 ip 주소</p></li>
+<li><p><strong>floor</strong> (<em>str</em>) – 냉 장고 층</p></li>
+<li><p><strong>width</strong> (<em>str</em>) – 냉장고 층 가로 길이</p></li>
+<li><p><strong>height</strong> (<em>str</em>) – 냉장고 층 세로 길이</p></li>
+<li><p><strong>depth</strong> (<em>str</em>) – 냉장고 층 높이</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.set_image">
+<code class="sig-name descname">set_image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">device_id</span></em>, <em class="sig-param"><span class="n">image</span></em>, <em class="sig-param"><span class="n">type</span></em>, <em class="sig-param"><span class="n">check_num</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.set_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.set_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image table에 row 추가</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>device_id</strong> (<em>str</em>) – Environment table의 id(foreigner key)</p></li>
+<li><p><strong>image</strong> (<em>image</em>) – image data</p></li>
+<li><p><strong>type</strong> (<em>str</em>) – 합성된 이미지인지 아닌지</p></li>
+<li><p><strong>check_num</strong> (<em>str</em>) – 검수표시할 check 컬럼</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.update_image">
+<code class="sig-name descname">update_image</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">device_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">image</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">type</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">check_num</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.update_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.update_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image table의 특정 id의 row 값 갱신</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – Image table의 특정 id(primary key)</p></li>
+<li><p><strong>device_id</strong> (<em>str</em>) – Image table의 env_id(foreigner key)</p></li>
+<li><p><strong>image</strong> (<em>image</em>) – image 정보</p></li>
+<li><p><strong>type</strong> (<em>str</em>) – 합성된 이미지 인지 아닌지</p></li>
+<li><p><strong>check_num</strong> (<em>str</em>) – 검수표시할 check 컬럼</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.set_grid">
+<code class="sig-name descname">set_grid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.set_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.set_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grid table row 추가</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>width</strong> (<em>str</em>) – grid 가로 칸 개수</p></li>
+<li><p><strong>height</strong> (<em>str</em>) – grid 세로 칸 개수</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.update_grid">
+<code class="sig-name descname">update_grid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">height</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.update_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.update_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grid table의 특정 id row 값 갱신</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – Grid table의 특정 id(primary key)</p></li>
+<li><p><strong>width</strong> (<em>str</em>) – grid 가로 칸 수</p></li>
+<li><p><strong>height</strong> (<em>str</em>) – grid 세로 칸 수</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.set_location">
+<code class="sig-name descname">set_location</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid_id</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.set_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.set_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Location table에 row 추가</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grid_id</strong> (<em>str</em>) – Grid table의 id(foreigner key)</p></li>
+<li><p><strong>x</strong> (<em>str</em>) – 물체의 가로 좌표</p></li>
+<li><p><strong>y</strong> (<em>str</em>) – 물체의 세로 좌표</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.update_location">
+<code class="sig-name descname">update_location</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">grid_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">x</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.update_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.update_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Location table의 특정 id 값 갱신</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – Location table의 특정 id(primary key)</p></li>
+<li><p><strong>grid_id</strong> (<em>str</em>) – Grid table의 특정 id(foreigner key)</p></li>
+<li><p><strong>x</strong> (<em>str</em>) – 물체의 x 좌표</p></li>
+<li><p><strong>y</strong> (<em>str</em>) – 물체의 y 좌표</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.set_supercategory">
+<code class="sig-name descname">set_supercategory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.set_supercategory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.set_supercategory" title="Permalink to this definition">¶</a></dt>
+<dd><p>SuperCategory table에 row 추가</p>
+<dl class="simple">
+<dt>Arg:</dt><dd><p>name (str): 물체의 이름(종류)</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.update_supercategory">
+<code class="sig-name descname">update_supercategory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.update_supercategory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.update_supercategory" title="Permalink to this definition">¶</a></dt>
+<dd><p>SuperCategory table의 특정 id의 row 값 갱신</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – SuperCategory table의 특정 id(primary key)</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – 물체의 이름(종류)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mydb</span><span class="o">.</span><span class="n">update_supercategory</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;hi3&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.set_category">
+<code class="sig-name descname">set_category</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">super_id</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em>, <em class="sig-param"><span class="n">depth</span></em>, <em class="sig-param"><span class="n">iteration</span></em>, <em class="sig-param"><span class="n">thumbnail</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.set_category"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.set_category" title="Permalink to this definition">¶</a></dt>
+<dd><p>Category table에 row 추가</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>super_id</strong> (<em>str</em>) – SuperCategory table의 특정 id(foreigner key)</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – 물품의 이름</p></li>
+<li><p><strong>width</strong> (<em>str</em>) – 물체의 가로 크기</p></li>
+<li><p><strong>height</strong> (<em>str</em>) – 물체의 세로 크기</p></li>
+<li><p><strong>depth</strong> (<em>str</em>) – 물체의 높이</p></li>
+<li><p><strong>iteration</strong> (<em>str</em>) – 물체 촬영 횟수</p></li>
+<li><p><strong>thumbnail</strong> (<em>image</em>) – 썸네일 이미지</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.update_category">
+<code class="sig-name descname">update_category</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">super_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">height</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">depth</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">iteration</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">thumbnail</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.update_category"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.update_category" title="Permalink to this definition">¶</a></dt>
+<dd><p>Category table의 특정 id의 row 정보 갱신</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – Category table의 특정 id(primary key)</p></li>
+<li><p><strong>super_id</strong> (<em>str</em>) – superCategory의 id(foreigner key)</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – 물품의 이름</p></li>
+<li><p><strong>width</strong> (<em>str</em>) – 물체의 가로 크기</p></li>
+<li><p><strong>height</strong> (<em>str</em>) – 물체의 세로 크기</p></li>
+<li><p><strong>depth</strong> (<em>str</em>) – 물체의 높이</p></li>
+<li><p><strong>iteration</strong> (<em>str</em>) – 물체 촬영 횟수</p></li>
+<li><p><strong>thumbnail</strong> (<em>image</em>) – 썸네일 이미지</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.set_object">
+<code class="sig-name descname">set_object</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img_id</span></em>, <em class="sig-param"><span class="n">loc_id</span></em>, <em class="sig-param"><span class="n">category_id</span></em>, <em class="sig-param"><span class="n">iteration</span></em>, <em class="sig-param"><span class="n">mix_num</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.set_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.set_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table에 row 추가</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img_id</strong> (<em>str</em><em> or </em><em>None</em>) – Image table의 id(foreigner key)</p></li>
+<li><p><strong>loc_id</strong> (<em>str</em>) – Location table의 id(foreigner key)</p></li>
+<li><p><strong>category_id</strong> (<em>str</em>) – Category table의 id(foreigner key)</p></li>
+<li><p><strong>iteration</strong> (<em>str</em>) – 물체를 방향 별로 찍어야하는 횟수</p></li>
+<li><p><strong>mix_num</strong> (<em>str</em>) – mix 이미지에 대한 정보</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.update_object">
+<code class="sig-name descname">update_object</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">img_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">loc_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">category_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">iteration</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">mix_num</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.update_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.update_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 특정 id 정보 갱신</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – Object table의 특정 id(primary key)</p></li>
+<li><p><strong>img_id</strong> (<em>str</em><em> or </em><em>None</em>) – Image talbe의 특정 id(foreigner key)</p></li>
+<li><p><strong>loc_id</strong> (<em>str</em>) – Location table의 특정 id(foreigner key)</p></li>
+<li><p><strong>category_id</strong> (<em>str</em>) – Category table의 특정 id(foreigner key)</p></li>
+<li><p><strong>iteration</strong> (<em>str</em>) – 물체를 방향 별로 찍어야하는 횟수</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.set_bbox">
+<code class="sig-name descname">set_bbox</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj_id</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">height</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.set_bbox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.set_bbox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bbox table에 row 추가</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj_id</strong> (<em>str</em>) – Object table의 id(foreigner key)</p></li>
+<li><p><strong>x</strong> (<em>str</em>) – Bbox의 왼쪽 시작 점 x 좌표</p></li>
+<li><p><strong>y</strong> (<em>str</em>) – Bbox의 왼쪽 시작 점 y 좌표</p></li>
+<li><p><strong>width</strong> (<em>str</em>) – Bbox의 가로 크기</p></li>
+<li><p><strong>height</strong> (<em>str</em>) – Bbox의 세로 크기</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.update_bbox">
+<code class="sig-name descname">update_bbox</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">x</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">width</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">height</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.update_bbox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.update_bbox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bbox table의 특정 id 정보 갱</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – Bbox table의 특정 id(primary key)</p></li>
+<li><p><strong>x</strong> (<em>str</em>) – Bbox의 왼쪽 시작점 x 좌표</p></li>
+<li><p><strong>y</strong> (<em>str</em>) – Bbox의 왼쪽 시작점 y 좌표</p></li>
+<li><p><strong>width</strong> (<em>str</em>) – Bbox의 가로 크기</p></li>
+<li><p><strong>height</strong> (<em>str</em>) – Bboxm의 세로 크기</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.set_mask">
+<code class="sig-name descname">set_mask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj_id</span></em>, <em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.set_mask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.set_mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mask table의 id row 추가</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj_id</strong> (<em>str</em>) – Object table의 id(foreigner key)</p></li>
+<li><p><strong>x</strong> – Mask 점의 x 좌표</p></li>
+<li><p><strong>y</strong> – Mask 점의 y 좌표</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.update_mask">
+<code class="sig-name descname">update_mask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">obj_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">x</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.update_mask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.update_mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mask table의 특정 id의 row 갱신</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> – Mask table의 id(primary key)</p></li>
+<li><p><strong>obj_id</strong> (<em>str</em>) – Object table의 id(foreigner key)</p></li>
+<li><p><strong>x</strong> – Mask 점의 x 좌표</p></li>
+<li><p><strong>y</strong> – Mask 점의 y 좌표</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_table">
+<code class="sig-name descname">get_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">table</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>mysql databse에 있는 특정 table의 특정 id의 row를 가져옵니다.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – table의 id 값</p></li>
+<li><p><strong>table</strong> (<em>str</em>) – 조회하기 원하는 table 이름</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>tuple()</em> – 해당 id의 row 값
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.delete_table">
+<code class="sig-name descname">delete_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">table</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.delete_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.delete_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>mysql databse에 있는 특정 table의 특정 id의 row를 지웁니다..</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>str</em>) – table의 id 값</p></li>
+<li><p><strong>table</strong> (<em>str</em>) – 조회하기 원하는 table 이름</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.list_table">
+<code class="sig-name descname">list_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.list_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.list_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>mysql databse에 있는 특정 table의 모든 값을 가져옵니다.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>table</strong> (<em>str</em>) – 조회하기 원하는 table 이름</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>tuple()()</em> – 특정 table의 모든 값
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.init_table">
+<code class="sig-name descname">init_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.init_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.init_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>table을 생성합니다.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.drop_table">
+<code class="sig-name descname">drop_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.drop_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.drop_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>mysql databse에 있는 특정 table을 지웁니다.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>table</strong> (<em>str</em>) – 지우고자하는 table</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_last_id">
+<code class="sig-name descname">get_last_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_last_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_last_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>table의 마지막 id 조회</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>table</strong> (<em>str</em>) – table 이름</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>int</em> – 마지막 id 값
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_env_id">
+<code class="sig-name descname">get_env_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ipv4</span></em>, <em class="sig-param"><span class="n">floor</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_env_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_env_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Environment table의 id 반환</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ipv4</strong> (<em>str</em>) – Environment table ipv4 정보</p></li>
+<li><p><strong>floor</strong> (<em>str</em>) – Environment table floor 정보</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>int</em> – Environment table (id)
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_grid_id">
+<code class="sig-name descname">get_grid_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid_w_h</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_grid_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_grid_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grid table의 (id) 반환</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>grid_w_h</strong> (<em>str</em>) – Grid table의 (width), (height)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>tuple ()</em> – Grid table (id)
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_supercategory_id">
+<code class="sig-name descname">get_supercategory_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_supercategory_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_supercategory_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>SuperCategory table의 id 반환</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – SuperCategory table의 name 정보</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>tuple ()</em> – SuperCategory table의 name에 해당하는 (id)
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_loc_id">
+<code class="sig-name descname">get_loc_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid_id</span></em>, <em class="sig-param"><span class="n">loc_x_y</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_loc_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_loc_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Location table의 id 반환</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grid_id</strong> (<em>str</em>) – Grid table의 (grid_id)</p></li>
+<li><p><strong>loc_x_y</strong> (<em>str</em>) – Location table의 (x), (y)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>int</em> – 해당 location의 id
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_loc_id_GL">
+<code class="sig-name descname">get_loc_id_GL</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid_w_h</span></em>, <em class="sig-param"><span class="n">loc_x_y</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_loc_id_GL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_loc_id_GL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grid table의 (width, height)와 Location table의 (x, y)를 입력받아
+Location table의 (id) 반환하는 함수</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grid_w_h</strong> (<em>str</em>) – Grid table의 width height 정보</p></li>
+<li><p><strong>loc_x_y</strong> (<em>str</em>) – Location table의 x, y 정보</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>tuple ()</em> – Location table의 id
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_category_id">
+<code class="sig-name descname">get_category_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">super_id</span></em>, <em class="sig-param"><span class="n">category_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_category_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_category_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Category table의 id를 반환</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>super_id</strong> (<em>str</em>) – 조회하기 원하는 category의 상위 super_category</p></li>
+<li><p><strong>category_name</strong> (<em>str</em>) – 조회하기 원하는 category의 name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>int</em> – 해당 category의 id
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_category_id_obj">
+<code class="sig-name descname">get_category_id_obj</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_category_id_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_category_id_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (obj_id)를 받아 (category_id)를 얻음</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>obj_id</strong> (<em>str</em>) – Object table의 id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>int</em> – (category_id)
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_img_id">
+<code class="sig-name descname">get_img_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_img_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_img_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 img_id를 반환</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>obj_id</strong> (<em>str</em>) – 조회하기 원하는 Object table의 id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>int</em> – 해당하는 Object table의 image id
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_location">
+<code class="sig-name descname">get_location</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Location table의 (grid_id)를 입력 받아
+(grid_id)를 값으로 가지는 Location table의 row 반환 함수</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>grid_id</strong> (<em>str</em>) – Location table의 grid_id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>tuple()()</em> – Location table의 id
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_bbox_info">
+<code class="sig-name descname">get_bbox_info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">object_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_bbox_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_bbox_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>입력받은 object [id]를 가지는 Bbox table의
+[x, y, width, height]들을 2차원 리스트로 반환</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>object_id</strong> (<em>str</em>) – 조회하기 원하는 Bbox table의 object id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>tuple ()()</em> – 입력받은 object [id]를 가지는 Bbox table의 [x, y, width, height]값으로 이루어진 2차원 튜플
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_obj_id_img">
+<code class="sig-name descname">get_obj_id_img</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_obj_id_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_obj_id_img" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (img_id)를 받아 (obj_id)들을 얻음</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>img_id</strong> (<em>str</em>) – Object table의 (img_id)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>tuple ()</em> – (obj_id) 정보들
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_obj_id">
+<code class="sig-name descname">get_obj_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">category_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_obj_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_obj_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (category id)를 입력 받아
+Object table의 (obj id)들 반환</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>category_id</strong> (<em>str</em>) – Object table의 (category id)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>tuple ()</em> – Object_table의 (obj id) 값들
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_super_id">
+<code class="sig-name descname">get_super_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">category_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_super_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_super_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Category table의 (id)를 받아
+Category table의 (super_id)를 반환</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>category_id</strong> (<em>str</em>) – Category table의 id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>int</em> – (super_id)
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_super_name">
+<code class="sig-name descname">get_super_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">super_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_super_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_super_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>SuperCategory table의 (id)를 받아
+SuperCategory table의 (name)을 반환함</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>super_id</strong> (<em>str</em>) – SuperCategory table의 (id)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>int</em> – (name)
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_mix_num">
+<code class="sig-name descname">get_mix_num</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loc_id</span></em>, <em class="sig-param"><span class="n">category_id</span></em>, <em class="sig-param"><span class="n">iteration</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_mix_num"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_mix_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (loc_id, category_id, iteration)를 입력받아
+Object table의 가장 큰 mix_num을 가진 (mix_num) 반환</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loc_id</strong> (<em>str</em>) – Object table의 (loc_id)</p></li>
+<li><p><strong>category_id</strong> (<em>str</em>) – Object table의 (category_id)</p></li>
+<li><p><strong>iteration</strong> (<em>str</em>) – Object table의 (iteration)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>int</em> – Object_table의 (mix_num) 값들
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_bbox_id">
+<code class="sig-name descname">get_bbox_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_bbox_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_bbox_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (id)를 받아
+Bbox table의 (id) 반환</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>obj_id</strong> (<em>str</em>) – Object table의 (id)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>tuple ()</em> – Bbox table의 (id)
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_mask_id">
+<code class="sig-name descname">get_mask_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_mask_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_mask_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (id)를 받아
+Mask table의 (id) 반환</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>object_id</strong> (<em>str</em>) – Object table의 (id)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>tuple ()</em> – Mask table의 (id)
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_img_check_num">
+<code class="sig-name descname">get_img_check_num</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_img_check_num"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_img_check_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (id)를 입력 받아
+Image table의 (check_num) 반환</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>obj_id</strong> (<em>str</em>) – Object table의 id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>check_num (int)</em> – Image table의 check_num
+None: 조회 실패
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_bbox_img">
+<code class="sig-name descname">get_bbox_img</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_bbox_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_bbox_img" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (img_id)를 받아 (obj_id)들을 가져옴
+얻은 (obj_id)들로 Bbox table의 row들을 조회</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>img_id</strong> (<em>str</em>) – Object table의 (img_id)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>tuple ()()</em> – Bbox table의 row
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_cat_id">
+<code class="sig-name descname">get_cat_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">super_name</span></em>, <em class="sig-param"><span class="n">cat_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_cat_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_cat_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>SuperCateogry table의 (name)과 Category table의 (name)을 받아
+Category table의 (id) 반환</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>super_name</strong> (<em>str</em>) – SuperCategory table의 (name)</p></li>
+<li><p><strong>cat_name</strong> (<em>str</em>) – Category table의 (name)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>category_id (int)</em> – Category table의 (id)
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.list_bbox">
+<code class="sig-name descname">list_bbox</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.list_bbox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.list_bbox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bbox table의 (obj_id)를 이용해
+Bbox table의 모든 row 반환</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>obj_id</strong> (<em>str</em>) – Bbox table의 obj_id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>tuple()()</em> – Bbox table의 row
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.list_obj">
+<code class="sig-name descname">list_obj</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">category_id</span></em>, <em class="sig-param"><span class="n">loc_ids</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.list_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.list_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (category_id, loc_ids)를 입력 받아
+해당되는 Object table의 row들을 반환하는 함수</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>category_id</strong> (<em>str</em>) – Object table의 category_id</p></li>
+<li><p><strong>loc_ids</strong> (<em>tuple</em>) – Object table의 loc_id들</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>tuple()()</em> – Location table의 id
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.check_image_check_num">
+<code class="sig-name descname">check_image_check_num</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.check_image_check_num"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.check_image_check_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image table의 이미지의 check_num을 반환</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>img_id</strong> (<em>str</em>) – 조회하기 원하는 Object table의 id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>int (0, 1, 2)</em> – 해당 object의 이미지 검수여부 반환
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.check_obj_id">
+<code class="sig-name descname">check_obj_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loc_id</span></em>, <em class="sig-param"><span class="n">category_id</span></em>, <em class="sig-param"><span class="n">iteration</span></em>, <em class="sig-param"><span class="n">mix_num</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.check_obj_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.check_obj_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (loc_id, category_id, iteration)를 입력 받아
+Object table의 특정 (id)를 check 하는 함수</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loc_id</strong> (<em>str</em>) – Object table의 loc_id</p></li>
+<li><p><strong>category_id</strong> (<em>str</em>) – Object table의 category_id</p></li>
+<li><p><strong>iteration</strong> (<em>str</em>) – Object table의 iteration</p></li>
+<li><p><strong>mix_num</strong> (<em>str</em>) – Object table의 mix_num</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.check_process">
+<code class="sig-name descname">check_process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">category_id</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.check_process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.check_process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (category_id)가 입력받은 값을 가지고 (mix_num)이 -1인 Object table의 row가 존재하고
+해당하는 모든 Object table의 row에 대한 Bbox table의 row와 Mask table의 row가 둘다 존재할 경우 True 반환
+이외의 경우 False 반환
+:param category_id: Object table의 (category_id)
+:type category_id: str</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.check_cat_id">
+<code class="sig-name descname">check_cat_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">super_name</span></em>, <em class="sig-param"><span class="n">cat_name</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.check_cat_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.check_cat_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>SuperCateogry table의 (name)과 Category table의 (name)을 입력받아
+Category table의 특정 (id)가 존재하는지 check하는 함수</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>super_name</strong> (<em>str</em>) – SuperCategory table의 name</p></li>
+<li><p><strong>cat_name</strong> (<em>str</em>) – Category table의 name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.update_img_check_num_obj_id">
+<code class="sig-name descname">update_img_check_num_obj_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj_id</span></em>, <em class="sig-param"><span class="n">check_num</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.update_img_check_num_obj_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.update_img_check_num_obj_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (id)를 입력 받아
+Image table의 (check_num)을 update 하는 함수</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj_id</strong> (<em>str</em>) – Object table의 id</p></li>
+<li><p><strong>check_num</strong> (<em>str</em>) – Image table의 check_num</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>True</em> – 갱신 성공
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.update_img_check_num_img_id">
+<code class="sig-name descname">update_img_check_num_img_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img_id</span></em>, <em class="sig-param"><span class="n">check_num</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.update_img_check_num_img_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.update_img_check_num_img_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image table의 check_num 갱신</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img_id</strong> (<em>str</em>) – 수정하기 원하는 Object table의 id</p></li>
+<li><p><strong>check_num</strong> (<em>str</em>) – 수정하기 원하는 Image table의 check_num</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>True</em> – 갱신 성공
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.update_img_img_obj_id">
+<code class="sig-name descname">update_img_img_obj_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj_id</span></em>, <em class="sig-param"><span class="n">img</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.update_img_img_obj_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.update_img_img_obj_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (id)를 입력 받아
+Image table의 (data) update 하는 함수</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj_id</strong> (<em>str</em>) – Object table의 id</p></li>
+<li><p><strong>img</strong> (<em>Image</em>) – update image 정보</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>True</em> – 갱신 성공
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.update_img_img_img_id">
+<code class="sig-name descname">update_img_img_img_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img_id</span></em>, <em class="sig-param"><span class="n">img</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.update_img_img_img_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.update_img_img_img_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image table의 (data) update</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img_id</strong> (<em>str</em>) – Image table의 (id)</p></li>
+<li><p><strong>img</strong> (<em>Image</em>) – Image table의 (data)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>True</em> – 갱신 성공
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.delete_object">
+<code class="sig-name descname">delete_object</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img_id</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.delete_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.delete_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (img_id)를 받아
+해당하는 Object table의 모든 row를 삭제</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>img_id</strong> (<em>str</em>) – Object table의 (img_id)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.delete_bbox">
+<code class="sig-name descname">delete_bbox</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj_id</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.delete_bbox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.delete_bbox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bbox table의 (object_id)를 가지 row 삭제</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>obj_id</strong> (<em>str</em>) – Bbox table의 object_id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.delete_mask">
+<code class="sig-name descname">delete_mask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj_id</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.delete_mask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.delete_mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mask table의 (object_id)를 가지는 모든 row 삭제</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>obj_id</strong> (<em>str</em>) – Mask table의 (object_id)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.delete_bbox_img">
+<code class="sig-name descname">delete_bbox_img</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img_id</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.delete_bbox_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.delete_bbox_img" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (img_id)를 통해 Object table의 (id)를 가져옴
+이를통해 관계된 Bbox table의 (obj_id)를 가지는 모든 bbox 삭제</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>img_id</strong> (<em>str</em>) – Object table의 img_id</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.delete_nomix_img">
+<code class="sig-name descname">delete_nomix_img</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">img_id</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.delete_nomix_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.delete_nomix_img" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (img_id)를 받아
+SuperCa는egory table의 (name)이 mix가 아닌 Object table의 (row) 삭제</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>img_id</strong> (<em>str</em>) – Object table의 (img_id)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.set_obj_list">
+<code class="sig-name descname">set_obj_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid_id</span></em>, <em class="sig-param"><span class="n">category_id</span></em>, <em class="sig-param"><span class="n">iteration</span></em>, <em class="sig-param"><span class="n">mix_num</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.set_obj_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.set_obj_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Location table의 (grid_id)를 가진 row와 Category table의 (id)를 가진 row를 통해
+(Location table의 특정 (grid_id)를 가진 row 수) X (category table의 특정 (category_id)를 가진 row 수)만큼
+Object table에 row 생성</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grid_id</strong> (<em>str</em>) – Location table의 (grid_id)</p></li>
+<li><p><strong>category_id</strong> (<em>str</em>) – Category table의 (id)</p></li>
+<li><p><strong>iteration</strong> (<em>str</em>) – Object table의 (iteration)</p></li>
+<li><p><strong>mix_num</strong> (<em>str</em>) – Object table의 (mix_num)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.list_obj_check_num">
+<code class="sig-name descname">list_obj_check_num</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid_id</span></em>, <em class="sig-param"><span class="n">category_id</span></em>, <em class="sig-param"><span class="n">check_num</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.list_obj_check_num"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.list_obj_check_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (category_id), Location table의 (grid_id)를 입력 받아
+Image table의 (check_num)이 check_num과 같으면
+Object table의 row를 반환하는 함수</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grid_id</strong> (<em>str</em>) – Location table의 (grid_id)</p></li>
+<li><p><strong>category_id</strong> (<em>str</em>) – Object table의 (category_id)</p></li>
+<li><p><strong>check_num</strong> (<em>str</em>) – Image table의 (check_num) 값과 비교될 값 -&gt; (0 : 완료, 1 : 미진행, 2 : 거절)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>tuple ()()</em> – Object table의 row
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_aug_img">
+<code class="sig-name descname">get_aug_img</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid_id</span></em>, <em class="sig-param"><span class="n">category_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_aug_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_aug_img" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (category_id)와 Location의 (grid_id)를 받아
+Location table의 (x), (y), Object table의 (iteration), Image table의 (data) 반환</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grid_id</strong> (<em>str</em>) – Grid table의 (id)</p></li>
+<li><p><strong>category_id</strong> (<em>str</em>) – category table의 (id)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p><em>tuple ()()</em> –</p>
+<dl class="simple">
+<dt>((loc_x, loc_y, iteration, (Image) data),</dt><dd><p>(…))</p>
+</dd>
+</dl>
+<p>None: 값 없음
+False: 쿼리 실패</p>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.get_aug_mask">
+<code class="sig-name descname">get_aug_mask</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid_id</span></em>, <em class="sig-param"><span class="n">category_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_aug_mask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_aug_mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object table의 (category_id), Location의 (grid_id)를 받아
+Location table의 (x), (y), Object table의 (iteration), Mask table의 (x), (y) 반</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grid_id</strong> (<em>str</em>) – Grid table의 (id)</p></li>
+<li><p><strong>category_id</strong> (<em>str</em>) – category table의 (id)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>tuple ((loc_x, loc_y, iteration, mask_x, mask_y), (…))
+None: 값 없음
+False: 쿼리 실패</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to DP APIs documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
