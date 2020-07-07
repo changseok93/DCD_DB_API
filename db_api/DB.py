@@ -1737,7 +1737,7 @@ class DB:
 
     def delete_bbox(self, obj_id) -> bool:
         """
-        Bbox table의 [object_id]를 가지는 모든 row 삭제
+        Bbox table의 (object_id)를 가지 row 삭제
 
         Args:
             obj_id (str): Bbox table의 object_id
@@ -1810,10 +1810,11 @@ class DB:
         finally:
             self.db.commit()
 
+    # --------------------------------------- 수정/확인 필요한 함수 --------------------------------------
     def delete_nomix_img(self, img_id) -> bool:
         """
         Object table의 (img_id)를 받아
-        SuperCategory table의 (name)이 mix가 아닌 Object table의 (row) 삭제
+        SuperCa는egory table의 (name)이 mix가 아닌 Object table의 (row) 삭제
 
         Args:
             img_id (str): Object table의 (img_id)
@@ -1823,7 +1824,6 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-
                 query = "SELECT id FROM Object WHERE img_id=%s AND category_id " \
                         "   IN (SELECT id FROM Category WHERE super_id " \
                         "       IN (SELECT id FROM SuperCategory WHERE NOT name " \
@@ -1831,7 +1831,8 @@ class DB:
                         "               IN (SELECT super_id FROM Category WHERE id " \
                         "                   IN (SELECT category_id FROM Object WHERE img_id=%s)))))"
                 value = (img_id, img_id)
-                obj_id = cursor.execute(query, value)
+                cursor.execute(query, value)
+                obj_ids = cursor.fetchall()
 
                 query = "DELETE FROM Object WHERE img_id=%s AND id=%s"
                 value = (img_id, obj_id)
@@ -1847,7 +1848,6 @@ class DB:
         finally:
             self.db.commit()
 
-    # --------------------------------------- 수정/확인 필요한 함수 --------------------------------------
     def set_obj_list(self, grid_id, category_id, iteration, mix_num) -> bool:
         """
         Location table의 (grid_id)를 가진 row와 Category table의 (id)를 가진 row를 통해
