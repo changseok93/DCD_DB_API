@@ -45,10 +45,10 @@ def check_grid(db):
 
 
 def check_location(db):
-    db.set_location(grid_id='1', x='3', y='4')
+    db.set_location(grid_id='1', x='1', y='1')
     db.get_table(id='1', table='Location')
     # db.delete_table(id='1', table='Location')
-    db.update_location(id='1', x='3')
+    db.update_location(id='1', x='1')
     print('Location table: ', db.list_table(table='Location'))
     print('Location table last id: ', db.get_last_id(table='Location'))
 
@@ -178,39 +178,21 @@ if __name__ == "__main__":
     # Mask table test
     check_mask(mydb)
 
-    mydb.set_supercategory(name='d')
-    mydb.set_category(super_id='2', name='dd', width='23', height='1', depth='1', iteration='1', thumbnail='1')
+    # mydb.set_supercategory(name='d')
+    # mydb.set_location(grid_id='1', x='1', y='3')
+    # mydb.set_location(grid_id='1', x='1', y='4')
+    # mydb.set_image(device_id='20001', image='100', type='3', check_num='1')
+    # mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='2', mix_num='-1')
+    # mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='3', mix_num='-1')
+    # mydb.set_object(img_id='2', loc_id='2', category_id='2', iteration='3', mix_num='-1')
 
+    # get_aug_mask test 코드
     mydb.set_location(grid_id='1', x='1', y='2')
-    mydb.set_location(grid_id='1', x='1', y='3')
-    mydb.set_location(grid_id='1', x='1', y='4')
-    mydb.set_image(device_id='20001', image='100', type='3', check_num='1')
-    mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='1', mix_num='-1')
-    mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='2', mix_num='-1')
-    mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='3', mix_num='-1')
-    mydb.set_object(img_id='2', loc_id='2', category_id='2', iteration='3', mix_num='-1')
-    mydb.set_bbox(obj_id='1', x='2', y='3', width='3', height='3')
-
+    mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
     mydb.set_mask(obj_id='1', x='1', y='2')
-    mydb.set_mask(obj_id='1', x='1', y='3')
-    mydb.set_mask(obj_id='1', x='1', y='4')
-    mydb.set_mask(obj_id='5', x='1', y='4')
-
-    # print(mydb.delete_nomix_img(img_id='1'))
-
-    # print(mydb.get_aug_image(grid_id='1', category_id='1'))
-    # print(mydb.get_aug_mask(grid_id='1', category_id='1'))
-
-    # print(mydb.list_obj_check_num(grid_id='1', category_id='1', check_num='1'))
-    # print(mydb.set_object_list(category_id='1', grid_id='1', mix_num='-1'))
-
-    # import time
-    # start = time.time()  # 시작 시간 저장
-    # print(mydb.delete_nomix_img(img_id='1'))
-    # print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
-
-    print(mydb.set_obj_list(img_id='1', grid_id='1', category_id='1', iteration='5', mix_num='-1'))
-
+    mydb.set_mask(obj_id='2', x='1', y='1')
+    mydb.set_mask(obj_id='2', x='1', y='2')
+    print(mydb.get_aug_mask(grid_id='1', category_id='1'))
 
 
 

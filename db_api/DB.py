@@ -1810,15 +1810,53 @@ class DB:
         finally:
             self.db.commit()
 
-    # --------------------------------------- 수정 필요한 함수 --------------------------------------
-    def set_obj_list(self, img_id, grid_id, category_id, iteration, mix_num) -> bool:
+    def delete_nomix_img(self, img_id) -> bool:
+        """
+        Object table의 (img_id)를 받아
+        SuperCategory table의 (name)이 mix가 아닌 Object table의 (row) 삭제
+
+        Args:
+            img_id (str): Object table의 (img_id)
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+
+                query = "SELECT id FROM Object WHERE img_id=%s AND category_id " \
+                        "   IN (SELECT id FROM Category WHERE super_id " \
+                        "       IN (SELECT id FROM SuperCategory WHERE NOT name " \
+                        "           IN (SELECT name FROM SuperCategory WHERE NOT id " \
+                        "               IN (SELECT super_id FROM Category WHERE id " \
+                        "                   IN (SELECT category_id FROM Object WHERE img_id=%s)))))"
+                value = (img_id, img_id)
+                obj_id = cursor.execute(query, value)
+
+                query = "DELETE FROM Object WHERE img_id=%s AND id=%s"
+                value = (img_id, obj_id)
+                cursor.execute(query, value)
+
+                return True
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+
+    # --------------------------------------- 수정/확인 필요한 함수 --------------------------------------
+
+    def set_obj_list(self, grid_id, category_id, iteration, mix_num, img_id='NULL') -> bool:
         """
         Location table의 (grid_id)를 가진 row와 Category table의 (id)를 가진 row를 통해
         (Location table의 특정 (grid_id)를 가진 row 수) X (category table의 특정 (category_id)를 가진 row 수)만큼
         Object table에 row 생성
 
         Args:
-            img_id (str): Object table의 (img_id)
+            img_id (str): Object table의 (img_id) -> default 값으로 None
             grid_id (str): Location table의 (grid_id)
             category_id (str): Category table의 (id)
             iteration (str): Object table의 (iteration)
@@ -1829,12 +1867,11 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) " \
-                        "VALUES(%s, loc_id, cat_id, %s, %s)"\
-                        "SELECT loc_id, cat_id " \
-                        "FROM (SELECT id as loc_id FROM Location WHERE grid_id=%s) AS Loc " \
-                        "INNER JOIN (SELECT id as cat_id FROM Category WHERE id=%s) AS Cat " \
-                        "ON Loc.loc_id=Cat.cat_id"
+                query = "INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) "\
+                        "SELECT * " \
+                        "FROM ((WITH tmp (img_id, iteration, mix_num) AS (SELECT %s, %s, %s) SELECT * FROM tmp) AS tmp " \
+                        "   CROSS JOIN (SELECT id AS loc_id FROM Location WHERE grid_id=%s) AS Loc) " \
+                        "   CROSS JOIN (SELECT id AS category_id FROM Category WHERE id=%s) AS Cat"
                 value = (img_id, iteration, mix_num, grid_id, category_id)
                 cursor.execute(query, value)
 
@@ -1889,43 +1926,6 @@ class DB:
             print(e)
             return False
 
-    def delete_nomix_img(self, img_id) -> bool:
-        """
-        Object table의 (img_id)를 받아
-        SuperCategory table의 (name)이 mix가 아닌 Object table의 (row) 삭제
-
-        Args:
-            img_id (str): Object table의 (img_id)
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-
-                query = "SELECT id FROM Object WHERE img_id=%s AND category_id " \
-                        "   IN (SELECT id FROM Category WHERE super_id " \
-                        "       IN (SELECT id FROM SuperCategory WHERE NOT name " \
-                        "           IN (SELECT name FROM SuperCategory WHERE NOT id " \
-                        "               IN (SELECT super_id FROM Category WHERE id " \
-                        "                   IN (SELECT category_id FROM Object WHERE img_id=%s)))))"
-                value = (img_id, img_id)
-                obj_id = cursor.execute(query, value)
-
-                query = "DELETE FROM Object WHERE img_id=%s AND id=%s"
-                value = (img_id, obj_id)
-                cursor.execute(query, value)
-
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
-
     def get_aug_img(self, grid_id, category_id):
         """
         Object table의 (category_id)와 Location의 (grid_id)를 받아
@@ -1942,7 +1942,6 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                # Location 테이블과 특정 category_id만을 가진 Object table join
                 query = "SELECT tmp.x, tmp.y, tmp.iteration, Image.data " \
                         "FROM (SELECT Obj.img_id, Obj.iteration, Loc.x, Loc.y " \
                         "      FROM (SELECT img_id, iteration, loc_id FROM Object WHERE category_id=%s) AS Obj " \
@@ -1965,8 +1964,8 @@ class DB:
 
     def get_aug_mask(self, grid_id, category_id):
         """
-       Object table의 (category_id), Location의 (grid_id)를 받아
-        Location table의 (x), (y), Object table의 (iteration), Mask table의 (x), (y)
+        Object table의 (category_id), Location의 (grid_id)를 받아
+        Location table의 (x), (y), Object table의 (iteration), Mask table의 (x), (y) 반
 
         Args:
             grid_id (str): Grid table의 (id)
@@ -1979,12 +1978,12 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT tmp.x, tmp.y, tmp.iteration, Mask.x, Mask.y " \
-                        "FROM (SELECT Obj.id, Obj.iteration, Loc.x, Loc.y " \
-                        "      FROM (SELECT id, iteration, loc_id From Object Where category_id=%s) AS Obj " \
-                        "      INNER JOIN (SELECT x, y, id FROM Location WHERE grid_id=%s) AS Loc " \
-                        "      ON Loc.id=Obj.loc_id) AS tmp " \
-                        "INNER JOIN Mask ON Mask.obj_id=tmp.id"
+                query = "SELECT tmp.loc_x, tmp.loc_y, tmp.iteration, Mask.x, Mask.y " \
+                        "FROM (SELECT Obj.obj_id, Obj.iteration, Loc.x AS loc_x, Loc.y AS loc_y " \
+                        "      FROM (SELECT id AS obj_id, iteration, loc_id From Object Where category_id=%s) AS Obj " \
+                        "      INNER JOIN (SELECT x, y, id AS loc_id FROM Location WHERE grid_id=%s) AS Loc " \
+                        "      ON Loc.loc_id=Obj.loc_id) AS tmp " \
+                        "INNER JOIN Mask ON Mask.obj_id=tmp.obj_id"
                 value = (category_id, grid_id)
                 cursor.execute(query, value)
                 v = cursor.fetchall()
