@@ -184,17 +184,18 @@ if __name__ == "__main__":
     # mydb.set_bbox(obj_id='1', x='1', y='3', width='1', height='1')
     # print(mydb.delete_bbox_img(img_id='1'))
 
-    # delete_nomix_img test 코드
-    mydb.set_supercategory(name='mix')
-    mydb.set_category(super_id='2', name='hi', width='1', height='1', depth='1', iteration='1', thumbnail='1')
-    mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='2', mix_num='-1')
-    mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='3', mix_num='-1')
-    mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='4', mix_num='-1')
-    mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='5', mix_num='-1')
-    mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='6', mix_num='-1')
-    mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='7', mix_num='-1')
-    mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='8', mix_num='-1')
-    print(mydb.delete_nomix_img(img_id='1'))
+    # # delete_nomix_img test 코드
+    # mydb.set_supercategory(name='mix')
+    # mydb.set_category(super_id='2', name='hi', width='1', height='1', depth='1', iteration='1', thumbnail='1')
+    # mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='2', mix_num='-1')
+    # mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='3', mix_num='-1')
+    # mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='4', mix_num='-1')
+    # mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='5', mix_num='-1')
+    # mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='6', mix_num='-1')
+    # mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='7', mix_num='-1')
+    # mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='8', mix_num='-1')
+    # # img_id=1이면 mix, img_id=2이면 mix 아님
+    # print(mydb.delete_nomix_img(img_id='1'))
 
     # # list_obj_check_num test 코드
     # mydb.set_environment(ipv4='127.223.444.445', floor='1', width='3', height='5', depth='2')
@@ -220,9 +221,9 @@ if __name__ == "__main__":
     # print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='1', mix_num='1'))
 
     # get_aug_mask test 코드
-    # mydb.set_location(grid_id='1', x='1', y='2')
-    # mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
-    # mydb.set_mask(obj_id='1', x='1', y='2')
-    # mydb.set_mask(obj_id='2', x='1', y='1')
-    # mydb.set_mask(obj_id='2', x='1', y='2')
-    # print(mydb.get_aug_mask(grid_id='1', category_id='1'))
+    mydb.set_location(grid_id='1', x='1', y='2')
+    mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
+    mydb.set_mask(obj_id='1', x='1', y='2')
+    mydb.set_mask(obj_id='2', x='1', y='1')
+    mydb.set_mask(obj_id='2', x='1', y='2')
+    print(mydb.get_aug_mask(grid_id='1', category_id='1'))
