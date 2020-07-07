@@ -68,10 +68,10 @@ def check_category(db):
         with open(img_dir, 'rb') as file:
             img = file.read()
 
-    db.set_category(super_id='1', name='hi', width='3', height='4', depth='10', iteration='1', thumbnail='1')
+    db.set_category(super_id='1', name='1', width='1', height='1', depth='1', iteration='1', thumbnail='1')
     db.get_table(id='1', table='Category')
     # db.delete_table(id='1', table='Category')
-    db.update_category(id='1', name='hi')
+    db.update_category(id='1', name='1')
     # print('Category table: ', db.list_table(table='Category'))
     print('Category table last id: ', db.get_last_id(table='Category'))
 
@@ -194,16 +194,20 @@ if __name__ == "__main__":
     # mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='3', mix_num='-1')
     # print(mydb.get_aug_img(grid_id='1', category_id='1'))
 
-    # # get_aug_mask test 코드
-    # mydb.set_location(grid_id='1', x='1', y='2')
-    # mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
-    # mydb.set_mask(obj_id='1', x='1', y='2')
-    # mydb.set_mask(obj_id='2', x='1', y='1')
-    # mydb.set_mask(obj_id='2', x='1', y='2')
-    # print(mydb.get_aug_mask(grid_id='1', category_id='1'))
-
     # set_obj_list test 코드
-    print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='1', mix_num='1'))
+    # mydb.delete_table(id='1', table='Object')
+    # mydb.set_location(grid_id='1', x='1', y='2')
+    # mydb.set_location(grid_id='1', x='1', y='3')
+    # mydb.set_location(grid_id='1', x='1', y='4')
+    # print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='1', mix_num='1'))
+
+    # get_aug_mask test 코드
+    mydb.set_location(grid_id='1', x='1', y='2')
+    mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
+    mydb.set_mask(obj_id='1', x='1', y='2')
+    mydb.set_mask(obj_id='2', x='1', y='1')
+    mydb.set_mask(obj_id='2', x='1', y='2')
+    print(mydb.get_aug_mask(grid_id='1', category_id='1'))
 
 
 

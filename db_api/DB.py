@@ -1848,14 +1848,13 @@ class DB:
             self.db.commit()
 
     # --------------------------------------- 수정/확인 필요한 함수 --------------------------------------
-    def set_obj_list(self, grid_id, category_id, iteration, mix_num, img_id='NULL') -> bool:
+    def set_obj_list(self, grid_id, category_id, iteration, mix_num) -> bool:
         """
         Location table의 (grid_id)를 가진 row와 Category table의 (id)를 가진 row를 통해
         (Location table의 특정 (grid_id)를 가진 row 수) X (category table의 특정 (category_id)를 가진 row 수)만큼
         Object table에 row 생성
 
         Args:
-            img_id (str): Object table의 (img_id) -> default 값으로 None
             grid_id (str): Location table의 (grid_id)
             category_id (str): Category table의 (id)
             iteration (str): Object table의 (iteration)
@@ -1866,14 +1865,16 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) "\
-                        "SELECT * " \
-                        "FROM ((WITH tmp (img_id, iteration, mix_num) AS (SELECT %s, %s, %s) SELECT * FROM tmp) AS tmp " \
-                        "   CROSS JOIN (SELECT id AS loc_id FROM Location WHERE grid_id=%s) AS Loc) " \
-                        "   CROSS JOIN (SELECT id AS category_id FROM Category WHERE id=%s) AS Cat"
-                value = (img_id, iteration, mix_num, grid_id, category_id)
+                query = "INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) " \
+                        "SELECT Obj.img_id, Obj.loc_id, Obj.category_id, Obj.iteration, Obj.mix_num " \
+                        "FROM (SELECT * " \
+                        "   FROM (SELECT * " \
+                        "       FROM (WITH tmp (img_id, iteration, mix_num) " \
+                        "             AS (SELECT NULL, %s, %s) SELECT * FROM tmp) AS tmp " \
+                        "       CROSS JOIN (SELECT id AS loc_id FROM Location WHERE grid_id=%s) AS Loc) AS Lo " \
+                        "   CROSS JOIN (SELECT id AS category_id FROM Category WHERE id=%s) AS Cat) AS Obj"
+                value = (iteration, mix_num, grid_id, category_id)
                 cursor.execute(query, value)
-
                 return True
 
         except Exception as e:
