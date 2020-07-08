@@ -1991,3 +1991,50 @@ class DB:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+#-----------------------수정 필요한 함수---------------------------------
+    def get_aug_loc_id(self, grid_id):
+        """
+        grid_id가 동일한 모든 loc의 id 획득
+
+        Args:
+            grid_id (str): Grid table의 id(Primary Key)
+
+        Return:
+            tuple()() :  tuple(grid_x)(grid_y)(loc_id)
+        """
+
+    def set_aug_image(self, data):
+        """
+        Image table에 여러개의 이미지들 row 추가
+
+        Args:
+            data ()(): ((device_id, image, type, check_num), (...))
+
+        Return:
+            Bool: True or False
+        """
+
+
+    def set_aug_obj(self, data):
+        """
+        object table에 여러 object들 row 추가
+
+        Args:
+            data ()(): ((img_id, loc_id, category_id, iteration, mix_num), (...))
+
+        Return:
+            Bool: True or False
+        """
+
+    def set_aug_bbox(self, data):
+        """
+        bbox table에 여러 bbox들 row 추가
+
+        Args:
+            data ()() : ((obj_id, x, y, width, height), (...))
+
+        Return:
+            Bool: True or False
+        """
+

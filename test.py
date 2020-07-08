@@ -221,12 +221,12 @@ if __name__ == "__main__":
     # print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='1', mix_num='1'))
 
     # get_aug_mask test 코드
-    mydb.set_location(grid_id='1', x='1', y='2')
-    mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
-    mydb.set_mask(obj_id='1', x='1', y='2')
-    mydb.set_mask(obj_id='2', x='1', y='1')
-    mydb.set_mask(obj_id='2', x='1', y='2')
-    print(mydb.get_aug_mask(grid_id='1', category_id='1'))
+    # mydb.set_location(grid_id='1', x='1', y='2')
+    # mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
+    # mydb.set_mask(obj_id='1', x='1', y='2')
+    # mydb.set_mask(obj_id='2', x='1', y='1')
+    # mydb.set_mask(obj_id='2', x='1', y='2')
+    # print(mydb.get_aug_mask(grid_id='1', category_id='1'))
 
     # # get_aug_img test 코드
     # mydb.set_environment(ipv4='127.223.444.445', floor='1', width='3', height='5', depth='2')
@@ -235,3 +235,10 @@ if __name__ == "__main__":
     # mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
     # mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='3', mix_num='-1')
     # print(mydb.get_aug_img(grid_id='1', category_id='1'))
+
+    img_dir = 'img/puffine.jpg'
+    if isinstance(img_dir, str):
+        with open(img_dir, 'rb') as file:
+            img = file.read()
+
+    mydb.set_image(device_id='20001', image=img, type='0', check_num='2')
