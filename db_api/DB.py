@@ -1918,48 +1918,11 @@ class DB:
             print(e)
             return False
 
-    def get_aug_img(self, grid_id, category_id):
-        """
-        Object table의 (category_id)와 Location의 (grid_id)를 받아
-        Location table의 (x), (y), Object table의 (iteration), Image table의 (data) 반환
-
-        Args:
-            grid_id (str): Grid table의 (id)
-            category_id (str): category table의 (id)
-
-        Return:
-            tuple ()(): ((loc_x, loc_y, iteration, (Image) data),
-                         (...))
-            None: 값 없음
-            False: 쿼리 실패
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "SELECT tmp.x, tmp.y, tmp.iteration, Image.data " \
-                        "FROM (SELECT Obj.img_id, Obj.iteration, Loc.x, Loc.y " \
-                        "      FROM (SELECT img_id, iteration, loc_id FROM Object WHERE category_id=%s) AS Obj " \
-                        "      INNER JOIN (SELECT x, y, id FROM Location WHERE grid_id=%s) AS Loc " \
-                        "      ON Loc.id=Obj.loc_id) AS tmp " \
-                        "INNER JOIN Image ON Image.id=tmp.img_id"
-                value = (category_id, grid_id)
-                cursor.execute(query, value)
-                v = cursor.fetchall()
-
-                if v:
-                    return v
-                else:
-                    return None
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
     # --------------------------------------- 수정/확인 필요한 함수 --------------------------------------
-
     def get_aug_mask(self, grid_id, category_id):
         """
         Object table의 (category_id), Location의 (grid_id)를 받아
-        Location table의 (x), (y), Object table의 (iteration), Mask table의 (x), (y) 반
+        Location table의 (x), (y), Object table의 (iteration), Mask table의 (x), (y) 반환
 
         Args:
             grid_id (str): Grid table의 (id)
@@ -1972,16 +1935,54 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT tmp.loc_x, tmp.loc_y, tmp.iteration, Mask.x, Mask.y " \
-                        "FROM (SELECT Obj.obj_id, Obj.iteration, Loc.x AS loc_x, Loc.y AS loc_y " \
-                        "      FROM (SELECT id AS obj_id, iteration, loc_id From Object Where category_id=%s) AS Obj " \
+                query = "SELECT Obj.loc_x, Obj.loc_y, Obj.iteration, Mask.x, Mask.y " \
+                        "FROM (SELECT O.obj_id, O.iteration, Loc.x AS loc_x, Loc.y AS loc_y " \
+                        "      FROM (SELECT id AS obj_id, iteration, loc_id FROM Object WHERE category_id=%s) AS O " \
                         "      INNER JOIN (SELECT x, y, id AS loc_id FROM Location WHERE grid_id=%s) AS Loc " \
-                        "      ON Loc.loc_id=Obj.loc_id) AS tmp " \
-                        "INNER JOIN Mask ON Mask.obj_id=tmp.obj_id"
+                        "      ON Loc.loc_id=O.loc_id) AS Obj " \
+                        "INNER JOIN Mask ON Mask.obj_id=Obj.obj_id"
                 value = (category_id, grid_id)
                 cursor.execute(query, value)
                 v = cursor.fetchall()
-                print(v)
+                if v:
+                    return v
+                else:
+                    return None
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+    def get_aug_img(self, grid_id, category_id):
+        """
+        Object table의 (category_id)와 Location의 (grid_id)를 받아
+        Location table의 (x), (y), Object table의 (iteration), Image table의 (data) 반환
+
+        Args:
+            grid_id (str): Grid table의 (id)
+            category_id (str): category table의 (id)
+
+        Return:
+            tuple ()(): ((loc_x, loc_y, iteration, img),
+                         (...))
+            None: 값 없음
+            False: 쿼리 실패
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "SELECT Obj.loc_x, Obj.loc_y, Obj.iteration, Image.data " \
+                        "FROM (SELECT O.img_id, O.iteration, O.obj_id, Loc.loc_x, Loc.loc_y " \
+                        "      FROM (SELECT id AS obj_id, img_id, iteration, loc_id " \
+                        "            FROM Object WHERE category_id=%s) AS O " \
+                        "      INNER JOIN (SELECT x AS loc_x, y AS loc_y, id as loc_id " \
+                        "                  FROM Location WHERE grid_id=%s) AS Loc " \
+                        "      ON Loc.loc_id=O.loc_id) AS Obj " \
+                        "INNER JOIN Image ON Image.id=Obj.img_id"
+                value = (category_id, grid_id)
+                cursor.execute(query, value)
+                v = cursor.fetchall()
+
                 if v:
                     return v
                 else:
