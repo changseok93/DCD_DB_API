@@ -1928,13 +1928,13 @@ class DB:
             category_id (str): category table의 (id)
 
         Return:
-            tuple ((loc_x, loc_y, iteration, mask_x, mask_y), (...))
+            tuple ((loc_x, loc_y, iteration, mask_id, mask_x, mask_y), (...))
             None: 값 없음
             False: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT Obj.loc_x, Obj.loc_y, Obj.iteration, Mask.x, Mask.y " \
+                query = "SELECT Obj.loc_x, Obj.loc_y, Obj.iteration, Mask.id, Mask.x, Mask.y " \
                         "FROM (SELECT O.obj_id, O.iteration, Loc.x AS loc_x, Loc.y AS loc_y " \
                         "      FROM (SELECT id AS obj_id, iteration, loc_id FROM Object WHERE category_id=%s) AS O " \
                         "      INNER JOIN (SELECT x, y, id AS loc_id FROM Location WHERE grid_id=%s) AS Loc " \

@@ -27,7 +27,7 @@ def check_image(db):
         with open(img_dir, 'rb') as file:
             img = file.read()
 
-    db.set_image(device_id='20001', image='1', type='0', check_num='1')
+    db.set_image(device_id='20001', image=img, type='0', check_num='1')
     db.get_table(id='1', table='Image')
     # db.delete_table(id='1', table='Image')
     db.update_image(id='1', device_id='20001')
@@ -178,13 +178,13 @@ if __name__ == "__main__":
     # Mask table test
     check_mask(mydb)
 
-    # list_obj_check_num test 코드
-    mydb.set_environment(ipv4='127.223.444.445', floor='1', width='3', height='5', depth='2')
-    mydb.set_image(device_id='20002', image='1ddd', type='2', check_num='3')
-    mydb.set_location(grid_id='1', x='1', y='2')
-    mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
-    mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='3', mix_num='-1')
-    print(mydb.list_obj_check_num(grid_id='1', category_id='1', check_num='1'))
+    # # list_obj_check_num test 코드
+    # mydb.set_environment(ipv4='127.223.444.445', floor='1', width='3', height='5', depth='2')
+    # mydb.set_image(device_id='20002', image='1ddd', type='2', check_num='3')
+    # mydb.set_location(grid_id='1', x='1', y='2')
+    # mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
+    # mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='3', mix_num='-1')
+    # print(mydb.list_obj_check_num(grid_id='1', category_id='1', check_num='1'))
 
     # # delete_bbox_img test 코드
     # mydb.set_bbox(obj_id='1', x='1', y='2', width='1', height='1')
@@ -220,13 +220,13 @@ if __name__ == "__main__":
     # mydb.set_location(grid_id='1', x='1', y='4')
     # print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='1', mix_num='1'))
 
-    # # get_aug_mask test 코드
-    # mydb.set_location(grid_id='1', x='1', y='2')
-    # mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
-    # mydb.set_mask(obj_id='1', x='1', y='2')
-    # mydb.set_mask(obj_id='2', x='1', y='1')
-    # mydb.set_mask(obj_id='2', x='1', y='2')
-    # print(mydb.get_aug_mask(grid_id='1', category_id='1'))
+    # get_aug_mask test 코드
+    mydb.set_location(grid_id='1', x='1', y='2')
+    mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
+    mydb.set_mask(obj_id='1', x='1', y='2')
+    mydb.set_mask(obj_id='2', x='1', y='1')
+    mydb.set_mask(obj_id='2', x='1', y='2')
+    print(mydb.get_aug_mask(grid_id='1', category_id='1'))
 
     # # get_aug_img test 코드
     # mydb.set_environment(ipv4='127.223.444.445', floor='1', width='3', height='5', depth='2')
