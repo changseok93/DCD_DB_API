@@ -1992,47 +1992,71 @@ class DB:
             print(e)
             return False
 
-#-----------------------수정 필요한 함수---------------------------------
+# -----------------------수정 필요한 함수---------------------------------
     def get_aug_loc_id(self, grid_id):
         """
-        grid_id가 동일한 모든 loc의 id 획득
+        Location table의 (grid_id)가 동일한
+        Grid table의 (grid_width), Grid table의 (grid_height), Location table의 (loc_id) 반환
 
         Args:
-            grid_id (str): Grid table의 id(Primary Key)
+            grid_id (str): Grid table의 (id)
 
         Return:
-            tuple()() :  tuple(grid_x)(grid_y)(loc_id)
+            tuple()(): ((grid_w, grid_h, loc_id),
+                        (...))
+            None: 조회된 값 없음
+            False: 쿼리 실패
         """
+        try:
+            with self.db.cursor() as cursor:
+                query = "SELECT G.grid_w, G.grid_h, Location.id AS loc_id " \
+                        "FROM (SELECT width as grid_w, height as grid_h, id as grid_id " \
+                        "      FROM Grid WHERE id=%s) AS G " \
+                        "INNER JOIN Location ON Location.grid_id=G.grid_id"
+                value = (grid_id)
+                cursor.execute(query, value)
+                v = cursor.fetchall()
 
-    def set_aug_image(self, data):
+                if v:
+                    return v
+                else:
+                    return None
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+    def set_bulk_image(self, data) -> bool:
         """
-        Image table에 여러개의 이미지들 row 추가
+        Image table에 수십개 row 추가
 
         Args:
-            data ()(): ((device_id, image, type, check_num), (...))
+            data (tuple): ((device_id, image, type, check_num),
+                        (...))
+        Return:
+            Bool: True or False
+        """
+
+    def set_bulk_obj(self, data) -> bool:
+        """
+        object table에 수십개 row 추가
+
+        Args:
+            data (tuple): ((img_id, loc_id, category_id, iteration, mix_num),
+                           (...))
 
         Return:
             Bool: True or False
         """
 
-
-    def set_aug_obj(self, data):
+    def set_bulk_bbox(self, data) -> bool:
         """
-        object table에 여러 object들 row 추가
+        bbox table에 수십개 row 추가
 
         Args:
-            data ()(): ((img_id, loc_id, category_id, iteration, mix_num), (...))
-
-        Return:
-            Bool: True or False
-        """
-
-    def set_aug_bbox(self, data):
-        """
-        bbox table에 여러 bbox들 row 추가
-
-        Args:
-            data ()() : ((obj_id, x, y, width, height), (...))
+            data (tuple) : ((obj_id, x, y, width, height),
+                            (...))
 
         Return:
             Bool: True or False

@@ -36,10 +36,10 @@ def check_image(db):
 
 
 def check_grid(db):
-    db.set_grid(width='3', height='4')
+    db.set_grid(width='1', height='1')
     db.get_table(id='1', table='Grid')
     # db.delete_table(id='1', table='Grid')
-    db.update_grid(id='1', width='3')
+    db.update_grid(id='1', width='1')
     print('Grid table: ', db.list_table(table='Grid'))
     print('Grid table last id: ', db.get_last_id(table='Grid'))
 
@@ -236,9 +236,8 @@ if __name__ == "__main__":
     # mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='3', mix_num='-1')
     # print(mydb.get_aug_img(grid_id='1', category_id='1'))
 
-    img_dir = 'img/puffine.jpg'
-    if isinstance(img_dir, str):
-        with open(img_dir, 'rb') as file:
-            img = file.read()
-
-    mydb.set_image(device_id='20001', image=img, type='0', check_num='2')
+    # # get_aug_loc_id test 코드
+    # mydb.set_location(grid_id='1', x='1', y='2')
+    # mydb.set_location(grid_id='1', x='2', y='1')
+    # mydb.set_location(grid_id='1', x='2', y='2')
+    # print(mydb.get_aug_loc_id(grid_id='1'))
