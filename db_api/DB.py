@@ -1918,7 +1918,6 @@ class DB:
             print(e)
             return False
 
-    # --------------------------------------- 수정/확인 필요한 함수 --------------------------------------
     def get_aug_mask(self, grid_id, category_id):
         """
         Object table의 (category_id), Location의 (grid_id)를 받아
@@ -1964,7 +1963,7 @@ class DB:
             category_id (str): category table의 (id)
 
         Return:
-            tuple ()(): ((loc_x, loc_y, iteration, img),
+            tuple ()(): ((loc_x, loc_y, iteration, (byte)img),
                          (...))
             None: 값 없음
             False: 쿼리 실패
