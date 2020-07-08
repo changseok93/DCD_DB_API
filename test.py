@@ -241,3 +241,25 @@ if __name__ == "__main__":
     # mydb.set_location(grid_id='1', x='2', y='1')
     # mydb.set_location(grid_id='1', x='2', y='2')
     # print(mydb.get_aug_loc_id(grid_id='1'))
+
+    # # set_bulk_img test 코드
+    # mydb.set_environment(ipv4='123.233.122.12', floor='1', width='2', height='3', depth='3')
+    # mydb.set_environment(ipv4='123.233.122.12', floor='2', width='2', height='3', depth='3')
+    # mydb.set_environment(ipv4='123.233.122.12', floor='3', width='2', height='3', depth='3')
+    # # (env_id, data, type, check_num)
+    # ex = (('20002', '1', '1', '1'),
+    #       ('20003', '1', '1', '2'))
+    # print(mydb.set_bulk_img(datas=ex))
+
+    # set_bulk_obj test 코드
+    # (img_id, loc_id, category_id, iteration, mix_num)
+    # ex = (('1', '1', '1', '3', '-1'),
+    #       ('1', '1', '1', '4', '-1'))
+    # print(mydb.set_bulk_obj(datas=ex))
+
+    # set_bulk_bbox test 코드
+    # (obj_id, x, y, width, height)
+    # ex = (('1', '1', '2', '1', '1'),
+    #       ('1', '2', '3', '1', '1'))
+    # print(mydb.set_bulk_bbox(datas=ex))
+

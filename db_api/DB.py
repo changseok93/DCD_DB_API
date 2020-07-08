@@ -1992,7 +1992,6 @@ class DB:
             print(e)
             return False
 
-# -----------------------수정 필요한 함수---------------------------------
     def get_aug_loc_id(self, grid_id):
         """
         Location table의 (grid_id)가 동일한
@@ -2027,38 +2026,88 @@ class DB:
             print(e)
             return False
 
-    def set_bulk_image(self, data) -> bool:
+# -----------------------수정 필요한 함수---------------------------------
+    def set_bulk_img(self, datas) -> bool:
         """
-        Image table에 수십개 row 추가
+        Image table에 여러개의 row 추가
 
         Args:
-            data (tuple): ((device_id, image, type, check_num),
-                        (...))
-        Return:
-            Bool: True or False
-        """
-
-    def set_bulk_obj(self, data) -> bool:
-        """
-        object table에 수십개 row 추가
-
-        Args:
-            data (tuple): ((img_id, loc_id, category_id, iteration, mix_num),
-                           (...))
-
-        Return:
-            Bool: True or False
-        """
-
-    def set_bulk_bbox(self, data) -> bool:
-        """
-        bbox table에 수십개 row 추가
-
-        Args:
-            data (tuple) : ((obj_id, x, y, width, height),
+            datas (tuple): ((env_id, data, type, check_num),
                             (...))
-
         Return:
             Bool: True or False
         """
+        try:
+            with self.db.cursor() as cursor:
+                query = "INSERT INTO Image (env_id, data, type, check_num) VALUES"
+                for data in datas:
+                    s = "({}, {}, {}, {}), ".format(data[0], data[1], data[2], data[3])
+                    query += s
+                query = query[:-2]
+                cursor.execute(query)
+                return True
 
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+
+    def set_bulk_obj(self, datas) -> bool:
+        """
+        Object table에 여러개의 row 추가
+
+        Args:
+            datas (tuple): ((img_id, loc_id, category_id, iteration, mix_num),
+                            (...))
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "INSERT INTO Object (img_id, loc_id, category_id, iteration, mix_num) VALUES"
+                for data in datas:
+                    s = "({}, {}, {}, {}, {}), ".format(data[0], data[1], data[2], data[3], data[4])
+                    query += s
+                query = query[:-2]
+                cursor.execute(query)
+                return True
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+
+    def set_bulk_bbox(self, datas) -> bool:
+        """
+        Bbox table에 여러개의 row 추가
+
+        Args:
+            datas (tuple) : ((obj_id, x, y, width, height),
+                             (...))
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "INSERT INTO Bbox (obj_id, x, y, width, height) VALUES"
+                for data in datas:
+                    s = "({}, {}, {}, {}, {}), ".format(data[0], data[1], data[2], data[3], data[4])
+                    query += s
+                query = query[:-2]
+                print(query)
+                cursor.execute(query)
+                return True
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
