@@ -225,13 +225,13 @@ if __name__ == "__main__":
     # print(mydb.list_obj_check_num(grid_id='1', category_id='1', check_num='1'))
 
     # set_obj_list test 코드
-    # mydb.delete_table(id='1', table='Object')
-    # mydb.set_location(grid_id='1', x='1', y='2')
-    # mydb.set_location(grid_id='1', x='1', y='3')
-    # mydb.set_location(grid_id='1', x='1', y='4')
-    # print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='1', mix_num='1'))
-    # print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='2', mix_num='1'))
-    # print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='3', mix_num='1'))
+    mydb.delete_table(id='1', table='Object')
+    mydb.set_location(grid_id='1', x='1', y='2')
+    mydb.set_location(grid_id='1', x='1', y='3')
+    mydb.set_location(grid_id='1', x='1', y='4')
+    print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='1', mix_num='1'))
+    print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='2', mix_num='1'))
+    print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='3', mix_num='1'))
 
     # get_aug_mask test 코드
     # mydb.set_location(grid_id='1', x='1', y='2')
@@ -250,10 +250,10 @@ if __name__ == "__main__":
     # print(mydb.get_aug_img(grid_id='1', category_id='1'))
 
     # get_aug_loc_id test 코드
-    mydb.set_location(grid_id='1', x='1', y='2')
-    mydb.set_location(grid_id='1', x='2', y='1')
-    mydb.set_location(grid_id='1', x='2', y='2')
-    print(mydb.get_aug_loc_id(grid_id='1'))
+    # mydb.set_location(grid_id='1', x='1', y='2')
+    # mydb.set_location(grid_id='1', x='2', y='1')
+    # mydb.set_location(grid_id='1', x='2', y='2')
+    # print(mydb.get_aug_loc_id(grid_id='1'))
 
     # # (env_id, data, type, check_num)
     # ex_table = []

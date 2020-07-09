@@ -42,9 +42,6 @@ class DB:
             print("setting on")
 
             with self.db.cursor() as cursor:
-                query = 'CREATE DATABASE ' + db_name
-                cursor.execute(query)
-
                 query = 'SET GLOBAL wait_timeout=31536000'
                 cursor.execute(query)
 
@@ -54,13 +51,22 @@ class DB:
                 query = 'SET GLOBAL max_connections=100000'
                 cursor.execute(query)
 
-                query = 'SET GLOBAL max_connections=100000'
+                query = 'SET GLOBAL max_user_connections=100000'
                 cursor.execute(query)
 
                 query = 'SET GLOBAL max_error_count=65535'
                 cursor.execute(query)
 
-                query = 'SET GLOBAL max_connect_errors=	4294967295'
+                query = 'SET GLOBAL max_connect_errors=4294967295'
+                cursor.execute(query)
+
+                query = 'SET GLOBAL mysqlx_max_connections=100000'
+                cursor.execute(query)
+
+                query = "set @@autocommit=0"
+                cursor.execute(query)
+
+                query = "CREATE DATABASE {}".format(db_name)
                 cursor.execute(query)
 
         except Exception as e:
