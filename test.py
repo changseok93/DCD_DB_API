@@ -170,24 +170,24 @@ if __name__ == "__main__":
     check_category(mydb)
 
     # Object table test
-    # check_object(mydb)
+    check_object(mydb)
 
     # Bbox table test
-    # check_bbox(mydb)
+    check_bbox(mydb)
 
     # Mask table test
-    # check_mask(mydb)
+    check_mask(mydb)
 
-    # get_mix_num test 코드
-    mydb.set_location(grid_id='1', x='1', y='2')
-    mydb.set_location(grid_id='1', x='1', y='3')
-    mydb.set_location(grid_id='1', x='1', y='4')
-    mydb.set_location(grid_id='1', x='1', y='5')
-    mydb.set_category(super_id='1', name='22', width='1', height='1', depth='22', iteration='2', thumbnail='1')
-    mydb.set_object(img_id='1', loc_id='5', category_id='2', iteration='1', mix_num='-1')
-    mydb.set_object(img_id='1', loc_id='5', category_id='2', iteration='1', mix_num='0')
-    mydb.set_object(img_id='1', loc_id='5', category_id='2', iteration='1', mix_num='1')
-    print(mydb.get_mix_num(loc_id='5', category_id='2', iteration='1'))
+    # # get_mix_num test 코드
+    # mydb.set_location(grid_id='1', x='1', y='2')
+    # mydb.set_location(grid_id='1', x='1', y='3')
+    # mydb.set_location(grid_id='1', x='1', y='4')
+    # mydb.set_location(grid_id='1', x='1', y='5')
+    # mydb.set_category(super_id='1', name='22', width='1', height='1', depth='22', iteration='2', thumbnail='1')
+    # mydb.set_object(img_id='1', loc_id='5', category_id='2', iteration='1', mix_num='-1')
+    # mydb.set_object(img_id='1', loc_id='5', category_id='2', iteration='1', mix_num='0')
+    # mydb.set_object(img_id='1', loc_id='5', category_id='2', iteration='1', mix_num='1')
+    # print(mydb.get_mix_num(loc_id='5', category_id='2', iteration='1'))
 
     # # list_obj_check_num test 코드
     # mydb.set_environment(ipv4='127.223.444.445', floor='1', width='3', height='5', depth='2')
@@ -249,11 +249,11 @@ if __name__ == "__main__":
     # mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='3', mix_num='-1')
     # print(mydb.get_aug_img(grid_id='1', category_id='1'))
 
-    # # get_aug_loc_id test 코드
-    # mydb.set_location(grid_id='1', x='1', y='2')
-    # mydb.set_location(grid_id='1', x='2', y='1')
-    # mydb.set_location(grid_id='1', x='2', y='2')
-    # print(mydb.get_aug_loc_id(grid_id='1'))
+    # get_aug_loc_id test 코드
+    mydb.set_location(grid_id='1', x='1', y='2')
+    mydb.set_location(grid_id='1', x='2', y='1')
+    mydb.set_location(grid_id='1', x='2', y='2')
+    print(mydb.get_aug_loc_id(grid_id='1'))
 
     # # (env_id, data, type, check_num)
     # ex_table = []

@@ -2067,23 +2067,20 @@ class DB:
     def get_aug_loc_id(self, grid_id):
         """
         Location table의 (grid_id)가 동일한
-        Grid table의 (grid_width), Grid table의 (grid_height), Location table의 (loc_id) 반환
+        Location table의 (x), Location table의 (y), Location table의 (loc_id) 반환
 
         Args:
             grid_id (str): Grid table의 (id)
 
         Return:
-            tuple()(): ((grid_w, grid_h, loc_id),
+            tuple()(): ((loc_x, loc_y, loc_id),
                         (...))
             None: 조회된 값 없음
             False: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT G.grid_w, G.grid_h, Location.id AS loc_id " \
-                        "FROM (SELECT width as grid_w, height as grid_h, id as grid_id " \
-                        "      FROM Grid WHERE id=%s) AS G " \
-                        "INNER JOIN Location ON Location.grid_id=G.grid_id"
+                query = "SELECT x, y, id FROM Location WHERE grid_id=%s"
                 value = (grid_id)
                 cursor.execute(query, value)
                 v = cursor.fetchall()
