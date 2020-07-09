@@ -91,7 +91,6 @@ class DB:
                 query = 'INSERT INTO Environment(ipv4, floor, width, height, depth) VALUES(%s, %s, %s, %s, %s)'
                 values = (ipv4, floor, width, height, depth)
                 cursor.execute(query, values)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -100,6 +99,7 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
 
     def update_environment(self, id, ipv4=None, floor=None, width=None, height=None, depth=None) -> bool:
         """
@@ -134,7 +134,6 @@ class DB:
                 query += query_tail
 
                 cursor.execute(query)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -143,6 +142,7 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
 
     def set_image(self, device_id, image, type, check_num) -> bool:
         """
@@ -163,7 +163,6 @@ class DB:
                 values = (device_id, image, type, check_num)
 
                 cursor.execute(query, values)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -172,6 +171,7 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
 
     def update_image(self, id, device_id=None, image=None, type=None, check_num=None) -> bool:
         """
@@ -204,8 +204,6 @@ class DB:
                 query += query_tail
                 cursor.execute(query)
 
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
@@ -213,6 +211,7 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
 
     def set_grid(self, width, height) -> bool:
         """
@@ -231,8 +230,6 @@ class DB:
                 values = (width, height)
                 cursor.execute(query, values)
 
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
@@ -240,6 +237,7 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
 
     def update_grid(self, id, width=None, height=None) -> bool:
         """
@@ -264,7 +262,6 @@ class DB:
                 query = query_head[:-2]
                 query += query_tail
                 cursor.execute(query)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -273,6 +270,7 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
 
     def set_location(self, grid_id, x, y) -> bool:
         """
@@ -291,7 +289,6 @@ class DB:
                 query = 'INSERT INTO Location(grid_id, x, y) VALUES(%s, %s, %s)'
                 values = (grid_id, x, y)
                 cursor.execute(query, values)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -300,6 +297,7 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
 
     def update_location(self, id, grid_id=None, x=None, y=None) -> bool:
         """
@@ -328,7 +326,6 @@ class DB:
                 query += query_tail
 
                 cursor.execute(query)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -337,6 +334,7 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
 
     def set_supercategory(self, name) -> bool:
         """
@@ -353,7 +351,6 @@ class DB:
                 query = 'INSERT INTO SuperCategory(name) VALUES(%s)'
                 values = (name)
                 cursor.execute(query, values)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -362,6 +359,7 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
 
     def update_supercategory(self, id, name=None) -> bool:
         """
@@ -389,7 +387,6 @@ class DB:
                 query = query_head[:-2]
                 query += query_tail
                 cursor.execute(query)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -398,6 +395,7 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
 
     def set_category(self, super_id, name, width, height, depth, iteration, thumbnail) -> bool:
         """
@@ -424,9 +422,11 @@ class DB:
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            return False
 
         finally:
             self.db.commit()
+            return True
 
     def update_category(self, id, super_id=None, name=None, width=None,
                         height=None, depth=None, iteration=None, thumbnail=None) -> bool:
@@ -468,7 +468,6 @@ class DB:
                 query = query_head[:-2]
                 query += query_tail
                 cursor.execute(query)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -477,6 +476,7 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
 
     def set_object(self, img_id, loc_id, category_id, iteration, mix_num) -> bool:
         """
@@ -497,7 +497,6 @@ class DB:
                 query = 'INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) VALUES(%s, %s, %s, %s, %s)'
                 values = (img_id, loc_id, category_id, iteration, mix_num)
                 cursor.execute(query, values)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -506,6 +505,7 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
 
     def update_object(self, id, img_id=None, loc_id=None, category_id=None, iteration=None, mix_num=None) -> bool:
         """
@@ -540,7 +540,6 @@ class DB:
                 query += query_tail
 
                 cursor.execute(query)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -549,6 +548,7 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
 
     def set_bbox(self, obj_id, x, y, width, height) -> bool:
         """
@@ -569,7 +569,6 @@ class DB:
                 query = 'INSERT INTO Bbox(obj_id, x, y, width, height) VALUES(%s, %s, %s, %s, %s)'
                 values = (obj_id, x, y, width, height)
                 cursor.execute(query, values)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -578,6 +577,7 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
 
     def update_bbox(self, id, x=None, y=None, width=None, height=None) -> bool:
         """
@@ -609,7 +609,6 @@ class DB:
                 query += query_tail
 
                 cursor.execute(query)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -618,6 +617,7 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
 
     def set_mask(self, obj_id, x, y) -> bool:
         """
@@ -636,7 +636,6 @@ class DB:
                 query = 'INSERT INTO Mask(obj_id, x, y) VALUES(%s, %s, %s)'
                 values = (obj_id, x, y)
                 cursor.execute(query, values)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -645,6 +644,7 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
 
     def update_mask(self, id, obj_id=None, x=None, y=None) -> bool:
         """
@@ -674,7 +674,6 @@ class DB:
                 query += query_tail
 
                 cursor.execute(query)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -683,6 +682,7 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
 
     def get_table(self, id, table):
         """
@@ -703,15 +703,18 @@ class DB:
                 values = (id)
                 cursor.execute(query, values)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3], '_', table)
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def delete_table(self, id, table) -> bool:
         """
@@ -729,7 +732,6 @@ class DB:
                 query = 'DELETE FROM ' + table + ' WHERE id=%s'
                 values = (id)
                 cursor.execute(query, values)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3], table)
@@ -738,6 +740,7 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
 
     def list_table(self, table):
         """
@@ -756,15 +759,18 @@ class DB:
                 query = 'SELECT * FROM ' + table
                 cursor.execute(query)
                 v = cursor.fetchall()
-                if v:
-                    return v
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3], '_', table)
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def init_table(self) -> bool:
         """
@@ -807,12 +813,15 @@ class DB:
                 query = 'DROP TABLE '
                 query += table
                 cursor.execute(query)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            return True
 
     def get_last_id(self, table):
         """
@@ -831,15 +840,18 @@ class DB:
                 query = 'SELECT MAX(id) FROM ' + table
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3], '_', table)
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def get_env_id(self, ipv4, floor):
         """
@@ -859,15 +871,18 @@ class DB:
                 query = "SELECT id FROM Environment WHERE ipv4='" + ipv4 + "' AND floor=" + floor
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def get_grid_id(self, grid_w_h):
         """
@@ -887,15 +902,18 @@ class DB:
                 query = "SELECT id FROM Grid WHERE width=" + w + " AND height=" + h
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return None
+
+        finally:
+            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_supercategory_id(self, name):
         """
@@ -914,15 +932,18 @@ class DB:
                 query = "SELECT id FROM SuperCategory WHERE name='" + name + "'"
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_loc_id(self, grid_id, loc_x_y):
         """
@@ -952,6 +973,13 @@ class DB:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def get_loc_id_GL(self, grid_w_h, loc_x_y):
         """
@@ -986,6 +1014,13 @@ class DB:
             print(e)
             return False
 
+        finally:
+            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
+
     def get_category_id(self, super_id, category_name):
         """
         Category table의 id를 반환
@@ -1004,15 +1039,18 @@ class DB:
                 query = 'SELECT id FROM Category WHERE super_id=' + super_id + " AND name='" + category_name + "'"
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def get_category_id_obj(self, obj_id):
         """
@@ -1031,15 +1069,18 @@ class DB:
                 query = "SELECT category_id FROM Object WHERE id=" + obj_id
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def get_img_id(self, obj_id):
         """
@@ -1058,15 +1099,18 @@ class DB:
                 query = 'SELECT img_id FROM Object WHERE id=' + obj_id
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def get_location(self, grid_id):
         """
@@ -1086,15 +1130,18 @@ class DB:
                 query = 'SELECT id FROM Location WHERE grid_id=' + grid_id
                 cursor.execute(query)
                 v = cursor.fetchall()
-                if v:
-                    return v
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_bbox_info(self, object_id):
         """
@@ -1114,15 +1161,19 @@ class DB:
                 query = "SELECT x, y, width, height from Bbox WHERE obj_id=" + object_id
                 cursor.execute(query)
                 v = cursor.fetchall()
-                if v:
-                    return v
-                else:
-                    return None
+
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_obj_id_img(self, img_id):
         """
@@ -1141,15 +1192,18 @@ class DB:
                 query = "SELECT id FROM Object WHERE img_id=" + img_id
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_obj_id(self, category_id):
         """
@@ -1169,15 +1223,18 @@ class DB:
                 query = "SELECT id FROM Object WHERE category_id=" + category_id + " AND mix_num=" + "-1"
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_super_id(self, category_id):
         """
@@ -1197,15 +1254,18 @@ class DB:
                 query = "SELECT super_id FROM Category WHERE id=" + category_id
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def get_super_name(self, super_id):
         """
@@ -1225,15 +1285,18 @@ class DB:
                 query = "SELECT name FROM SuperCategory WHERE id=" + super_id
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def get_mix_num(self, loc_id, category_id, iteration):
         """
@@ -1256,15 +1319,18 @@ class DB:
                 value = (loc_id, category_id, iteration)
                 cursor.execute(query, value)
                 mix_nums = sum(cursor.fetchall(), ())
-                if mix_nums:
-                    return None
-
-                return sorted(mix_nums, reverse=True)[0]
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if mix_nums:
+                return sorted(mix_nums, reverse=True)[0]
+            else:
+                return None
 
     def get_bbox_id(self, obj_id):
         """
@@ -1284,15 +1350,18 @@ class DB:
                 query = "SELECT id FROM Bbox WHERE obj_id=" + obj_id
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_mask_id(self, obj_id):
         """
@@ -1312,15 +1381,18 @@ class DB:
                 query = "SELECT id FROM Mask WHERE obj_id=" + obj_id
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_img_check_num(self, obj_id):
         """
@@ -1341,15 +1413,18 @@ class DB:
                 value = (obj_id)
                 cursor.execute(query, value)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def get_bbox_img(self, img_id):
         """
@@ -1371,15 +1446,18 @@ class DB:
                 value = (img_id)
                 cursor.execute(query, value)
                 v = cursor.fetchall()
-                if v:
-                    return v
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_cat_id(self, super_name, cat_name):
         """
@@ -1402,15 +1480,18 @@ class DB:
                 value = (super_name, cat_name)
                 cursor.execute(query, value)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def list_bbox(self, obj_id):
         """
@@ -1430,15 +1511,18 @@ class DB:
                 query = 'SELECT * FROM Bbox WHERE obj_id=' + obj_id
                 cursor.execute(query)
                 v = cursor.fetchall()
-                if v:
-                    return v
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def list_obj(self, category_id, loc_ids):
         """
@@ -1464,160 +1548,6 @@ class DB:
                 cursor.execute(query)
                 # print('function: {}, query: {}'.format(inspect.stack()[0][3], query))
                 v = cursor.fetchall()
-                if v:
-                    return v
-                else:
-                    return None
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-    def check_image_check_num(self, img_id):
-        """
-        Image table의 이미지의 check_num을 반환
-
-        Args:
-            img_id (str): 조회하기 원하는 Object table의 id
-
-        Return:
-            int (0, 1, 2): 해당 object의 이미지 검수여부 반환
-            None: 값 없음
-            False: 쿼리 실패
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = 'SELECT check_num FROM Image WHERE id=' + img_id
-                cursor.execute(query)
-                v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-    def check_obj_id(self, loc_id, category_id, iteration, mix_num) -> bool:
-        """
-        Object table의 (loc_id, category_id, iteration)를 입력 받아
-        Object table의 특정 (id)를 check 하는 함수
-
-        Args:
-            loc_id (str): Object table의 loc_id
-            category_id (str): Object table의 category_id
-            iteration (str): Object table의 iteration
-            mix_num (str): Object table의 mix_num
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "SELECT id FROM Object WHERE loc_id=%s AND category_id=%s AND iteration=%s AND mix_num=%s"
-                value = (loc_id, category_id, iteration, mix_num)
-                cursor.execute(query, value)
-                obj_id = sum(cursor.fetchall(), ())
-                if obj_id:
-                    return True
-                else:
-                    return False
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-    def check_process(self, category_id) -> bool:
-        """
-        Object table의 (category_id)가 입력받은 값을 가지고 (mix_num)이 -1인 Object table의 row가 존재하고
-        해당하는 모든 Object table의 row에 대한 Bbox table의 row와 Mask table의 row가 둘다 존재할 경우 True 반환
-        이외의 경우 False 반환
-        Args:
-            category_id (str): Object table의 (category_id)
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                # Bbox query
-                category_id = int(category_id)
-                query = "SELECT id FROM Bbox " \
-                        "WHERE obj_id IN (SELECT id FROM Object WHERE category_id=%s AND mix_num=-1)"
-                value = (category_id)
-                cursor.execute(query, value)
-                bbox_ids = cursor.fetchall()
-
-                # Mask query
-                query = "SELECT id FROM Mask " \
-                        "WHERE obj_id IN (SELECT id FROM Object WHERE category_id=%s AND mix_num=-1)"
-                value = (category_id)
-                cursor.execute(query, value)
-                mask_ids = cursor.fetchall()
-
-                if bbox_ids and mask_ids:
-                    return True
-                else:
-                    return False
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-    def check_cat_id(self, super_name, cat_name) -> bool:
-        """
-        SuperCateogry table의 (name)과 Category table의 (name)을 입력받아
-        Category table의 특정 (id)가 존재하는지 check하는 함수
-
-        Args:
-            super_name (str): SuperCategory table의 name
-            cat_name (str): Category table의 name
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "SELECT id FROM Category WHERE name=%s AND " \
-                        "super_id IN (SELECT id FROM SuperCategory WHERE name=%s)"
-                value = (super_name, cat_name)
-                cursor.execute(query, value)
-                v = sum(cursor.fetchall(), ())
-                if v:
-                    return True
-                else:
-                    return False
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-    def update_img_check_num_obj_id(self, obj_id, check_num):
-        """
-        Object table의 (id)를 입력 받아
-        Image table의 (check_num)을 update 하는 함수
-
-        Args:
-            obj_id (str): Object table의 id
-            check_num (str): Image table의 check_num
-
-        Return:
-            True: 갱신 성공
-            False: 쿼리 실패
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "UPDATE Image SET check_num=%s " \
-                        "WHERE id=(SELECT img_id FROM Object WHERE id=%s)"
-                value = (check_num, obj_id)
-                cursor.execute(query, value)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -1626,256 +1556,10 @@ class DB:
 
         finally:
             self.db.commit()
-
-    def update_img_check_num_img_id(self, img_id, check_num):
-        """
-        Image table의 check_num 갱신
-
-        Args:
-            img_id (str): 수정하기 원하는 Object table의 id
-            check_num (str): 수정하기 원하는 Image table의 check_num
-
-        Return:
-            True: 갱신 성공
-            False: 쿼리 실패
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "UPDATE Image SET check_num=%s WHERE id=%s"
-                value = (check_num, img_id)
-                cursor.execute(query, value)
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
-
-    def update_img_img_obj_id(self, obj_id, img):
-        """
-        Object table의 (id)를 입력 받아
-        Image table의 (data) update 하는 함수
-
-        Args:
-            obj_id (str): Object table의 id
-            img (Image): update image 정보
-
-        Return:
-            True: 갱신 성공
-            False: 쿼리 실패
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "UPDATE Image SET data=%s" \
-                        "WHERE id=(SELECT img_id FROM Object WHERE id=%s)"
-                value = (img, obj_id)
-                cursor.execute(query, value)
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
-
-    def update_img_img_img_id(self, img_id, img):
-        """
-        Image table의 (data) update
-
-        Args:
-            img_id (str): Image table의 (id)
-            img (Image): Image table의 (data)
-
-        Return:
-            True: 갱신 성공
-            False: 쿼리 실패
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "UPDATE Image SET data=%s WHERE id=%s"
-                value = (img, img_id)
-                cursor.execute(query, value)
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
-
-    def delete_object(self, img_id) -> bool:
-        """
-        Object table의 (img_id)를 받아
-        해당하는 Object table의 모든 row를 삭제
-
-        Args:
-            img_id (str): Object table의 (img_id)
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = 'DELETE FROM Object WHERE img_id=' + img_id
-                cursor.execute(query)
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
-
-    def delete_bbox(self, obj_id) -> bool:
-        """
-        Bbox table의 (object_id)를 가지 row 삭제
-
-        Args:
-            obj_id (str): Bbox table의 object_id
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = 'DELETE FROM Bbox WHERE obj_id=' + obj_id
-                cursor.execute(query)
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
-
-    def delete_mask(self, obj_id) -> bool:
-        """
-        Mask table의 (object_id)를 가지는 모든 row 삭제
-
-        Args:
-            obj_id (str): Mask table의 (object_id)
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = 'DELETE FROM Mask WHERE obj_id=' + obj_id
-                cursor.execute(query)
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
-
-    def delete_bbox_img(self, img_id) -> bool:
-        """
-        Object table의 (img_id)를 통해 Object table의 (id)를 가져옴
-        이를통해 관계된 Bbox table의 (obj_id)를 가지는 모든 bbox 삭제
-
-        Args:
-            img_id (str): Object table의 img_id
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "DELETE FROM Bbox WHERE " \
-                        "obj_id IN (SELECT id FROM Object WHERE img_id=%s)"
-                value = (img_id)
-                cursor.execute(query, value)
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
-
-    def delete_nomix_img(self, img_id) -> bool:
-        """
-        Object table의 (img_id)를 받아
-        SuperCa는egory table의 (name)이 mix가 아닌 Object table의 (row) 삭제
-
-        Args:
-            img_id (str): Object table의 (img_id)
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "DELETE FROM Object WHERE img_id=%s AND id " \
-                        "IN (SELECT obj_id FROM (SELECT id as obj_id FROM Object WHERE category_id " \
-                        "IN (SELECT id as category_id FROM Category WHERE super_id " \
-                        "IN (SELECT id as super_id FROM SuperCategory WHERE NOT name='mix'))) AS Obj)"
-
-                value = (img_id)
-                cursor.execute(query, value)
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
-
-    def set_obj_list(self, grid_id, category_id, iteration, mix_num) -> bool:
-        """
-        Location table의 (grid_id)를 가진 row와 Category table의 (id)를 가진 row를 통해
-        (Location table의 특정 (grid_id)를 가진 row 수) X (category table의 특정 (category_id)를 가진 row 수)만큼
-        Object table에 row 생성
-
-        Args:
-            grid_id (str): Location table의 (grid_id)
-            category_id (str): Category table의 (id)
-            iteration (str): Object table의 (iteration)
-            mix_num (str): Object table의 (mix_num)
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) " \
-                        "SELECT Obj.img_id, Obj.loc_id, Obj.category_id, Obj.iteration, Obj.mix_num " \
-                        "FROM (SELECT * " \
-                        "   FROM (SELECT * " \
-                        "       FROM (WITH tmp (img_id, iteration, mix_num) " \
-                        "             AS (SELECT NULL, %s, %s) SELECT * FROM tmp) AS tmp " \
-                        "       CROSS JOIN (SELECT id AS loc_id FROM Location WHERE grid_id=%s) AS Loc) AS Lo " \
-                        "   CROSS JOIN (SELECT id AS category_id FROM Category WHERE id=%s) AS Cat) AS Obj"
-                value = (iteration, mix_num, grid_id, category_id)
-                cursor.execute(query, value)
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def list_obj_check_num(self, grid_id, category_id, check_num):
         """
@@ -1908,15 +1592,398 @@ class DB:
                 cursor.execute(query, value)
                 v = cursor.fetchall()
 
-                if v:
-                    return v
-                else:
-                    return None
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
+
+    def check_image_check_num(self, img_id):
+        """
+        Image table의 이미지의 check_num을 반환
+
+        Args:
+            img_id (str): 조회하기 원하는 Object table의 id
+
+        Return:
+            int (0, 1, 2): 해당 object의 이미지 검수여부 반환
+            None: 값 없음
+            False: 쿼리 실패
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = 'SELECT check_num FROM Image WHERE id=' + img_id
+                cursor.execute(query)
+                v = sum(cursor.fetchall(), ())
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
+
+    def check_obj_id(self, loc_id, category_id, iteration, mix_num) -> bool:
+        """
+        Object table의 (loc_id, category_id, iteration)를 입력 받아
+        Object table의 특정 (id)를 check 하는 함수
+
+        Args:
+            loc_id (str): Object table의 loc_id
+            category_id (str): Object table의 category_id
+            iteration (str): Object table의 iteration
+            mix_num (str): Object table의 mix_num
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "SELECT id FROM Object WHERE loc_id=%s AND category_id=%s AND iteration=%s AND mix_num=%s"
+                value = (loc_id, category_id, iteration, mix_num)
+                cursor.execute(query, value)
+                obj_id = sum(cursor.fetchall(), ())
+                if obj_id:
+                    return True
+                else:
+                    return False
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+            if obj_id:
+                return True
+            else:
+                return False
+
+    def check_process(self, category_id) -> bool:
+        """
+        Object table의 (category_id)가 입력받은 값을 가지고 (mix_num)이 -1인 Object table의 row가 존재하고
+        해당하는 모든 Object table의 row에 대한 Bbox table의 row와 Mask table의 row가 둘다 존재할 경우 True 반환
+        이외의 경우 False 반환
+        Args:
+            category_id (str): Object table의 (category_id)
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                # Bbox query
+                category_id = int(category_id)
+                query = "SELECT id FROM Bbox " \
+                        "WHERE obj_id IN (SELECT id FROM Object WHERE category_id=%s AND mix_num=-1)"
+                value = (category_id)
+                cursor.execute(query, value)
+                bbox_ids = cursor.fetchall()
+
+                # Mask query
+                query = "SELECT id FROM Mask " \
+                        "WHERE obj_id IN (SELECT id FROM Object WHERE category_id=%s AND mix_num=-1)"
+                value = (category_id)
+                cursor.execute(query, value)
+                mask_ids = cursor.fetchall()
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+            if bbox_ids and mask_ids:
+                return True
+            else:
+                return False
+
+    def check_cat_id(self, super_name, cat_name) -> bool:
+        """
+        SuperCateogry table의 (name)과 Category table의 (name)을 입력받아
+        Category table의 특정 (id)가 존재하는지 check하는 함수
+
+        Args:
+            super_name (str): SuperCategory table의 name
+            cat_name (str): Category table의 name
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "SELECT id FROM Category WHERE name=%s AND " \
+                        "super_id IN (SELECT id FROM SuperCategory WHERE name=%s)"
+                value = (super_name, cat_name)
+                cursor.execute(query, value)
+                v = sum(cursor.fetchall(), ())
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return True
+            else:
+                return False
+
+    def update_img_check_num_obj_id(self, obj_id, check_num):
+        """
+        Object table의 (id)를 입력 받아
+        Image table의 (check_num)을 update 하는 함수
+
+        Args:
+            obj_id (str): Object table의 id
+            check_num (str): Image table의 check_num
+
+        Return:
+            True: 갱신 성공
+            False: 쿼리 실패
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "UPDATE Image SET check_num=%s " \
+                        "WHERE id=(SELECT img_id FROM Object WHERE id=%s)"
+                value = (check_num, obj_id)
+                cursor.execute(query, value)
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+            return True
+
+    def update_img_check_num_img_id(self, img_id, check_num):
+        """
+        Image table의 check_num 갱신
+
+        Args:
+            img_id (str): 수정하기 원하는 Object table의 id
+            check_num (str): 수정하기 원하는 Image table의 check_num
+
+        Return:
+            True: 갱신 성공
+            False: 쿼리 실패
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "UPDATE Image SET check_num=%s WHERE id=%s"
+                value = (check_num, img_id)
+                cursor.execute(query, value)
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+            return True
+
+    def update_img_img_obj_id(self, obj_id, img):
+        """
+        Object table의 (id)를 입력 받아
+        Image table의 (data) update 하는 함수
+
+        Args:
+            obj_id (str): Object table의 id
+            img (Image): update image 정보
+
+        Return:
+            True: 갱신 성공
+            False: 쿼리 실패
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "UPDATE Image SET data=%s" \
+                        "WHERE id=(SELECT img_id FROM Object WHERE id=%s)"
+                value = (img, obj_id)
+                cursor.execute(query, value)
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+            return True
+
+    def update_img_img_img_id(self, img_id, img):
+        """
+        Image table의 (data) update
+
+        Args:
+            img_id (str): Image table의 (id)
+            img (Image): Image table의 (data)
+
+        Return:
+            True: 갱신 성공
+            False: 쿼리 실패
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "UPDATE Image SET data=%s WHERE id=%s"
+                value = (img, img_id)
+                cursor.execute(query, value)
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+            return True
+
+    def delete_object(self, img_id) -> bool:
+        """
+        Object table의 (img_id)를 받아
+        해당하는 Object table의 모든 row를 삭제
+
+        Args:
+            img_id (str): Object table의 (img_id)
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = 'DELETE FROM Object WHERE img_id=' + img_id
+                cursor.execute(query)
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+            return True
+
+    def delete_bbox(self, obj_id) -> bool:
+        """
+        Bbox table의 (object_id)를 가지 row 삭제
+
+        Args:
+            obj_id (str): Bbox table의 object_id
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = 'DELETE FROM Bbox WHERE obj_id=' + obj_id
+                cursor.execute(query)
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+            return True
+
+    def delete_mask(self, obj_id) -> bool:
+        """
+        Mask table의 (object_id)를 가지는 모든 row 삭제
+
+        Args:
+            obj_id (str): Mask table의 (object_id)
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = 'DELETE FROM Mask WHERE obj_id=' + obj_id
+                cursor.execute(query)
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+            return True
+
+    def delete_bbox_img(self, img_id) -> bool:
+        """
+        Object table의 (img_id)를 통해 Object table의 (id)를 가져옴
+        이를통해 관계된 Bbox table의 (obj_id)를 가지는 모든 bbox 삭제
+
+        Args:
+            img_id (str): Object table의 img_id
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "DELETE FROM Bbox WHERE " \
+                        "obj_id IN (SELECT id FROM Object WHERE img_id=%s)"
+                value = (img_id)
+                cursor.execute(query, value)
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+            return True
+
+    def delete_nomix_img(self, img_id) -> bool:
+        """
+        Object table의 (img_id)를 받아
+        SuperCa는egory table의 (name)이 mix가 아닌 Object table의 (row) 삭제
+
+        Args:
+            img_id (str): Object table의 (img_id)
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "DELETE FROM Object WHERE img_id=%s AND id " \
+                        "IN (SELECT obj_id FROM (SELECT id as obj_id FROM Object WHERE category_id " \
+                        "IN (SELECT id as category_id FROM Category WHERE super_id " \
+                        "IN (SELECT id as super_id FROM SuperCategory WHERE NOT name='mix'))) AS Obj)"
+
+                value = (img_id)
+                cursor.execute(query, value)
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+            return True
 
     def get_aug_mask(self, grid_id, category_id):
         """
@@ -1943,15 +2010,18 @@ class DB:
                 value = (category_id, grid_id)
                 cursor.execute(query, value)
                 v = cursor.fetchall()
-                if v:
-                    return v
-                else:
-                    return None
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_aug_img(self, grid_id, category_id):
         """
@@ -1982,15 +2052,17 @@ class DB:
                 cursor.execute(query, value)
                 v = cursor.fetchall()
 
-                if v:
-                    return v
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
+
+        finally:
+            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_aug_loc_id(self, grid_id):
         """
@@ -2016,37 +2088,6 @@ class DB:
                 cursor.execute(query, value)
                 v = cursor.fetchall()
 
-                if v:
-                    return v
-                else:
-                    return None
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-# -----------------------수정 필요한 함수---------------------------------
-    def set_bulk_img(self, datas) -> bool:
-        """
-        Image table에 여러개의 row 추가
-
-        Args:
-            datas (tuple): ((env_id, data, type, check_num),
-                            (...))
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "INSERT INTO Image (env_id, data, type, check_num) VALUES"
-                for data in datas:
-                    s = "({}, {}, {}, {}), ".format(data[0], data[1], data[2], data[3])
-                    query += s
-                query = query[:-2]
-                cursor.execute(query)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
@@ -2054,6 +2095,10 @@ class DB:
 
         finally:
             self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def set_bulk_obj(self, datas) -> bool:
         """
@@ -2073,7 +2118,6 @@ class DB:
                     query += s
                 query = query[:-2]
                 cursor.execute(query)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -2082,6 +2126,7 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
 
     def set_bulk_bbox(self, datas) -> bool:
         """
@@ -2100,9 +2145,7 @@ class DB:
                     s = "({}, {}, {}, {}, {}), ".format(data[0], data[1], data[2], data[3], data[4])
                     query += s
                 query = query[:-2]
-                print(query)
                 cursor.execute(query)
-                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -2111,3 +2154,70 @@ class DB:
 
         finally:
             self.db.commit()
+            return True
+
+    def set_obj_list(self, grid_id, category_id, iteration, mix_num) -> bool:
+        """
+        Location table의 (grid_id)를 가진 row와 Category table의 (id)를 가진 row를 통해
+        (Location table의 특정 (grid_id)를 가진 row 수) X (category table의 특정 (category_id)를 가진 row 수)만큼
+        Object table에 row 생성
+
+        Args:
+            grid_id (str): Location table의 (grid_id)
+            category_id (str): Category table의 (id)
+            iteration (str): Object table의 (iteration)
+            mix_num (str): Object table의 (mix_num)
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) " \
+                        "SELECT Obj.img_id, Obj.loc_id, Obj.category_id, Obj.iteration, Obj.mix_num " \
+                        "FROM (SELECT * " \
+                        "   FROM (SELECT * " \
+                        "       FROM (WITH tmp (img_id, iteration, mix_num) " \
+                        "             AS (SELECT NULL, %s, %s) SELECT * FROM tmp) AS tmp " \
+                        "       CROSS JOIN (SELECT id AS loc_id FROM Location WHERE grid_id=%s) AS Loc) AS Lo " \
+                        "   CROSS JOIN (SELECT id AS category_id FROM Category WHERE id=%s) AS Cat) AS Obj"
+                value = (iteration, mix_num, grid_id, category_id)
+                cursor.execute(query, value)
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+            return True
+
+    # -----------------------수정 필요한 함수---------------------------------
+    def set_bulk_img(self, datas) -> bool:
+        """
+        Image table에 여러개의 row 추가
+
+        Args:
+            datas (tuple): ((env_id, data, type, check_num),
+                            (...))
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "INSERT INTO Image (env_id, data, type, check_num) VALUES"
+                for data in datas:
+                    s = "({}, {}, {}, {}), ".format(data[0], data[1], data[2], data[3])
+                    query += s
+                query = query[:-2]
+                cursor.execute(query)
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+            return True

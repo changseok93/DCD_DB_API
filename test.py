@@ -22,7 +22,7 @@ def check_environment(db):
 
 
 def check_image(db):
-    img_dir = 'img/example.png'
+    img_dir = 'img/example.jpg'
     if isinstance(img_dir, str):
         with open(img_dir, 'rb') as file:
             img = file.read()
@@ -63,7 +63,7 @@ def check_supercategory(db):
 
 
 def check_category(db):
-    img_dir = 'img/example.png'
+    img_dir = 'img/example.jpg'
     if isinstance(img_dir, str):
         with open(img_dir, 'rb') as file:
             img = file.read()
@@ -136,7 +136,7 @@ def read_img_from_db(db, img_id, table):
 
 
 if __name__ == "__main__":
-    img = img_loader('img/example.png')
+    img = img_loader('img/example.jpg')
 
     # cunnect to MYSQL Server
     mydb = DB(ip='192.168.10.69',
@@ -170,13 +170,24 @@ if __name__ == "__main__":
     check_category(mydb)
 
     # Object table test
-    check_object(mydb)
+    # check_object(mydb)
 
     # Bbox table test
-    check_bbox(mydb)
+    # check_bbox(mydb)
 
     # Mask table test
-    check_mask(mydb)
+    # check_mask(mydb)
+
+    # get_mix_num test 코드
+    mydb.set_location(grid_id='1', x='1', y='2')
+    mydb.set_location(grid_id='1', x='1', y='3')
+    mydb.set_location(grid_id='1', x='1', y='4')
+    mydb.set_location(grid_id='1', x='1', y='5')
+    mydb.set_category(super_id='1', name='22', width='1', height='1', depth='22', iteration='2', thumbnail='1')
+    mydb.set_object(img_id='1', loc_id='5', category_id='2', iteration='1', mix_num='-1')
+    mydb.set_object(img_id='1', loc_id='5', category_id='2', iteration='1', mix_num='0')
+    mydb.set_object(img_id='1', loc_id='5', category_id='2', iteration='1', mix_num='1')
+    print(mydb.get_mix_num(loc_id='5', category_id='2', iteration='1'))
 
     # # list_obj_check_num test 코드
     # mydb.set_environment(ipv4='127.223.444.445', floor='1', width='3', height='5', depth='2')
@@ -213,12 +224,14 @@ if __name__ == "__main__":
     # mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='3', mix_num='-1')
     # print(mydb.list_obj_check_num(grid_id='1', category_id='1', check_num='1'))
 
-    # # set_obj_list test 코드
+    # set_obj_list test 코드
     # mydb.delete_table(id='1', table='Object')
     # mydb.set_location(grid_id='1', x='1', y='2')
     # mydb.set_location(grid_id='1', x='1', y='3')
     # mydb.set_location(grid_id='1', x='1', y='4')
     # print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='1', mix_num='1'))
+    # print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='2', mix_num='1'))
+    # print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='3', mix_num='1'))
 
     # get_aug_mask test 코드
     # mydb.set_location(grid_id='1', x='1', y='2')
@@ -242,14 +255,21 @@ if __name__ == "__main__":
     # mydb.set_location(grid_id='1', x='2', y='2')
     # print(mydb.get_aug_loc_id(grid_id='1'))
 
-    # # set_bulk_img test 코드
-    # mydb.set_environment(ipv4='123.233.122.12', floor='1', width='2', height='3', depth='3')
-    # mydb.set_environment(ipv4='123.233.122.12', floor='2', width='2', height='3', depth='3')
-    # mydb.set_environment(ipv4='123.233.122.12', floor='3', width='2', height='3', depth='3')
     # # (env_id, data, type, check_num)
-    # ex = (('20002', '1', '1', '1'),
-    #       ('20003', '1', '1', '2'))
-    # print(mydb.set_bulk_img(datas=ex))
+    # ex_table = []
+    # for i in range(1):
+    #     ex_table.append(('1', img, '1', '1', '1'))
+    # ex_table = tuple(ex_table)
+    #
+    # from utils.memory import cpu_mem_check
+    # import time
+    # start_time = time.time()
+    #
+    # mydb.set_bulk_img(datas=ex_table)
+    #
+    # cpu_mem_check()
+    # end_time = time.time()
+    # print('total_time: ', end_time - start_time)
 
     # set_bulk_obj test 코드
     # (img_id, loc_id, category_id, iteration, mix_num)
@@ -259,7 +279,17 @@ if __name__ == "__main__":
 
     # set_bulk_bbox test 코드
     # (obj_id, x, y, width, height)
-    # ex = (('1', '1', '2', '1', '1'),
-    #       ('1', '2', '3', '1', '1'))
-    # print(mydb.set_bulk_bbox(datas=ex))
-
+    # ex_table = []
+    # for i in range(100000):
+    #     ex_table.append(('1', '1', "{}".format(i), '1', '1'))
+    # ex_table = tuple(ex_table)
+    #
+    # from utils.memory import cpu_mem_check
+    # import time
+    # start_time = time.time()
+    #
+    # mydb.set_bulk_bbox(datas=ex_table)
+    #
+    # cpu_mem_check()
+    # end_time = time.time()
+    # print('total_time: ', end_time - start_time)
