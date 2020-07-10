@@ -260,11 +260,11 @@ if __name__ == "__main__":
     # for i in range(1):
     #     ex_table.append(('1', img, '1', '1', '1'))
     # ex_table = tuple(ex_table)
-    #
-    # from utils.memory import cpu_mem_check
-    # import time
-    # start_time = time.time()
-    #
+    # #
+    # # from utils.memory import cpu_mem_check
+    # # import time
+    # # start_time = time.time()
+    # #
     # mydb.set_bulk_img(datas=ex_table)
     #
     # cpu_mem_check()
@@ -280,7 +280,7 @@ if __name__ == "__main__":
     # set_bulk_bbox test 코드
     # (obj_id, x, y, width, height)
     # ex_table = []
-    # for i in range(100000):
+    # for i in range(100):
     #     ex_table.append(('1', '1', "{}".format(i), '1', '1'))
     # ex_table = tuple(ex_table)
     #
@@ -288,6 +288,7 @@ if __name__ == "__main__":
     # import time
     # start_time = time.time()
     #
+    # mydb.set_bulk_bbox(datas=ex_table)
     # mydb.set_bulk_bbox(datas=ex_table)
     #
     # cpu_mem_check()
