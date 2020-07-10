@@ -239,6 +239,7 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;INSERT INTO Environment(ipv4, floor, width, height, depth) VALUES(</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">)&#39;</span>
                 <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">ipv4</span><span class="p">,</span> <span class="n">floor</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -246,8 +247,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.update_environment"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.update_environment">[docs]</a>    <span class="k">def</span> <span class="nf">update_environment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">ipv4</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">floor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -282,6 +282,7 @@
                 <span class="n">query</span> <span class="o">+=</span> <span class="n">query_tail</span>
 
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -289,8 +290,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.set_image"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.set_image">[docs]</a>    <span class="k">def</span> <span class="nf">set_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device_id</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">check_num</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -311,6 +311,7 @@
                 <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">device_id</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">check_num</span><span class="p">)</span>
 
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -318,8 +319,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.update_image"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.update_image">[docs]</a>    <span class="k">def</span> <span class="nf">update_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">device_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">check_num</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -351,6 +351,7 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="n">query_head</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
                 <span class="n">query</span> <span class="o">+=</span> <span class="n">query_tail</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -358,8 +359,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.set_grid"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.set_grid">[docs]</a>    <span class="k">def</span> <span class="nf">set_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -377,6 +377,7 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;INSERT INTO Grid(width, height) VALUES(</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">)&#39;</span>
                 <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -384,8 +385,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.update_grid"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.update_grid">[docs]</a>    <span class="k">def</span> <span class="nf">update_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -410,6 +410,7 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="n">query_head</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
                 <span class="n">query</span> <span class="o">+=</span> <span class="n">query_tail</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -417,8 +418,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.set_location"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.set_location">[docs]</a>    <span class="k">def</span> <span class="nf">set_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -437,6 +437,7 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;INSERT INTO Location(grid_id, x, y) VALUES(</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">)&#39;</span>
                 <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">grid_id</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -444,8 +445,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.update_location"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.update_location">[docs]</a>    <span class="k">def</span> <span class="nf">update_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">grid_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -474,6 +474,7 @@
                 <span class="n">query</span> <span class="o">+=</span> <span class="n">query_tail</span>
 
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -481,8 +482,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.set_supercategory"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.set_supercategory">[docs]</a>    <span class="k">def</span> <span class="nf">set_supercategory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -499,6 +499,7 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;INSERT INTO SuperCategory(name) VALUES(</span><span class="si">%s</span><span class="s1">)&#39;</span>
                 <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -506,8 +507,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.update_supercategory"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.update_supercategory">[docs]</a>    <span class="k">def</span> <span class="nf">update_supercategory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -529,6 +529,7 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="n">query_head</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
                 <span class="n">query</span> <span class="o">+=</span> <span class="n">query_tail</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -536,8 +537,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.set_category"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.set_category">[docs]</a>    <span class="k">def</span> <span class="nf">set_category</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">super_id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">thumbnail</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -560,6 +560,7 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;INSERT INTO Category(super_id, name, width, height, depth, iteration, thumbnail) VALUES(</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">)&#39;</span>
                 <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">super_id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">thumbnail</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -567,8 +568,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.update_category"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.update_category">[docs]</a>    <span class="k">def</span> <span class="nf">update_category</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">super_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                         <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">iteration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">thumbnail</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -610,6 +610,7 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="n">query_head</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
                 <span class="n">query</span> <span class="o">+=</span> <span class="n">query_tail</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -617,8 +618,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.set_object"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.set_object">[docs]</a>    <span class="k">def</span> <span class="nf">set_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_id</span><span class="p">,</span> <span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">mix_num</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -639,6 +639,7 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) VALUES(</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">)&#39;</span>
                 <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">img_id</span><span class="p">,</span> <span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">mix_num</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -646,8 +647,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.update_object"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.update_object">[docs]</a>    <span class="k">def</span> <span class="nf">update_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">img_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">loc_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">category_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">iteration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mix_num</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -682,6 +682,7 @@
                 <span class="n">query</span> <span class="o">+=</span> <span class="n">query_tail</span>
 
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -689,8 +690,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.set_bbox"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.set_bbox">[docs]</a>    <span class="k">def</span> <span class="nf">set_bbox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -711,6 +711,7 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;INSERT INTO Bbox(obj_id, x, y, width, height) VALUES(</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">)&#39;</span>
                 <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">obj_id</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -718,8 +719,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.update_bbox"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.update_bbox">[docs]</a>    <span class="k">def</span> <span class="nf">update_bbox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -751,6 +751,7 @@
                 <span class="n">query</span> <span class="o">+=</span> <span class="n">query_tail</span>
 
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -758,8 +759,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.set_mask"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.set_mask">[docs]</a>    <span class="k">def</span> <span class="nf">set_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -778,6 +778,7 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;INSERT INTO Mask(obj_id, x, y) VALUES(</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">)&#39;</span>
                 <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">obj_id</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -785,8 +786,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.update_mask"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.update_mask">[docs]</a>    <span class="k">def</span> <span class="nf">update_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">obj_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -816,6 +816,7 @@
                 <span class="n">query</span> <span class="o">+=</span> <span class="n">query_tail</span>
 
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -823,8 +824,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_table"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_table">[docs]</a>    <span class="k">def</span> <span class="nf">get_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -845,6 +845,10 @@
                 <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="nb">id</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
@@ -852,11 +856,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.delete_table"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.delete_table">[docs]</a>    <span class="k">def</span> <span class="nf">delete_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -874,6 +874,7 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;DELETE FROM &#39;</span> <span class="o">+</span> <span class="n">table</span> <span class="o">+</span> <span class="s1">&#39; WHERE id=</span><span class="si">%s</span><span class="s1">&#39;</span>
                 <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="nb">id</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">table</span><span class="p">)</span>
@@ -881,8 +882,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.list_table"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.list_table">[docs]</a>    <span class="k">def</span> <span class="nf">list_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -903,6 +903,10 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SELECT * FROM &#39;</span> <span class="o">+</span> <span class="n">table</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
@@ -910,11 +914,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.init_table"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.init_table">[docs]</a>    <span class="k">def</span> <span class="nf">init_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -932,6 +932,7 @@
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SHOW TABLES&quot;</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
                     <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;table is already exist&#39;</span><span class="p">)</span>
@@ -939,8 +940,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.drop_table"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.drop_table">[docs]</a>    <span class="k">def</span> <span class="nf">drop_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -957,6 +957,7 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;DROP TABLE &#39;</span>
                 <span class="n">query</span> <span class="o">+=</span> <span class="n">table</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -964,8 +965,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_last_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_last_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_last_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -986,6 +986,10 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SELECT MAX(id) FROM &#39;</span> <span class="o">+</span> <span class="n">table</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
@@ -993,11 +997,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_env_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_env_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_env_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ipv4</span><span class="p">,</span> <span class="n">floor</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1019,6 +1019,10 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT id FROM Environment WHERE ipv4=&#39;&quot;</span> <span class="o">+</span> <span class="n">ipv4</span> <span class="o">+</span> <span class="s2">&quot;&#39; AND floor=&quot;</span> <span class="o">+</span> <span class="n">floor</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1026,11 +1030,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_grid_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_grid_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_grid_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_w_h</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1052,6 +1052,10 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT id FROM Grid WHERE width=&quot;</span> <span class="o">+</span> <span class="n">w</span> <span class="o">+</span> <span class="s2">&quot; AND height=&quot;</span> <span class="o">+</span> <span class="n">h</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1059,11 +1063,7 @@
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_supercategory_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_supercategory_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_supercategory_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1084,6 +1084,10 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT id FROM SuperCategory WHERE name=&#39;&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;&#39;&quot;</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1091,11 +1095,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_loc_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_loc_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_loc_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">,</span> <span class="n">loc_x_y</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1129,11 +1129,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_loc_id_GL"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_loc_id_GL">[docs]</a>    <span class="k">def</span> <span class="nf">get_loc_id_GL</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_w_h</span><span class="p">,</span> <span class="n">loc_x_y</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1171,11 +1167,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_category_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_category_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_category_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">super_id</span><span class="p">,</span> <span class="n">category_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1197,6 +1189,10 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SELECT id FROM Category WHERE super_id=&#39;</span> <span class="o">+</span> <span class="n">super_id</span> <span class="o">+</span> <span class="s2">&quot; AND name=&#39;&quot;</span> <span class="o">+</span> <span class="n">category_name</span> <span class="o">+</span> <span class="s2">&quot;&#39;&quot;</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1204,11 +1200,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_category_id_obj"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_category_id_obj">[docs]</a>    <span class="k">def</span> <span class="nf">get_category_id_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1229,6 +1221,10 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT category_id FROM Object WHERE id=&quot;</span> <span class="o">+</span> <span class="n">obj_id</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1236,11 +1232,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_img_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_img_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_img_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1261,6 +1253,10 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SELECT img_id FROM Object WHERE id=&#39;</span> <span class="o">+</span> <span class="n">obj_id</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1268,11 +1264,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_location"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_location">[docs]</a>    <span class="k">def</span> <span class="nf">get_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1294,6 +1286,10 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SELECT id FROM Location WHERE grid_id=&#39;</span> <span class="o">+</span> <span class="n">grid_id</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1301,11 +1297,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_bbox_info"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_bbox_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_bbox_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1327,6 +1319,10 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT x, y, width, height from Bbox WHERE obj_id=&quot;</span> <span class="o">+</span> <span class="n">object_id</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1334,11 +1330,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_obj_id_img"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_obj_id_img">[docs]</a>    <span class="k">def</span> <span class="nf">get_obj_id_img</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1359,6 +1351,10 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT id FROM Object WHERE img_id=&quot;</span> <span class="o">+</span> <span class="n">img_id</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1366,11 +1362,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_obj_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_obj_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_obj_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1392,6 +1384,10 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT id FROM Object WHERE category_id=&quot;</span> <span class="o">+</span> <span class="n">category_id</span> <span class="o">+</span> <span class="s2">&quot; AND mix_num=&quot;</span> <span class="o">+</span> <span class="s2">&quot;-1&quot;</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1399,11 +1395,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_super_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_super_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_super_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1425,6 +1417,10 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT super_id FROM Category WHERE id=&quot;</span> <span class="o">+</span> <span class="n">category_id</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1432,11 +1428,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_super_name"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_super_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_super_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">super_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1458,6 +1450,10 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT name FROM SuperCategory WHERE id=&quot;</span> <span class="o">+</span> <span class="n">super_id</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1465,11 +1461,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_mix_num"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_mix_num">[docs]</a>    <span class="k">def</span> <span class="nf">get_mix_num</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1494,6 +1486,10 @@
                 <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
                 <span class="n">mix_nums</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">mix_nums</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">mix_nums</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1501,11 +1497,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">mix_nums</span><span class="p">:</span>
-                <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">mix_nums</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_bbox_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_bbox_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_bbox_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1527,6 +1519,10 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT id FROM Bbox WHERE obj_id=&quot;</span> <span class="o">+</span> <span class="n">obj_id</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1534,11 +1530,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_mask_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_mask_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_mask_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1560,6 +1552,10 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT id FROM Mask WHERE obj_id=&quot;</span> <span class="o">+</span> <span class="n">obj_id</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1567,11 +1563,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_img_check_num"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_img_check_num">[docs]</a>    <span class="k">def</span> <span class="nf">get_img_check_num</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1594,6 +1586,10 @@
                 <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">obj_id</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1601,11 +1597,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_bbox_img"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_bbox_img">[docs]</a>    <span class="k">def</span> <span class="nf">get_bbox_img</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1629,6 +1621,10 @@
                 <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">img_id</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1636,11 +1632,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_cat_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_cat_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_cat_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">super_name</span><span class="p">,</span> <span class="n">cat_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1665,6 +1657,10 @@
                 <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">super_name</span><span class="p">,</span> <span class="n">cat_name</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1672,11 +1668,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.list_bbox"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.list_bbox">[docs]</a>    <span class="k">def</span> <span class="nf">list_bbox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1698,6 +1690,10 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SELECT * FROM Bbox WHERE obj_id=&#39;</span> <span class="o">+</span> <span class="n">obj_id</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1705,11 +1701,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.list_obj"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.list_obj">[docs]</a>    <span class="k">def</span> <span class="nf">list_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">loc_ids</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1737,6 +1729,10 @@
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="c1"># print(&#39;function: {}, query: {}&#39;.format(inspect.stack()[0][3], query))</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1744,11 +1740,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.list_obj_check_num"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.list_obj_check_num">[docs]</a>    <span class="k">def</span> <span class="nf">list_obj_check_num</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">check_num</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1782,6 +1774,10 @@
                 <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">category_id</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">,</span> <span class="n">check_num</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1789,11 +1785,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.check_image_check_num"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.check_image_check_num">[docs]</a>    <span class="k">def</span> <span class="nf">check_image_check_num</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1814,6 +1806,10 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;SELECT check_num FROM Image WHERE id=&#39;</span> <span class="o">+</span> <span class="n">img_id</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1821,11 +1817,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.check_obj_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.check_obj_id">[docs]</a>    <span class="k">def</span> <span class="nf">check_obj_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loc_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">mix_num</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1858,11 +1850,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">obj_id</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">True</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">False</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.check_process"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.check_process">[docs]</a>    <span class="k">def</span> <span class="nf">check_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1891,6 +1879,10 @@
                 <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">category_id</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
                 <span class="n">mask_ids</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">bbox_ids</span> <span class="ow">and</span> <span class="n">mask_ids</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1898,11 +1890,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">bbox_ids</span> <span class="ow">and</span> <span class="n">mask_ids</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">True</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">False</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.check_cat_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.check_cat_id">[docs]</a>    <span class="k">def</span> <span class="nf">check_cat_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">super_name</span><span class="p">,</span> <span class="n">cat_name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1923,6 +1911,10 @@
                 <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">super_name</span><span class="p">,</span> <span class="n">cat_name</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="p">())</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1930,11 +1922,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">True</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">False</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.update_img_check_num_obj_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.update_img_check_num_obj_id">[docs]</a>    <span class="k">def</span> <span class="nf">update_img_check_num_obj_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">,</span> <span class="n">check_num</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1954,6 +1942,7 @@
                         <span class="s2">&quot;WHERE id=(SELECT img_id FROM Object WHERE id=</span><span class="si">%s</span><span class="s2">)&quot;</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">check_num</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1961,8 +1950,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.update_img_check_num_img_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.update_img_check_num_img_id">[docs]</a>    <span class="k">def</span> <span class="nf">update_img_check_num_img_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_id</span><span class="p">,</span> <span class="n">check_num</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1980,6 +1968,7 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;UPDATE Image SET check_num=</span><span class="si">%s</span><span class="s2"> WHERE id=</span><span class="si">%s</span><span class="s2">&quot;</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">check_num</span><span class="p">,</span> <span class="n">img_id</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -1987,8 +1976,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.update_img_img_obj_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.update_img_img_obj_id">[docs]</a>    <span class="k">def</span> <span class="nf">update_img_img_obj_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -2008,6 +1996,7 @@
                         <span class="s2">&quot;WHERE id=(SELECT img_id FROM Object WHERE id=</span><span class="si">%s</span><span class="s2">)&quot;</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -2015,8 +2004,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.update_img_img_img_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.update_img_img_img_id">[docs]</a>    <span class="k">def</span> <span class="nf">update_img_img_img_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_id</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -2034,6 +2022,7 @@
                 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;UPDATE Image SET data=</span><span class="si">%s</span><span class="s2"> WHERE id=</span><span class="si">%s</span><span class="s2">&quot;</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">img_id</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -2041,8 +2030,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.delete_object"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.delete_object">[docs]</a>    <span class="k">def</span> <span class="nf">delete_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -2059,6 +2047,7 @@
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;DELETE FROM Object WHERE img_id=&#39;</span> <span class="o">+</span> <span class="n">img_id</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -2066,8 +2055,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.delete_bbox"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.delete_bbox">[docs]</a>    <span class="k">def</span> <span class="nf">delete_bbox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -2083,6 +2071,7 @@
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;DELETE FROM Bbox WHERE obj_id=&#39;</span> <span class="o">+</span> <span class="n">obj_id</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -2090,8 +2079,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.delete_mask"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.delete_mask">[docs]</a>    <span class="k">def</span> <span class="nf">delete_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -2107,6 +2095,7 @@
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
                 <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;DELETE FROM Mask WHERE obj_id=&#39;</span> <span class="o">+</span> <span class="n">obj_id</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -2114,8 +2103,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.delete_bbox_img"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.delete_bbox_img">[docs]</a>    <span class="k">def</span> <span class="nf">delete_bbox_img</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -2134,6 +2122,7 @@
                         <span class="s2">&quot;obj_id IN (SELECT id FROM Object WHERE img_id=</span><span class="si">%s</span><span class="s2">)&quot;</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">img_id</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -2141,8 +2130,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.delete_nomix_img"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.delete_nomix_img">[docs]</a>    <span class="k">def</span> <span class="nf">delete_nomix_img</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -2164,6 +2152,7 @@
 
                 <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">img_id</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -2171,8 +2160,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_aug_mask"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_aug_mask">[docs]</a>    <span class="k">def</span> <span class="nf">get_aug_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -2201,6 +2189,10 @@
                 <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">category_id</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -2208,11 +2200,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_aug_img"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_aug_img">[docs]</a>    <span class="k">def</span> <span class="nf">get_aug_img</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -2244,6 +2232,10 @@
                 <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">category_id</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -2251,11 +2243,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.get_aug_loc_id"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.get_aug_loc_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_aug_loc_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -2279,6 +2267,10 @@
                 <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">grid_id</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">v</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -2286,11 +2278,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">v</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.set_bulk_obj"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.set_bulk_obj">[docs]</a>    <span class="k">def</span> <span class="nf">set_bulk_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datas</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -2310,6 +2298,7 @@
                     <span class="n">query</span> <span class="o">+=</span> <span class="n">s</span>
                 <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -2317,8 +2306,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.set_bulk_bbox"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.set_bulk_bbox">[docs]</a>    <span class="k">def</span> <span class="nf">set_bulk_bbox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datas</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -2338,6 +2326,7 @@
                     <span class="n">query</span> <span class="o">+=</span> <span class="n">s</span>
                 <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -2345,8 +2334,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
     <span class="c1"># -----------------------수정 필요한 함수---------------------------------</span>
 <div class="viewcode-block" id="DB.set_obj_list"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.set_obj_list">[docs]</a>    <span class="k">def</span> <span class="nf">set_obj_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">mix_num</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -2366,16 +2354,25 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;CREATE TEMPORARY TABLE tmp(img_id INT, iteration SMALLINT, mix_num INT) &quot;</span> \
+                        <span class="s2">&quot;INSERT INTO tmp(img_id, iteration, mix_num) VALUES(NULL, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">iteration</span><span class="p">,</span> <span class="n">mix_num</span><span class="p">)</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
                 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) &quot;</span> \
                         <span class="s2">&quot;SELECT Obj.img_id, Obj.loc_id, Obj.category_id, Obj.iteration, Obj.mix_num &quot;</span> \
                         <span class="s2">&quot;FROM (SELECT * &quot;</span> \
                         <span class="s2">&quot;   FROM (SELECT * &quot;</span> \
-                        <span class="s2">&quot;       FROM (WITH tmp (img_id, iteration, mix_num) &quot;</span> \
-                        <span class="s2">&quot;             AS (SELECT NULL, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">) SELECT * FROM tmp) AS tmp &quot;</span> \
+                        <span class="s2">&quot;       FROM tmp &quot;</span> \
                         <span class="s2">&quot;       CROSS JOIN (SELECT id AS loc_id FROM Location WHERE grid_id=</span><span class="si">%s</span><span class="s2">) AS Loc) AS Lo &quot;</span> \
                         <span class="s2">&quot;   CROSS JOIN (SELECT id AS category_id FROM Category WHERE id=</span><span class="si">%s</span><span class="s2">) AS Cat) AS Obj&quot;</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">iteration</span><span class="p">,</span> <span class="n">mix_num</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">)</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">grid_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">)</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;DROP TABLE tmp&quot;</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -2383,8 +2380,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DB.set_bulk_img"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.set_bulk_img">[docs]</a>    <span class="k">def</span> <span class="nf">set_bulk_img</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datas</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -2400,10 +2396,13 @@
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
                 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO Image (env_id, data, type, check_num) VALUES&quot;</span>
                 <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">datas</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">)</span>
                     <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">), &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
                     <span class="n">query</span> <span class="o">+=</span> <span class="n">s</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
                 <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
@@ -2411,8 +2410,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">return</span> <span class="kc">True</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div></div>
 </pre></div>
 
            </div>

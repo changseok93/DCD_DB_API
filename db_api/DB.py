@@ -2142,6 +2142,7 @@ class DB:
         Args:
             datas (tuple): ((img_id, loc_id, category_id, iteration, mix_num),
                             (...))
+
         Return:
             Bool: True or False
         """
@@ -2170,6 +2171,7 @@ class DB:
         Args:
             datas (tuple) : ((obj_id, x, y, width, height),
                              (...))
+
         Return:
             Bool: True or False
         """
@@ -2200,7 +2202,7 @@ class DB:
 
         Args:
             grid_id (str): Location table의 (grid_id)
-            category_id (str): Category table의 (id)f
+            category_id (str): Category table의 (id)
             iteration (str): Object table의 (iteration)
             mix_num (str): Object table의 (mix_num)
 
@@ -2211,13 +2213,10 @@ class DB:
             with self.db.cursor() as cursor:
                 query = "INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) " \
                         "SELECT Obj.img_id, Obj.loc_id, Obj.category_id, Obj.iteration, Obj.mix_num " \
-                        "FROM (SELECT * " \
-                        "   FROM (SELECT * " \
-                        "       FROM (CREATE TEMPORARY TABLE tmp(img_id, iteration, mix_num) " \
-                        "            INSERT INTO tmp(img_id, iteration, mix_num VALUES(NULL, %s, %s))) " \
-                        "       CROSS JOIN (SELECT id AS loc_id FROM Location WHERE grid_id=%s) AS Loc) AS Lo " \
-                        "   CROSS JOIN (SELECT id AS category_id FROM Category WHERE id=%s) AS Cat) AS Obj"
-                value = (iteration, mix_num, grid_id, category_id)
+                        "FROM (SELECT * FROM (WITH tmp(img_id, iteration, mix_num, category_id) AS " \
+                        "                     (SELECT NULL, %s, %s, %s) SELECT * FROM tmp) AS tmp " \
+                        "      CROSS JOIN (SELECT id AS loc_id FROM Location WHERE grid_id=%s) AS Loc) AS Obj"
+                value = (iteration, mix_num, category_id, grid_id)
                 cursor.execute(query, value)
                 return True
 
@@ -2236,6 +2235,7 @@ class DB:
         Args:
             datas (tuple): ((env_id, data, type, check_num),
                             (...))
+
         Return:
             Bool: True or False
         """
@@ -2248,6 +2248,51 @@ class DB:
                     query += s
                 print(query)
                 query = query[:-2]
+                cursor.execute(query)
+                return True
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+
+    def test_cross_join(self, c1) -> bool:
+        try:
+            with self.db.cursor() as cursor:
+                # # t1 create
+                # query = "CREATE TABLE t1(c1 INT)"
+                # cursor.execute(query)
+                # query = "INSERT INTO t1(c1) VALUE(%s)"
+                # value = (c1)
+                # cursor.execute(query, value)
+                # query = "INSERT INTO t1(c1) VALUE(%s)"
+                # value = (c1)
+                # cursor.execute(query, value)
+                #
+                # # t2 create
+                # query = "CREATE TABLE t2(c2 INT)"
+                # cursor.execute(query)
+                # query = "INSERT INTO t2(c2) VALUE(%s)"
+                # value = (c1)
+                # cursor.execute(query, value)
+                # query = "INSERT INTO t2(c2) VALUE(%s)"
+                # value = (c1)
+                # cursor.execute(query, value)
+                #
+                # # t3 create
+                # query = "CREATE TABLE t3(a INT, b INT, id INT AUTO_INCREMENT PRIMARY KEY)"
+                # cursor.execute(query)
+
+                query = "INSERT INTO t3(a, b) " \
+                        "SELECT * " \
+                        "FROM (SELECT * " \
+                        "      FROM t1 " \
+                        "      CROSS JOIN t2 " \
+                        "      ) AS tmp " \
+                        "ORDER BY tmp.c1"
                 cursor.execute(query)
                 return True
 

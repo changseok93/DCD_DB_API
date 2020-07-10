@@ -233,6 +233,10 @@ if __name__ == "__main__":
     print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='2', mix_num='1'))
     print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='3', mix_num='1'))
 
+    # print(mydb.test_cross_join('1'))
+    # print(mydb.test_cross_join('2'))
+    # print(mydb.test_cross_join('3'))
+
     # get_aug_mask test 코드
     # mydb.set_location(grid_id='1', x='1', y='2')
     # mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
