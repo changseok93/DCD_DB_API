@@ -137,10 +137,7 @@ def read_img_from_db(db, img_id, table):
 
 def compare_set_bulk_bbox():
     # (obj_id, x, y, width, height)
-    ex_table = []
-    for i in range(65537):
-        ex_table.append(('1', '1', "{}".format(i), '1', '1'))
-    ex_table = tuple(ex_table)
+    ex_table = tuple([('1', '1', "{}".format(i), '1', '1') for i in range(4, 10)])
 
     from utils.memory import cpu_mem_check
     import time
@@ -153,10 +150,7 @@ def compare_set_bulk_bbox():
 
 def compare_set_bulk_obj():
     # (img_id, loc_id, category_id, iteration, mix_num)
-    ex_table = []
-    for i in range(4, 65533):
-        ex_table.append(('1', '1', "1", "{}".format(i), '1'))
-    ex_table = tuple(ex_table)
+    ex_table = tuple([('1', '1', "1", "{}".format(i), '1') for i in range(4, 65533)])
 
     from utils.memory import cpu_mem_check
     import time
@@ -164,6 +158,29 @@ def compare_set_bulk_obj():
     print('no execute many')
     start_time = time.time()
     print(mydb.set_bulk_obj(datas=ex_table))
+    cpu_mem_check()
+    end_time = time.time()
+    print('total_time: ', end_time - start_time)
+
+
+def compare_set_bulk_img():
+    from os import listdir
+    from os.path import join
+
+    img_path = './img/aug_img'
+
+    # list case
+    # (env_id, data, type, check_num)
+    ex_table = [['20001', img, '1', '1'] for img in listdir(img_path)]
+
+    # generator case
+    # (env_id, data, type, check_num)
+    # ex_table = (['20001', img, '1', '1'] for img in listdir(img_path))
+
+    from utils.memory import cpu_mem_check
+    import time
+    start_time = time.time()
+    print(mydb.set_bulk_img(datas=ex_table))
     cpu_mem_check()
     end_time = time.time()
     print('total_time: ', end_time - start_time)
@@ -292,24 +309,8 @@ if __name__ == "__main__":
     # # set_bulk_obj test 코드
     # compare_set_bulk_obj()
 
-    # # set_bulk_bbox test 코드
+    # set_bulk_bbox test 코드
     # compare_set_bulk_bbox()
 
-    # # set_bulk_img test 코드
-    # compare_set_bulk_img()
-
-    # (env_id, data, type, check_num)
-    ex_table = []
-    for i in range(1):
-        ex_table.append(('1', img, '1', '1', '1'))
-    ex_table = tuple(ex_table)
-
-    print(img)
-
-    from utils.memory import cpu_mem_check
-    import time
-    start_time = time.time()
-    mydb.set_bulk_img(datas=ex_table)
-    cpu_mem_check()
-    end_time = time.time()
-    print('total_time: ', end_time - start_time)
+    # set_bulk_img test 코드
+    compare_set_bulk_img()

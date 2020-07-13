@@ -162,7 +162,7 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'INSERT INTO Image(env_id, data, type, check_num) VALUES(%s, %s, %s, %s)'
+                query = 'INSERT INTO Image(env_id, data, type, check_num) VALUES(%s, _binary%s, %s, %s)'
                 values = (device_id, image, type, check_num)
 
                 cursor.execute(query, values)
@@ -2235,7 +2235,7 @@ class DB:
         Image table에 여러개의 row 추가
 
         Args:
-            datas (tuple): ((env_id, data, type, check_num),
+            datas (list): ((env_id, data, type, check_num),
                             (...))
 
         Return:
@@ -2244,7 +2244,7 @@ class DB:
         try:
             with self.db.cursor() as cursor:
                 query = "INSERT INTO Image (env_id, data, type, check_num) " \
-                        "VALUES (%s, %s, %s, %s)"
+                        "VALUES (%s, _binary%s, %s, %s)"
                 cursor.executemany(query, datas)
                 return True
 
