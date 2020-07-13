@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 from db_api.DB import DB
 from db_api.DB import *
+from os import listdir
+from os.path import join
+from utils.memory import cpu_mem_check
+
+import time
 
 
 def img_loader(img_dir):
@@ -22,11 +27,6 @@ def check_environment(db):
 
 
 def check_image(db):
-    img_dir = 'img/example.jpg'
-    if isinstance(img_dir, str):
-        with open(img_dir, 'rb') as file:
-            img = file.read()
-
     db.set_image(device_id='20001', image=img, type='0', check_num='1')
     db.get_table(id='1', table='Image')
     # db.delete_table(id='1', table='Image')
@@ -63,11 +63,6 @@ def check_supercategory(db):
 
 
 def check_category(db):
-    img_dir = 'img/example.jpg'
-    if isinstance(img_dir, str):
-        with open(img_dir, 'rb') as file:
-            img = file.read()
-
     db.set_category(super_id='1', name='1', width='1', height='1', depth='1', iteration='1', thumbnail='1')
     db.get_table(id='1', table='Category')
     # db.delete_table(id='1', table='Category')
@@ -137,10 +132,8 @@ def read_img_from_db(db, img_id, table):
 
 def compare_set_bulk_bbox():
     # (obj_id, x, y, width, height)
-    ex_table = tuple([('1', '1', "{}".format(i), '1', '1') for i in range(4, 10)])
+    ex_table = ([('1', '1', "{}".format(i), '1', '1') for i in range(4, 10)])
 
-    from utils.memory import cpu_mem_check
-    import time
     start_time = time.time()
     mydb.set_bulk_bbox(datas=ex_table)
     cpu_mem_check()
@@ -150,11 +143,8 @@ def compare_set_bulk_bbox():
 
 def compare_set_bulk_obj():
     # (img_id, loc_id, category_id, iteration, mix_num)
-    ex_table = tuple([('1', '1', "1", "{}".format(i), '1') for i in range(4, 65533)])
+    ex_table = ([('1', '1', "1", "{}".format(i), '1') for i in range(4, 65533)])
 
-    from utils.memory import cpu_mem_check
-    import time
-    # no execute many
     print('no execute many')
     start_time = time.time()
     print(mydb.set_bulk_obj(datas=ex_table))
@@ -164,22 +154,20 @@ def compare_set_bulk_obj():
 
 
 def compare_set_bulk_img():
-    from os import listdir
-    from os.path import join
-
-    img_path = './img/aug_img'
+    img_path = '/home/cha/DB/img/aug_img'
 
     # list case
     # (env_id, data, type, check_num)
-    ex_table = [['20001', img, '1', '1'] for img in listdir(img_path)]
+    # start_time = time.time()
+    # ex_table = [['20001', img_loader(join(img_path, img_p)), '1', '1'] for img_p in sorted(listdir(img_path))]
+    # cpu_mem_check()
 
     # generator case
     # (env_id, data, type, check_num)
-    # ex_table = (['20001', img, '1', '1'] for img in listdir(img_path))
-
-    from utils.memory import cpu_mem_check
-    import time
     start_time = time.time()
+    ex_table = (['20001', img_loader(join(img_path, img_p)), '1', '1'] for img_p in sorted(listdir(img_path)))
+    cpu_mem_check()
+
     print(mydb.set_bulk_img(datas=ex_table))
     cpu_mem_check()
     end_time = time.time()
@@ -187,7 +175,8 @@ def compare_set_bulk_img():
 
 
 if __name__ == "__main__":
-    img = img_loader('img/example.jpg')
+    img_path = '/home/cha/DB/img/example.jpg'
+    img = img_loader(img_path)
 
     # cunnect to MYSQL Server
     mydb = DB(ip='192.168.10.69',

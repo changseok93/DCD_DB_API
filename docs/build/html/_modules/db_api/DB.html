@@ -307,7 +307,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
-                <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;INSERT INTO Image(env_id, data, type, check_num) VALUES(</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">)&#39;</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;INSERT INTO Image(env_id, data, type, check_num) VALUES(</span><span class="si">%s</span><span class="s1">, _binary</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">)&#39;</span>
                 <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">device_id</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">check_num</span><span class="p">)</span>
 
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
@@ -2280,6 +2280,49 @@
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
 
+<div class="viewcode-block" id="DB.set_obj_list"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.set_obj_list">[docs]</a>    <span class="k">def</span> <span class="nf">set_obj_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">mix_num</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Location table의 (grid_id)를 가진 row와 Category table의 (id)를 가진 row를 통해</span>
+<span class="sd">        (Location table의 특정 (grid_id)를 가진 row 수) X (category table의 특정 (category_id)를 가진 row 수)만큼</span>
+<span class="sd">        Object table에 row 생성</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            grid_id (str): Location table의 (grid_id)</span>
+<span class="sd">            category_id (str): Category table의 (id)</span>
+<span class="sd">            iteration (str): Object table의 (iteration)</span>
+<span class="sd">            mix_num (str): Object table의 (mix_num)</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">            Bool: True or False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) &quot;</span> \
+                        <span class="s2">&quot;SELECT Obj.img_id, Obj.loc_id, Obj.category_id, Obj.iteration, Obj.mix_num &quot;</span> \
+                        <span class="s2">&quot;FROM (SELECT * FROM (WITH tmp(img_id, iteration, mix_num, category_id) AS &quot;</span> \
+                        <span class="s2">&quot;                     (SELECT NULL, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">) SELECT * FROM tmp) AS tmp &quot;</span> \
+                        <span class="s2">&quot;      CROSS JOIN (SELECT id AS loc_id FROM Location WHERE grid_id=</span><span class="si">%s</span><span class="s2">) AS Loc) AS Obj&quot;</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">iteration</span><span class="p">,</span> <span class="n">mix_num</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">)</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+                <span class="c1"># table id 변경</span>
+                <span class="c1"># mysql의 autoincrement gap error 때문에 설정이 필요</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT MAX(id) FROM Object&quot;</span>
+                <span class="n">max_id</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;ALTER TABLE Object AUTO_INCREMENT = </span><span class="si">%s</span><span class="s2">&quot;</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">max_id</span><span class="p">)</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
 <div class="viewcode-block" id="DB.set_bulk_obj"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.set_bulk_obj">[docs]</a>    <span class="k">def</span> <span class="nf">set_bulk_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datas</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Object table에 여러개의 row 추가</span>
@@ -2287,17 +2330,15 @@
 <span class="sd">        Args:</span>
 <span class="sd">            datas (tuple): ((img_id, loc_id, category_id, iteration, mix_num),</span>
 <span class="sd">                            (...))</span>
+
 <span class="sd">        Return:</span>
 <span class="sd">            Bool: True or False</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
-                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO Object (img_id, loc_id, category_id, iteration, mix_num) VALUES&quot;</span>
-                <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">datas</span><span class="p">:</span>
-                    <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">), &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
-                    <span class="n">query</span> <span class="o">+=</span> <span class="n">s</span>
-                <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
-                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO Object (img_id, loc_id, category_id, iteration, mix_num) &quot;</span> \
+                        <span class="s2">&quot;VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">datas</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -2315,63 +2356,15 @@
 <span class="sd">        Args:</span>
 <span class="sd">            datas (tuple) : ((obj_id, x, y, width, height),</span>
 <span class="sd">                             (...))</span>
-<span class="sd">        Return:</span>
-<span class="sd">            Bool: True or False</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
-                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO Bbox (obj_id, x, y, width, height) VALUES&quot;</span>
-                <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">datas</span><span class="p">:</span>
-                    <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">), &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
-                    <span class="n">query</span> <span class="o">+=</span> <span class="n">s</span>
-                <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
-                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-                <span class="k">return</span> <span class="kc">True</span>
-
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error function:&#39;</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">False</span>
-
-        <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
-
-    <span class="c1"># -----------------------수정 필요한 함수---------------------------------</span>
-<div class="viewcode-block" id="DB.set_obj_list"><a class="viewcode-back" href="../../db_api.html#db_api.DB.DB.set_obj_list">[docs]</a>    <span class="k">def</span> <span class="nf">set_obj_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">mix_num</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Location table의 (grid_id)를 가진 row와 Category table의 (id)를 가진 row를 통해</span>
-<span class="sd">        (Location table의 특정 (grid_id)를 가진 row 수) X (category table의 특정 (category_id)를 가진 row 수)만큼</span>
-<span class="sd">        Object table에 row 생성</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            grid_id (str): Location table의 (grid_id)</span>
-<span class="sd">            category_id (str): Category table의 (id)f</span>
-<span class="sd">            iteration (str): Object table의 (iteration)</span>
-<span class="sd">            mix_num (str): Object table의 (mix_num)</span>
 
 <span class="sd">        Return:</span>
 <span class="sd">            Bool: True or False</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
-                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;CREATE TEMPORARY TABLE tmp(img_id INT, iteration SMALLINT, mix_num INT) &quot;</span> \
-                        <span class="s2">&quot;INSERT INTO tmp(img_id, iteration, mix_num) VALUES(NULL, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">iteration</span><span class="p">,</span> <span class="n">mix_num</span><span class="p">)</span>
-                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-
-                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) &quot;</span> \
-                        <span class="s2">&quot;SELECT Obj.img_id, Obj.loc_id, Obj.category_id, Obj.iteration, Obj.mix_num &quot;</span> \
-                        <span class="s2">&quot;FROM (SELECT * &quot;</span> \
-                        <span class="s2">&quot;   FROM (SELECT * &quot;</span> \
-                        <span class="s2">&quot;       FROM tmp &quot;</span> \
-                        <span class="s2">&quot;       CROSS JOIN (SELECT id AS loc_id FROM Location WHERE grid_id=</span><span class="si">%s</span><span class="s2">) AS Loc) AS Lo &quot;</span> \
-                        <span class="s2">&quot;   CROSS JOIN (SELECT id AS category_id FROM Category WHERE id=</span><span class="si">%s</span><span class="s2">) AS Cat) AS Obj&quot;</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">grid_id</span><span class="p">,</span> <span class="n">category_id</span><span class="p">)</span>
-                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-
-                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;DROP TABLE tmp&quot;</span>
-                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-
+                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO Bbox (obj_id, x, y, width, height) &quot;</span> \
+                        <span class="s2">&quot;VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">datas</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -2387,21 +2380,17 @@
 <span class="sd">        Image table에 여러개의 row 추가</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            datas (tuple): ((env_id, data, type, check_num),</span>
+<span class="sd">            datas (list): ((env_id, data, type, check_num),</span>
 <span class="sd">                            (...))</span>
+
 <span class="sd">        Return:</span>
 <span class="sd">            Bool: True or False</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cursor</span><span class="p">:</span>
-                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO Image (env_id, data, type, check_num) VALUES&quot;</span>
-                <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">datas</span><span class="p">:</span>
-                    <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">)</span>
-                    <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">), &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
-                    <span class="n">query</span> <span class="o">+=</span> <span class="n">s</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-                <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
-                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO Image (env_id, data, type, check_num) &quot;</span> \
+                        <span class="s2">&quot;VALUES (</span><span class="si">%s</span><span class="s2">, _binary</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">datas</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>

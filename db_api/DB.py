@@ -2183,8 +2183,8 @@ class DB:
         Object table에 여러개의 row 추가
 
         Args:
-            datas (tuple): ((img_id, loc_id, category_id, iteration, mix_num),
-                            (...))
+            datas (generator): ((img_id, loc_id, category_id, iteration, mix_num),
+                                (...))
 
         Return:
             Bool: True or False
@@ -2209,8 +2209,8 @@ class DB:
         Bbox table에 여러개의 row 추가
 
         Args:
-            datas (tuple) : ((obj_id, x, y, width, height),
-                             (...))
+            datas (generator) : ((obj_id, x, y, width, height),
+                                 (...))
 
         Return:
             Bool: True or False
@@ -2235,8 +2235,8 @@ class DB:
         Image table에 여러개의 row 추가
 
         Args:
-            datas (list): ((env_id, data, type, check_num),
-                            (...))
+            datas (generator): ((env_id, data, type, check_num),
+                                (...))
 
         Return:
             Bool: True or False

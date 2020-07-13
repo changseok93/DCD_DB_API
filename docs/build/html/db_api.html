@@ -1341,6 +1341,27 @@ Location table의 (x), Location table의 (y), Location table의 (loc_id) 반환<
 </dd></dl>
 
 <dl class="py method">
+<dt id="db_api.DB.DB.set_obj_list">
+<code class="sig-name descname">set_obj_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid_id</span></em>, <em class="sig-param"><span class="n">category_id</span></em>, <em class="sig-param"><span class="n">iteration</span></em>, <em class="sig-param"><span class="n">mix_num</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.set_obj_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.set_obj_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Location table의 (grid_id)를 가진 row와 Category table의 (id)를 가진 row를 통해
+(Location table의 특정 (grid_id)를 가진 row 수) X (category table의 특정 (category_id)를 가진 row 수)만큼
+Object table에 row 생성</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grid_id</strong> (<em>str</em>) – Location table의 (grid_id)</p></li>
+<li><p><strong>category_id</strong> (<em>str</em>) – Category table의 (id)</p></li>
+<li><p><strong>iteration</strong> (<em>str</em>) – Object table의 (iteration)</p></li>
+<li><p><strong>mix_num</strong> (<em>str</em>) – Object table의 (mix_num)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="db_api.DB.DB.set_bulk_obj">
 <code class="sig-name descname">set_bulk_obj</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">datas</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.set_bulk_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.set_bulk_obj" title="Permalink to this definition">¶</a></dt>
 <dd><p>Object table에 여러개의 row 추가</p>
@@ -1371,33 +1392,12 @@ Location table의 (x), Location table의 (y), Location table의 (loc_id) 반환<
 </dd></dl>
 
 <dl class="py method">
-<dt id="db_api.DB.DB.set_obj_list">
-<code class="sig-name descname">set_obj_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid_id</span></em>, <em class="sig-param"><span class="n">category_id</span></em>, <em class="sig-param"><span class="n">iteration</span></em>, <em class="sig-param"><span class="n">mix_num</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.set_obj_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.set_obj_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>Location table의 (grid_id)를 가진 row와 Category table의 (id)를 가진 row를 통해
-(Location table의 특정 (grid_id)를 가진 row 수) X (category table의 특정 (category_id)를 가진 row 수)만큼
-Object table에 row 생성</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>grid_id</strong> (<em>str</em>) – Location table의 (grid_id)</p></li>
-<li><p><strong>category_id</strong> (<em>str</em>) – Category table의 (id)f</p></li>
-<li><p><strong>iteration</strong> (<em>str</em>) – Object table의 (iteration)</p></li>
-<li><p><strong>mix_num</strong> (<em>str</em>) – Object table의 (mix_num)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>Bool</em> – True or False</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt id="db_api.DB.DB.set_bulk_img">
 <code class="sig-name descname">set_bulk_img</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">datas</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.set_bulk_img"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.set_bulk_img" title="Permalink to this definition">¶</a></dt>
 <dd><p>Image table에 여러개의 row 추가</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>datas</strong> (<em>tuple</em>) – ((env_id, data, type, check_num),
+<dd class="field-odd"><p><strong>datas</strong> (<em>list</em>) – ((env_id, data, type, check_num),
 (…))</p>
 </dd>
 <dt class="field-even">Returns</dt>
