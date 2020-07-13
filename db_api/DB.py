@@ -2135,65 +2135,6 @@ class DB:
         finally:
             self.db.commit()
 
-    def set_bulk_obj(self, datas) -> bool:
-        """
-        Object table에 여러개의 row 추가
-
-        Args:
-            datas (tuple): ((img_id, loc_id, category_id, iteration, mix_num),
-                            (...))
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "INSERT INTO Object (img_id, loc_id, category_id, iteration, mix_num) VALUES"
-                for data in datas:
-                    s = "({}, {}, {}, {}, {}), ".format(data[0], data[1], data[2], data[3], data[4])
-                    query += s
-                query = query[:-2]
-                cursor.execute(query)
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
-
-    def set_bulk_bbox(self, datas) -> bool:
-        """
-        Bbox table에 여러개의 row 추가
-
-        Args:
-            datas (tuple) : ((obj_id, x, y, width, height),
-                             (...))
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "INSERT INTO Bbox (obj_id, x, y, width, height) VALUES"
-                for data in datas:
-                    s = "({}, {}, {}, {}, {}), ".format(data[0], data[1], data[2], data[3], data[4])
-                    query += s
-                query = query[:-2]
-                cursor.execute(query)
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
-
-    # -----------------------수정 필요한 함수---------------------------------
     def set_obj_list(self, grid_id, category_id, iteration, mix_num) -> bool:
         """
         Location table의 (grid_id)를 가진 row와 Category table의 (id)를 가진 row를 통해
@@ -2220,12 +2161,65 @@ class DB:
                 cursor.execute(query, value)
 
                 # table id 변경
+                # mysql의 autoincrement gap error 때문에 설정이 필요
                 query = "SELECT MAX(id) FROM Object"
                 max_id = cursor.execute(query)
                 query = "ALTER TABLE Object AUTO_INCREMENT = %s"
                 value = (max_id)
                 cursor.execute(query, value)
 
+                return True
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+
+    def set_bulk_obj(self, datas) -> bool:
+        """
+        Object table에 여러개의 row 추가
+
+        Args:
+            datas (tuple): ((img_id, loc_id, category_id, iteration, mix_num),
+                            (...))
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "INSERT INTO Object (img_id, loc_id, category_id, iteration, mix_num) " \
+                        "VALUES (%s, %s, %s, %s, %s)"
+                cursor.executemany(query, datas)
+                return True
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
+
+    def set_bulk_bbox(self, datas) -> bool:
+        """
+        Bbox table에 여러개의 row 추가
+
+        Args:
+            datas (tuple) : ((obj_id, x, y, width, height),
+                             (...))
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "INSERT INTO Bbox (obj_id, x, y, width, height) " \
+                        "VALUES (%s, %s, %s, %s, %s)"
+                cursor.executemany(query, datas)
                 return True
 
         except Exception as e:
@@ -2249,14 +2243,9 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "INSERT INTO Image (env_id, data, type, check_num) VALUES"
-                for data in datas:
-                    data[1] = data[1].strip('\\')
-                    s = "({}, {}, {}, {}), ".format(data[0], data[1], data[2], data[3])
-                    query += s
-                print(query)
-                query = query[:-2]
-                cursor.execute(query)
+                query = "INSERT INTO Image (env_id, data, type, check_num) " \
+                        "VALUES (%s, %s, %s, %s)"
+                cursor.executemany(query, datas)
                 return True
 
         except Exception as e:

@@ -135,6 +135,40 @@ def read_img_from_db(db, img_id, table):
         file.write(img_byte_str)
 
 
+def compare_set_bulk_bbox():
+    # (obj_id, x, y, width, height)
+    ex_table = []
+    for i in range(65537):
+        ex_table.append(('1', '1', "{}".format(i), '1', '1'))
+    ex_table = tuple(ex_table)
+
+    from utils.memory import cpu_mem_check
+    import time
+    start_time = time.time()
+    mydb.set_bulk_bbox(datas=ex_table)
+    cpu_mem_check()
+    end_time = time.time()
+    print('total_time: ', end_time - start_time)
+
+
+def compare_set_bulk_obj():
+    # (img_id, loc_id, category_id, iteration, mix_num)
+    ex_table = []
+    for i in range(4, 65533):
+        ex_table.append(('1', '1', "1", "{}".format(i), '1'))
+    ex_table = tuple(ex_table)
+
+    from utils.memory import cpu_mem_check
+    import time
+    # no execute many
+    print('no execute many')
+    start_time = time.time()
+    print(mydb.set_bulk_obj(datas=ex_table))
+    cpu_mem_check()
+    end_time = time.time()
+    print('total_time: ', end_time - start_time)
+
+
 if __name__ == "__main__":
     img = img_loader('img/example.jpg')
 
@@ -255,42 +289,27 @@ if __name__ == "__main__":
     # mydb.set_location(grid_id='1', x='2', y='2')
     # print(mydb.get_aug_loc_id(grid_id='1'))
 
-    # # (env_id, data, type, check_num)
-    # ex_table = []
-    # for i in range(1):
-    #     ex_table.append(('1', img, '1', '1', '1'))
-    # ex_table = tuple(ex_table)
-    # #
-    # # from utils.memory import cpu_mem_check
-    # # import time
-    # # start_time = time.time()
-    # #
-    # mydb.set_bulk_img(datas=ex_table)
-    #
-    # cpu_mem_check()
-    # end_time = time.time()
-    # print('total_time: ', end_time - start_time)
+    # # set_bulk_obj test 코드
+    # compare_set_bulk_obj()
 
-    # set_bulk_obj test 코드
-    # (img_id, loc_id, category_id, iteration, mix_num)
-    # ex = (('1', '1', '1', '3', '-1'),
-    #       ('1', '1', '1', '4', '-1'))
-    # print(mydb.set_bulk_obj(datas=ex))
+    # # set_bulk_bbox test 코드
+    # compare_set_bulk_bbox()
 
-    # set_bulk_bbox test 코드
-    # (obj_id, x, y, width, height)
-    # ex_table = []
-    # for i in range(100):
-    #     ex_table.append(('1', '1', "{}".format(i), '1', '1'))
-    # ex_table = tuple(ex_table)
-    #
-    # from utils.memory import cpu_mem_check
-    # import time
-    # start_time = time.time()
-    #
-    # mydb.set_bulk_bbox(datas=ex_table)
-    # mydb.set_bulk_bbox(datas=ex_table)
-    #
-    # cpu_mem_check()
-    # end_time = time.time()
-    # print('total_time: ', end_time - start_time)
+    # # set_bulk_img test 코드
+    # compare_set_bulk_img()
+
+    # (env_id, data, type, check_num)
+    ex_table = []
+    for i in range(1):
+        ex_table.append(('1', img, '1', '1', '1'))
+    ex_table = tuple(ex_table)
+
+    print(img)
+
+    from utils.memory import cpu_mem_check
+    import time
+    start_time = time.time()
+    mydb.set_bulk_img(datas=ex_table)
+    cpu_mem_check()
+    end_time = time.time()
+    print('total_time: ', end_time - start_time)
