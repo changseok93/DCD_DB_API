@@ -2218,6 +2218,14 @@ class DB:
                         "      CROSS JOIN (SELECT id AS loc_id FROM Location WHERE grid_id=%s) AS Loc) AS Obj"
                 value = (iteration, mix_num, category_id, grid_id)
                 cursor.execute(query, value)
+
+                # table id 변경
+                query = "SELECT MAX(id) FROM Object"
+                max_id = cursor.execute(query)
+                query = "ALTER TABLE Object AUTO_INCREMENT = %s"
+                value = (max_id)
+                cursor.execute(query, value)
+
                 return True
 
         except Exception as e:
@@ -2248,51 +2256,6 @@ class DB:
                     query += s
                 print(query)
                 query = query[:-2]
-                cursor.execute(query)
-                return True
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        finally:
-            self.db.commit()
-
-    def test_cross_join(self, c1) -> bool:
-        try:
-            with self.db.cursor() as cursor:
-                # # t1 create
-                # query = "CREATE TABLE t1(c1 INT)"
-                # cursor.execute(query)
-                # query = "INSERT INTO t1(c1) VALUE(%s)"
-                # value = (c1)
-                # cursor.execute(query, value)
-                # query = "INSERT INTO t1(c1) VALUE(%s)"
-                # value = (c1)
-                # cursor.execute(query, value)
-                #
-                # # t2 create
-                # query = "CREATE TABLE t2(c2 INT)"
-                # cursor.execute(query)
-                # query = "INSERT INTO t2(c2) VALUE(%s)"
-                # value = (c1)
-                # cursor.execute(query, value)
-                # query = "INSERT INTO t2(c2) VALUE(%s)"
-                # value = (c1)
-                # cursor.execute(query, value)
-                #
-                # # t3 create
-                # query = "CREATE TABLE t3(a INT, b INT, id INT AUTO_INCREMENT PRIMARY KEY)"
-                # cursor.execute(query)
-
-                query = "INSERT INTO t3(a, b) " \
-                        "SELECT * " \
-                        "FROM (SELECT * " \
-                        "      FROM t1 " \
-                        "      CROSS JOIN t2 " \
-                        "      ) AS tmp " \
-                        "ORDER BY tmp.c1"
                 cursor.execute(query)
                 return True
 
