@@ -91,7 +91,8 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'INSERT INTO Environment(ipv4, floor, width, height, depth) VALUES(%s, %s, %s, %s, %s)'
+                query = 'INSERT INTO Environment(ipv4, floor, width, height, depth) ' \
+                        'VALUES(%s, %s, %s, %s, %s)'
                 values = (ipv4, floor, width, height, depth)
                 cursor.execute(query, values)
         except Exception as e:
@@ -122,15 +123,15 @@ class DB:
             with self.db.cursor() as cursor:
                 query_head = 'UPDATE Environment SET '
                 query_tail = ' WHERE id={}'.format(id)
-                if ipv4 != None:
+                if ipv4 is not None:
                     query_head += "ipv4='{}', ".format(ipv4)
-                if floor != None:
+                if floor is not None:
                     query_head += 'floor={}, '.format(floor)
-                if width != None:
+                if width is not None:
                     query_head += 'width={}, '.format(width)
-                if height != None:
+                if height is not None:
                     query_head += 'height={}, '.format(height)
-                if depth != None:
+                if depth is not None:
                     query_head += 'depth={}, '.format(depth)
                 query = query_head[:-2]
                 query += query_tail
@@ -159,7 +160,8 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'INSERT INTO Image(env_id, data, type, check_num) VALUES(%s, _binary%s, %s, %s)'
+                query = 'INSERT INTO Image(env_id, data, type, check_num) ' \
+                        'VALUES(%s, _binary%s, %s, %s)'
                 values = (device_id, image, type, check_num)
                 cursor.execute(query, values)
         except Exception as e:
@@ -189,13 +191,13 @@ class DB:
             with self.db.cursor() as cursor:
                 query_head = 'UPDATE Image SET '
                 query_tail = ' WHERE id={}'.format(id)
-                if device_id != None:
+                if device_id is not None:
                     query_head += 'env_id={}, '.format(device_id)
-                if image != None:
+                if image is not None:
                     query_head += "data=x'{}' , ".format(image.hex())
-                if type != None:
+                if type is not None:
                     query_head += 'type={}, '.format(type)
-                if check_num != None:
+                if check_num is not None:
                     check_num += 'check={}, '.format(check_num)
                 query = query_head[:-2]
                 query += query_tail
@@ -222,7 +224,8 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'INSERT INTO Grid(width, height) VALUES(%s, %s)'
+                query = 'INSERT INTO Grid(width, height) ' \
+                        'VALUES(%s, %s)'
                 values = (width, height)
                 cursor.execute(query, values)
         except Exception as e:
@@ -250,9 +253,9 @@ class DB:
             with self.db.cursor() as cursor:
                 query_head = 'UPDATE Grid SET '
                 query_tail = ' WHERE id={}'.format(id)
-                if width != None:
+                if width is not None:
                     query_head += 'width={}, '.format(width)
-                if height != None:
+                if height is not None:
                     query_head += 'height={}, '.format(height)
                 query = query_head[:-2]
                 query += query_tail
@@ -280,7 +283,8 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'INSERT INTO Location(grid_id, x, y) VALUES(%s, %s, %s)'
+                query = 'INSERT INTO Location(grid_id, x, y) ' \
+                        'VALUES(%s, %s, %s)'
                 values = (grid_id, x, y)
                 cursor.execute(query, values)
         except Exception as e:
@@ -309,11 +313,11 @@ class DB:
             with self.db.cursor() as cursor:
                 query_head = 'UPDATE Location SET '
                 query_tail = ' WHERE id={}'.format(id)
-                if grid_id != None:
+                if grid_id is not None:
                     query_head += 'Grid_id={}, '.format(grid_id)
-                if x != None:
+                if x is not None:
                     query_head += 'x={}, '.format(x)
-                if y != None:
+                if y is not None:
                     query_head += 'y={}, '.format(y)
                 query = query_head[:-2]
                 query += query_tail
@@ -339,7 +343,8 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'INSERT INTO SuperCategory(name) VALUES(%s)'
+                query = 'INSERT INTO SuperCategory(name) ' \
+                        'VALUES(%s)'
                 values = (name)
                 cursor.execute(query, values)
         except Exception as e:
@@ -366,7 +371,7 @@ class DB:
             with self.db.cursor() as cursor:
                 query_head = 'UPDATE SuperCategory SET '
                 query_tail = ' WHERE id={}'.format(id)
-                if name != None:
+                if name is not None:
                     query_head += "name='{}', ".format(name)
                 query = query_head[:-2]
                 query += query_tail
@@ -398,18 +403,18 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'INSERT INTO Category(super_id, name, width, height, depth, iteration, thumbnail) VALUES(%s, %s, %s, %s, %s, %s, %s)'
+                query = 'INSERT INTO Category(super_id, name, width, height, depth, iteration, thumbnail) ' \
+                        'VALUES(%s, %s, %s, %s, %s, %s, %s)'
                 values = (super_id, name, width, height, depth, iteration, thumbnail)
                 cursor.execute(query, values)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def update_category(self, id, super_id=None, name=None, width=None,
                         height=None, depth=None, iteration=None, thumbnail=None) -> bool:
@@ -433,33 +438,31 @@ class DB:
             with self.db.cursor() as cursor:
                 query_head = 'UPDATE Category SET '
                 query_tail = ' WHERE id={}'.format(id)
-                if super_id != None:
+                if super_id is not None:
                     query_head += 'super_id={}, '.format(super_id)
-                if name != None:
+                if name is not None:
                     query_head += "name='{}', ".format(name)
-                if width != None:
+                if width is not None:
                     query_head += 'width={}, '.format(width)
-                if height != None:
+                if height is not None:
                     query_head += 'height={}, '.format(height)
-                if depth != None:
+                if depth is not None:
                     query_head += 'depth={}, '.format(depth)
-                if iteration != None:
+                if iteration is not None:
                     query_head += 'iteration={}, '.format(iteration)
-                if thumbnail != None:
+                if thumbnail is not None:
                     query_head += "thumbnail=x'{}' , ".format(thumbnail.hex())
-
                 query = query_head[:-2]
                 query += query_tail
                 cursor.execute(query)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def set_object(self, img_id, loc_id, category_id, iteration, mix_num) -> bool:
         """
@@ -2314,12 +2317,11 @@ class DB:
                 # SuperCategory, Category 정보 json file에 마지막으로 저장
                 # 위에 두개 배열 json 타입으로 저장만 해주면 됨
 
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
