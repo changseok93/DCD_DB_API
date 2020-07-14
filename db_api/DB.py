@@ -2135,70 +2135,68 @@ class DB:
         finally:
             self.db.commit()
 
-    # def set_obj_list(self, grid_id, category_id, iteration, mix_num) -> bool:
-    #     """
-    #     Location table의 (grid_id)를 가진 row와 Category table의 (id)를 가진 row를 통해
-    #     (Location table의 특정 (grid_id)를 가진 row 수) X
-    #     (category table의 특정 (category_id)를 가진 row 수) X
-    #     (iteration)만큼
-    #     Object table에 row 생성
-    #
-    #     Args:
-    #         grid_id (str): Location table의 (grid_id)
-    #         category_id (str): Category table의 (id)
-    #         iteration (str): Object table의 (iteration)
-    #         mix_num (str): Object table의 (mix_num)
-    #
-    #     Return:
-    #         Bool: True or False
-    #     """
-    #     try:
-    #         with self.db.cursor() as cursor:
-    #             for
-    #             # While procedure 생성
-    #             query = "CREATE PROCEDURE IF NOT EXISTS create_tmp(i_id, num_iter, m_num, cat_id) " \
-    #                     "BEGIN " \
-    #                     "   CREATE TEMPORARY TABLE tmp(" \
-    #                     "       img_id INT UNSIGNED," \
-    #                     "       iteration SMALLINT UNSIGNED NOT NULL," \
-    #                     "       mix_num INT NOT NULL," \
-    #                     "       category_id INT UNSIGNED NOT NULL" \
-    #                     "   )" \
-    #                     "   DECLARE iter SMALLINT UNSIGNED " \
-    #                     "   WHILE iter < num_iter " \
-    #                     "       INSERT INTO tmp(img_id, iteration, mix_num, category_id) " \
-    #                     "       VALUES(i_id, iter, m_num, cat_id)" \
-    #                     "       SET iter = iter + 1 " \
-    #                     "   END WHILE " \
-    #                     "END"
-    #             cursor.execute(query)
-    #
-    #             # main query
-    #             query = "INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) " \
-    #                     "SELECT Obj.img_id, Obj.loc_id, Obj.category_id, Obj.iteration, Obj.mix_num " \
-    #                     "FROM (SELECT * FROM (WITH tmp(img_id, iteration, mix_num, category_id) AS " \
-    #                     "                     (SELECT NULL, %s, %s, %s) SELECT * FROM tmp) AS tmp " \
-    #                     "      CROSS JOIN (SELECT id AS loc_id FROM Location WHERE grid_id=%s) AS Loc) AS Obj"
-    #             value = (iteration, mix_num, category_id, grid_id)
-    #             cursor.execute(query, value)
-    #
-    #             # table id 변경
-    #             # mysql의 autoincrement gap error 때문에 설정이 필요
-    #             query = "SELECT MAX(id) FROM Object"
-    #             max_id = cursor.execute(query)
-    #             query = "ALTER TABLE Object AUTO_INCREMENT = %s"
-    #             value = (max_id)
-    #             cursor.execute(query, value)
-    #
-    #             return True
-    #
-    #     except Exception as e:
-    #         print('Error function:', inspect.stack()[0][3])
-    #         print(e)
-    #         return False
-    #
-    #     finally:
-    #         self.db.commit()
+    def set_obj_list(self, grid_id, category_id, iteration, mix_num) -> bool:
+        """
+        Location table의 (grid_id)를 가진 row와 Category table의 (id)를 가진 row를 통해
+        (Location table의 특정 (grid_id)를 가진 row 수) X
+        (category table의 특정 (category_id)를 가진 row 수) X
+        (iteration)만큼
+        Object table에 row 생성
+
+        Args:
+            grid_id (str): Location table의 (grid_id)
+            category_id (str): Category table의 (id)
+            iteration (str): Object table의 (iteration)
+            mix_num (str): Object table의 (mix_num)
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                # While procedure 생성
+                query = "CREATE TEMPORARY TABLE tmp(" \
+                        "   img_id INT UNSIGNED," \
+                        "   iteration INT UNSIGNED NOT NULL," \
+                        "   mix_num INT NOT NULL," \
+                        "   category_id INT UNSIGNED NOT NULL" \
+                        ")"
+                cursor.execute(query)
+                # for문 이용해 tmp 테이블에 값을 채움
+                for i in range(int(iteration)):
+                    query = "INSERT INTO tmp(img_id, iteration, mix_num, category_id) " \
+                            "VALUES(NULL, %s, %s, %s)"
+                    value = (iteration, i+1, category_id)
+                    cursor.execute(query, value)
+
+                # main query
+                query = "INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) " \
+                        "SELECT Obj.img_id, Obj.loc_id, Obj.category_id, Obj.iteration, Obj.mix_num " \
+                        "FROM (SELECT * FROM tmp " \
+                        "      CROSS JOIN (SELECT id AS loc_id FROM Location WHERE grid_id=%s) AS Loc) AS Obj"
+                value = (grid_id)
+                cursor.execute(query, value)
+
+                # table id 변경
+                # mysql의 autoincrement gap error 때문에 설정이 필요
+                query = "SELECT MAX(id) FROM Object"
+                max_id = cursor.execute(query)
+                query = "ALTER TABLE Object AUTO_INCREMENT = %s"
+                value = (max_id)
+                cursor.execute(query, value)
+                # tmp table 삭제
+                query = "DROP TABLE tmp"
+                cursor.execute(query)
+
+                return True
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
 
     def set_bulk_obj(self, datas) -> bool:
         """
