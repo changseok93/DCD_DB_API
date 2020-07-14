@@ -265,10 +265,10 @@ if __name__ == "__main__":
     # print(mydb.list_obj_check_num(grid_id='1', category_id='1', check_num='1'))
 
     # set_obj_list test 코드
-    # mydb.delete_table(id='1', table='Object')
-    # mydb.set_location(grid_id='1', x='1', y='2')
-    # mydb.set_location(grid_id='1', x='1', y='3')
-    # mydb.set_location(grid_id='1', x='1', y='4')
+    mydb.delete_table(id='1', table='Object')
+    mydb.set_location(grid_id='1', x='1', y='2')
+    mydb.set_location(grid_id='1', x='1', y='3')
+    mydb.set_location(grid_id='1', x='1', y='4')
     # print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='1', mix_num='1'))
     # print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='2', mix_num='1'))
     # print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='3', mix_num='1'))
@@ -302,4 +302,4 @@ if __name__ == "__main__":
     # compare_set_bulk_bbox()
 
     # set_bulk_img test 코드
-    compare_set_bulk_img()
+    # compare_set_bulk_img()
