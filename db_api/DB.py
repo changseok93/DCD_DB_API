@@ -2166,7 +2166,7 @@ class DB:
                 for i in range(int(iteration)):
                     query = "INSERT INTO tmp(img_id, iteration, mix_num, category_id) " \
                             "VALUES(NULL, %s, %s, %s)"
-                    value = (iteration, i+1, category_id)
+                    value = (i+1, mix_num, category_id)
                     cursor.execute(query, value)
 
                 # main query

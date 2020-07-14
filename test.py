@@ -269,9 +269,7 @@ if __name__ == "__main__":
     mydb.set_location(grid_id='1', x='1', y='2')
     mydb.set_location(grid_id='1', x='1', y='3')
     mydb.set_location(grid_id='1', x='1', y='4')
-    print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='1', mix_num='1'))
-    print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='2', mix_num='1'))
-    print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='3', mix_num='1'))
+    print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='3', mix_num='-1'))
 
     # get_aug_mask test 코드
     # mydb.set_location(grid_id='1', x='1', y='2')
