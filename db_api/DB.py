@@ -70,7 +70,7 @@ class DB:
             print('already init DB')
             print(e)
 
-        finally:
+        else:
             # select databases, 'use [database]'와 동일
             self.db.select_db(db_name)
             self.db.commit()
@@ -94,15 +94,14 @@ class DB:
                 query = 'INSERT INTO Environment(ipv4, floor, width, height, depth) VALUES(%s, %s, %s, %s, %s)'
                 values = (ipv4, floor, width, height, depth)
                 cursor.execute(query, values)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
-        finally:
+        else:
             self.db.commit()
+            return True
 
     def update_environment(self, id, ipv4=None, floor=None, width=None, height=None, depth=None) -> bool:
         """
@@ -135,17 +134,15 @@ class DB:
                     query_head += 'depth={}, '.format(depth)
                 query = query_head[:-2]
                 query += query_tail
-
                 cursor.execute(query)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
-        finally:
+        else:
             self.db.commit()
+            return True
 
     def set_image(self, device_id, image, type, check_num) -> bool:
         """
@@ -164,17 +161,15 @@ class DB:
             with self.db.cursor() as cursor:
                 query = 'INSERT INTO Image(env_id, data, type, check_num) VALUES(%s, _binary%s, %s, %s)'
                 values = (device_id, image, type, check_num)
-
                 cursor.execute(query, values)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
-        finally:
+        else:
             self.db.commit()
+            return True
 
     def update_image(self, id, device_id=None, image=None, type=None, check_num=None) -> bool:
         """
@@ -202,19 +197,17 @@ class DB:
                     query_head += 'type={}, '.format(type)
                 if check_num != None:
                     check_num += 'check={}, '.format(check_num)
-
                 query = query_head[:-2]
                 query += query_tail
                 cursor.execute(query)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
-        finally:
+        else:
             self.db.commit()
+            return True
 
     def set_grid(self, width, height) -> bool:
         """
@@ -232,15 +225,14 @@ class DB:
                 query = 'INSERT INTO Grid(width, height) VALUES(%s, %s)'
                 values = (width, height)
                 cursor.execute(query, values)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
-        finally:
+        else:
             self.db.commit()
+            return True
 
     def update_grid(self, id, width=None, height=None) -> bool:
         """
@@ -265,15 +257,14 @@ class DB:
                 query = query_head[:-2]
                 query += query_tail
                 cursor.execute(query)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
-        finally:
+        else:
             self.db.commit()
+            return True
 
     def set_location(self, grid_id, x, y) -> bool:
         """
@@ -292,15 +283,14 @@ class DB:
                 query = 'INSERT INTO Location(grid_id, x, y) VALUES(%s, %s, %s)'
                 values = (grid_id, x, y)
                 cursor.execute(query, values)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
-        finally:
+        else:
             self.db.commit()
+            return True
 
     def update_location(self, id, grid_id=None, x=None, y=None) -> bool:
         """
@@ -327,17 +317,15 @@ class DB:
                     query_head += 'y={}, '.format(y)
                 query = query_head[:-2]
                 query += query_tail
-
                 cursor.execute(query)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
-        finally:
+        else:
             self.db.commit()
+            return True
 
     def set_supercategory(self, name) -> bool:
         """
@@ -354,15 +342,14 @@ class DB:
                 query = 'INSERT INTO SuperCategory(name) VALUES(%s)'
                 values = (name)
                 cursor.execute(query, values)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
-        finally:
+        else:
             self.db.commit()
+            return True
 
     def update_supercategory(self, id, name=None) -> bool:
         """
@@ -384,15 +371,14 @@ class DB:
                 query = query_head[:-2]
                 query += query_tail
                 cursor.execute(query)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
-        finally:
+        else:
             self.db.commit()
+            return True
 
     def set_category(self, super_id, name, width, height, depth, iteration, thumbnail) -> bool:
         """
@@ -422,7 +408,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def update_category(self, id, super_id=None, name=None, width=None,
@@ -472,7 +458,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def set_object(self, img_id, loc_id, category_id, iteration, mix_num) -> bool:
@@ -501,7 +487,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def update_object(self, id, img_id=None, loc_id=None, category_id=None, iteration=None, mix_num=None) -> bool:
@@ -544,7 +530,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def set_bbox(self, obj_id, x, y, width, height) -> bool:
@@ -573,7 +559,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def update_bbox(self, id, x=None, y=None, width=None, height=None) -> bool:
@@ -613,7 +599,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def set_mask(self, obj_id, x, y) -> bool:
@@ -640,7 +626,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def update_mask(self, id, obj_id=None, x=None, y=None) -> bool:
@@ -678,7 +664,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_table(self, id, table):
@@ -710,7 +696,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def delete_table(self, id, table) -> bool:
@@ -736,7 +722,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def list_table(self, table):
@@ -768,7 +754,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def init_table(self) -> bool:
@@ -794,7 +780,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def drop_table(self, table) -> bool:
@@ -819,7 +805,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_last_id(self, table):
@@ -851,7 +837,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_env_id(self, ipv4, floor):
@@ -884,7 +870,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_grid_id(self, grid_w_h):
@@ -917,7 +903,7 @@ class DB:
             print(e)
             return None
 
-        finally:
+        else:
             self.db.commit()
 
     def get_supercategory_id(self, name):
@@ -949,7 +935,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_loc_id(self, grid_id, loc_x_y):
@@ -983,7 +969,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_loc_id_GL(self, grid_w_h, loc_x_y):
@@ -1021,7 +1007,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_category_id(self, super_id, category_name):
@@ -1054,7 +1040,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_category_id_obj(self, obj_id):
@@ -1086,7 +1072,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_img_id(self, obj_id):
@@ -1118,7 +1104,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_location(self, grid_id):
@@ -1151,7 +1137,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_bbox_info(self, object_id):
@@ -1184,7 +1170,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_obj_id_img(self, img_id):
@@ -1216,7 +1202,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_obj_id(self, category_id):
@@ -1249,7 +1235,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_super_id(self, category_id):
@@ -1282,7 +1268,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_super_name(self, super_id):
@@ -1315,7 +1301,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_mix_num(self, loc_id, category_id, iteration):
@@ -1351,7 +1337,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_bbox_id(self, obj_id):
@@ -1384,7 +1370,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_mask_id(self, obj_id):
@@ -1417,7 +1403,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_img_check_num(self, obj_id):
@@ -1451,7 +1437,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_bbox_img(self, img_id):
@@ -1486,7 +1472,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_cat_id(self, super_name, cat_name):
@@ -1522,7 +1508,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def list_bbox(self, obj_id):
@@ -1555,7 +1541,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def list_obj(self, category_id, loc_ids):
@@ -1594,7 +1580,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def list_obj_check_num(self, grid_id, category_id, check_num):
@@ -1639,7 +1625,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def check_image_check_num(self, img_id):
@@ -1671,7 +1657,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def check_obj_id(self, loc_id, category_id, iteration, mix_num) -> bool:
@@ -1704,7 +1690,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def check_process(self, category_id) -> bool:
@@ -1744,7 +1730,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def check_cat_id(self, super_name, cat_name) -> bool:
@@ -1776,7 +1762,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def update_img_check_num_obj_id(self, obj_id, check_num)->bool:
@@ -1804,7 +1790,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def update_img_check_num_img_id(self, img_id, check_num)->bool:
@@ -1830,7 +1816,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def update_img_img_obj_id(self, obj_id, img) -> bool:
@@ -1858,7 +1844,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def update_img_img_img_id(self, img_id, img) -> bool:
@@ -1884,7 +1870,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def delete_object(self, img_id) -> bool:
@@ -1909,7 +1895,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def delete_bbox(self, obj_id) -> bool:
@@ -1933,7 +1919,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def delete_mask(self, obj_id) -> bool:
@@ -1957,7 +1943,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def delete_bbox_img(self, img_id) -> bool:
@@ -1984,7 +1970,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def delete_nomix_img(self, img_id) -> bool:
@@ -2014,7 +2000,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_aug_mask(self, grid_id, category_id):
@@ -2054,7 +2040,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_aug_img(self, grid_id, category_id):
@@ -2097,7 +2083,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def get_aug_loc_id(self, grid_id):
@@ -2132,7 +2118,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def set_obj_list(self, grid_id, category_id, iteration, mix_num) -> bool:
@@ -2195,7 +2181,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def set_bulk_obj(self, datas) -> bool:
@@ -2221,7 +2207,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def set_bulk_bbox(self, datas) -> bool:
@@ -2247,7 +2233,7 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def set_bulk_img(self, datas) -> bool:
@@ -2273,13 +2259,21 @@ class DB:
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()
 
     def db_to_json(self, json_path, img_path):
         """
         DB의 전체 테이블에서 학습에 필요한 데이터들을 가져와
         json 타입으로 저장
+
+        Args:
+            json_path (str):
+            img_path (str):
+
+        Return:
+            Bool: True or False
+
         """
         try:
             with self.db.cursor() as cursor:
@@ -2293,20 +2287,39 @@ class DB:
                 cursor.execute(query)
                 obj_table = cursor.fetchall()
 
-                # bbox table
-                query = "SELECT x, y, width, height FROM Bbox WHERE=%s"
-                cursor.execute(query)
-                bbox_table = cursor.fetchall()
+                categories = []
+                s_categories = []
 
-                # mask table
-                query = "SELECT x, y FROM Mask WHERE=%s"
-                cursor.execute(query)
-                mask_table = cursor.fetchall()
+                # make json file
+                for obj_row in obj_table:
+                    # obj row 전처리
+                    obj_row
+
+                    # obj_row에서 나온 category column이 categories 안에 없으면
+                    # 배열에 추가
+                    # 배열에 추가된 뒤, s_categories에도 없다면, s_categories 배열에도 추가
+
+                    # bbox table 조회
+                    query = "SELECT x, y, width, height FROM Bbox WHERE=%s"
+                    value = (obj_row)
+                    cursor.execute(query, value)
+                    bbox_table = cursor.fetchall()
+
+                    # mask table 조회
+                    query = "SELECT x, y FROM Mask WHERE=%s"
+                    value = (obj_row)
+                    cursor.execute(query, value)
+                    mask_table = cursor.fetchall()
+
+                # SuperCategory, Category 정보 json file에 마지막으로 저장
+                # 위에 두개 배열 json 타입으로 저장만 해주면 됨
+
+                return True
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
             return False
 
-        finally:
+        else:
             self.db.commit()

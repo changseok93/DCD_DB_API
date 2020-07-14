@@ -303,6 +303,6 @@ if __name__ == "__main__":
     # compare_set_bulk_img()
 
     # db_to_json test 코드
-    json_path = "./"
-    img_path = "./"
-    mydb.db_to_json(json_path=json_path, img_path=img_path)
+    # json_path = "./"
+    # img_path = "./"
+    # mydb.db_to_json(json_path=json_path, img_path=img_path)
