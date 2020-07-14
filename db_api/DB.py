@@ -2275,3 +2275,38 @@ class DB:
 
         finally:
             self.db.commit()
+
+    def db_to_json(self, json_path, img_path):
+        """
+        DB의 전체 테이블에서 학습에 필요한 데이터들을 가져와
+        json 타입으로 저장
+        """
+        try:
+            with self.db.cursor() as cursor:
+                # Image table의 모든 img는 folder에 update -> Image table이 언제 갱신되었을지 모름 -> folder도 갱신
+                query = "SELECT id, data FROM Image"
+                cursor.execute(query)
+                img_table = cursor.fetchall()
+
+                # Object table search
+                query = "SELECT img_id, category_id, id FROM Object"
+                cursor.execute(query)
+                obj_table = cursor.fetchall()
+
+                # bbox table
+                query = "SELECT x, y, width, height FROM Bbox WHERE=%s"
+                cursor.execute(query)
+                bbox_table = cursor.fetchall()
+
+                # mask table
+                query = "SELECT x, y FROM Mask WHERE=%s"
+                cursor.execute(query)
+                mask_table = cursor.fetchall()
+
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            return False
+
+        finally:
+            self.db.commit()
