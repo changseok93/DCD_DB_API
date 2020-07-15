@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from . import querys
 from .utils.img_util import save_img
+from os.path import join
+
 import pymysql
 import inspect
 
@@ -2188,10 +2190,14 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                # Image table의 모든 img는 folder에 update -> Image table이 언제 갱신되었을지 모름 -> folder도 갱신
+                # Image table의 모든 img는 folder에 update -> Image table이 언제 갱신되었을지 모름 -> img folder도 갱신
                 query = "SELECT id, data FROM Image"
                 cursor.execute(query)
                 img_table = cursor.fetchall()
+                for row in img_table:
+                    img_id = row[0]
+                    img = row[1]
+                    save_img(byte_img=img, img_dir=join(img_path, str(img_id) + '.png'))
 
                 # Object table search
                 query = "SELECT img_id, category_id, id FROM Object"
@@ -2202,25 +2208,28 @@ class DB:
                 s_categories = []
 
                 # make json file
-                for obj_row in obj_table:
-                    # obj row 전처리
-                    obj_row
+                for row in obj_table:
+                    img_id = row[0]
+                    cat_id = row[1]
+                    obj_id = row[2]
 
                     # obj_row에서 나온 category column이 categories 안에 없으면
                     # 배열에 추가
                     # 배열에 추가된 뒤, s_categories에도 없다면, s_categories 배열에도 추가
 
                     # bbox table 조회
-                    query = "SELECT x, y, width, height FROM Bbox WHERE=%s"
-                    value = (obj_row)
+                    query = "SELECT x, y, width, height FROM Bbox WHERE obj_id=%s"
+                    value = (obj_id)
                     cursor.execute(query, value)
                     bbox_table = cursor.fetchall()
+                    print(bbox_table)
 
                     # mask table 조회
-                    query = "SELECT x, y FROM Mask WHERE=%s"
-                    value = (obj_row)
+                    query = "SELECT x, y FROM Mask WHERE obj_id=%s"
+                    value = (obj_id)
                     cursor.execute(query, value)
                     mask_table = cursor.fetchall()
+                    print(mask_table)
 
                 # SuperCategory, Category 정보 json file에 마지막으로 저장
                 # 위에 두개 배열 json 타입으로 저장만 해주면 됨

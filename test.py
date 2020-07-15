@@ -3,6 +3,7 @@ from db_api.DB import DB
 from db_api.DB import *
 from os import listdir
 from os.path import join
+import os
 from utils.memory import cpu_mem_check
 
 import time
@@ -81,10 +82,10 @@ def check_object(db):
 
 
 def check_bbox(db):
-    db.set_bbox(obj_id='1', x='10', y='10', width='3', height='4')
+    db.set_bbox(obj_id='1', x='1', y='1', width='1', height='1')
     db.get_table(id='1', table='Bbox')
     # db.delete_table(id='1', table='Bbox')
-    db.update_bbox(id='1', x='15')
+    db.update_bbox(id='1', x='1')
     print('Bbox table: ', db.list_table(table='Bbox'))
     print('Bbox table last id: ', db.get_last_id(table='Bbox'))
 
@@ -303,6 +304,18 @@ if __name__ == "__main__":
     # compare_set_bulk_img()
 
     # db_to_json test 코드
+    mydb.set_image(device_id='20001', image=img, type='0', check_num='1')
+    mydb.set_image(device_id='20001', image=img, type='0', check_num='1')
+    mydb.set_mask(obj_id='1', x='1', y='2')
+    mydb.set_mask(obj_id='1', x='1', y='3')
+    mydb.set_mask(obj_id='1', x='1', y='4')
+    mydb.set_bbox(obj_id='1', x='1', y='1', width='1', height='2')
+    mydb.set_bbox(obj_id='1', x='1', y='1', width='1', height='3')
+    mydb.set_bbox(obj_id='1', x='1', y='1', width='1', height='4')
+
     json_path = "./"
-    img_path = "./"
+    img_path = "./img"
+    if not os.path.exists(img_path):
+        os.makedirs(img_path)
+
     mydb.db_to_json(json_path=json_path, img_path=img_path)
