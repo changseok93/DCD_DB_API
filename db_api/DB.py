@@ -2191,6 +2191,10 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
+                # coco format
+                coco_info = {"annotations": [],
+                             "categories": []}
+
                 # Image table의 모든 img는 folder에 update -> Image table이 언제 갱신되었을지 모름 -> img folder도 갱신
                 query = "SELECT id, data FROM Image"
                 cursor.execute(query)
@@ -2205,13 +2209,23 @@ class DB:
                 cursor.execute(query)
                 obj_table = cursor.fetchall()
 
-                categories = []
-                s_categories = []
+                # Category table search
+                query = "SELECT super_id, id, name FROM Category"
+                cursor.execute(query)
+                cat_table = cursor.fetchall()
+                for row in cat_table:
+                    super_id = row[0]
+                    cat_id = row[1]
+                    cat_name = row[2]
 
-                coco_info = {"annotations": [],
-                             "categories": [],
-                             "supercategories": [],
-                             }
+                    # SuperCategory table search
+                    query = "SELECT name FROM SuperCategory WHERE id=%s"
+                    value = (super_id)
+                    cursor.execute(query, value)
+                    super_name = sum(cursor.fetchall(), ())
+                    coco_info["categories"].append({"id": cat_id,
+                                                    "name": cat_name,
+                                                    "supercategory": super_name[0]})
 
                 # make json file
                 for row in obj_table:
@@ -2219,34 +2233,36 @@ class DB:
                     cat_id = row[1]
                     obj_id = row[2]
 
-                    # obj_row에서 나온 category column이 categories 안에 없으면
-                    # 배열에 추가
-                    # 배열에 추가된 뒤, s_categories에도 없다면, s_categories 배열에도 추가
+                    # area
+                    area = 100
+                    coco_info["annotations"].append({"area": area})
 
-                    # bbox table 조회
+                    # bbox
                     query = "SELECT x, y, width, height FROM Bbox WHERE obj_id=%s"
                     value = (obj_id)
                     cursor.execute(query, value)
                     bbox = list(sum(cursor.fetchall(), ()))
                     coco_info["annotations"].append({"bbox": bbox})
 
-                    # mask table 조회
+                    # category id
+                    coco_info["annotations"].append({"category_id": cat_id})
+
+                    # img_id
+                    coco_info["annotations"].append({"image_id": img_id})
+
+                    # iscrowd
+                    coco_info["annotations"].append({"iscrowd": 0})
+
+                    # segmentation
                     query = "SELECT x, y FROM Mask WHERE obj_id=%s"
                     value = (obj_id)
                     cursor.execute(query, value)
                     mask_table = cursor.fetchall()
-                    mask = list(sum(mask_table, ()))
+                    mask = [list(sum(mask_table, ()))]
                     coco_info["annotations"].append({"segmentation": mask})
 
-                    print(coco_info)
-
-                # SuperCategory, Category 정보 json file에 마지막으로 저장
-                # 위에 두개 배열 json 타입으로 저장만 해주면 됨
-                # coco_info["categories"].append()
-
-                # with open(json_path, 'w') as json_file:
-                #     json.dump(coco_info, json_file)
-
+                with open(json_path, 'w', encoding='UTF-8') as json_file:
+                    json.dump(coco_info, json_file, ensure_ascii=False)
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)

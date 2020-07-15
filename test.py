@@ -304,6 +304,14 @@ if __name__ == "__main__":
     # compare_set_bulk_img()
 
     # db_to_json test 코드
+    mydb.set_supercategory(name='생수')
+    mydb.set_category(super_id='2', name='삼다수', width='1', height='1', depth='1', iteration='1', thumbnail='1')
+    mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='2', mix_num='-1')
+    mydb.set_mask(obj_id='2', x='1', y='2')
+    mydb.set_mask(obj_id='2', x='1', y='3')
+    mydb.set_mask(obj_id='2', x='1', y='4')
+    mydb.set_bbox(obj_id='2', x='1', y='1', width='1', height='1')
+
     mydb.set_image(device_id='20001', image=img, type='0', check_num='1')
     mydb.set_image(device_id='20001', image=img, type='0', check_num='1')
     mydb.set_mask(obj_id='1', x='1', y='2')
