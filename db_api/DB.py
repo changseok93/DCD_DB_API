@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from db_api import querys
+from . import querys
+from .utils.img_util import save_img
 import pymysql
 import inspect
 
