@@ -65,15 +65,13 @@ class DB:
 
                 query = "CREATE DATABASE {}".format(db_name)
                 cursor.execute(query)
-
         except Exception as e:
             print('already init DB')
             print(e)
-
         else:
-            # select databases, 'use [database]'와 동일
-            self.db.select_db(db_name)
             self.db.commit()
+        finally:
+            self.db.select_db(db_name)
 
     def set_environment(self, ipv4, floor, width, height, depth) -> bool:
         """
@@ -480,18 +478,18 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) VALUES(%s, %s, %s, %s, %s)'
+                query = 'INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) ' \
+                        'VALUES(%s, %s, %s, %s, %s)'
                 values = (img_id, loc_id, category_id, iteration, mix_num)
                 cursor.execute(query, values)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def update_object(self, id, img_id=None, loc_id=None, category_id=None, iteration=None, mix_num=None) -> bool:
         """
@@ -511,30 +509,28 @@ class DB:
             with self.db.cursor() as cursor:
                 query_head = 'UPDATE Object SET '
                 query_tail = ' WHERE id={}'.format(id)
-                if img_id != None:
+                if img_id is not None:
                     query_head += 'img_id={}, '.format(img_id)
-                if loc_id != None:
+                if loc_id is not None:
                     query_head += 'loc_id={}, '.format(loc_id)
-                if category_id != None:
+                if category_id is not None:
                     query_head += 'Category_id={}, '.format(category_id)
-                if category_id != None:
+                if category_id is not None:
                     query_head += 'iteration={}, '.format(iteration)
-                if mix_num != None:
+                if mix_num is not None:
                     query_head += 'mix_num={}, '.format(mix_num)
 
                 query = query_head[:-2]
                 query += query_tail
-
                 cursor.execute(query)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def set_bbox(self, obj_id, x, y, width, height) -> bool:
         """
@@ -552,18 +548,18 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'INSERT INTO Bbox(obj_id, x, y, width, height) VALUES(%s, %s, %s, %s, %s)'
+                query = 'INSERT INTO Bbox(obj_id, x, y, width, height) ' \
+                        'VALUES(%s, %s, %s, %s, %s)'
                 values = (obj_id, x, y, width, height)
                 cursor.execute(query, values)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def update_bbox(self, id, x=None, y=None, width=None, height=None) -> bool:
         """
@@ -583,27 +579,25 @@ class DB:
             with self.db.cursor() as cursor:
                 query_head = 'UPDATE Bbox SET '
                 query_tail = ' WHERE id={}'.format(id)
-                if x != None:
+                if x is not None:
                     query_head += 'x={}, '.format(x)
-                if y != None:
+                if y is not None:
                     query_head += 'y={}, '.format(y)
-                if width != None:
+                if width is not None:
                     query_head += 'width={}, '.format(width)
-                if height != None:
+                if height is not None:
                     query_head += 'height={}, '.format(height)
                 query = query_head[:-2]
                 query += query_tail
-
                 cursor.execute(query)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def set_mask(self, obj_id, x, y) -> bool:
         """
@@ -619,18 +613,18 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'INSERT INTO Mask(obj_id, x, y) VALUES(%s, %s, %s)'
+                query = 'INSERT INTO Mask(obj_id, x, y) ' \
+                        'VALUES(%s, %s, %s)'
                 values = (obj_id, x, y)
                 cursor.execute(query, values)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def update_mask(self, id, obj_id=None, x=None, y=None) -> bool:
         """
@@ -649,26 +643,24 @@ class DB:
             with self.db.cursor() as cursor:
                 query_head = 'UPDATE Mask SET '
                 query_tail = ' WHERE id={}'.format(id)
-                if obj_id != None:
+                if obj_id is not None:
                     query_head += 'obj_id={}, '.format(obj_id)
-                if x != None:
+                if x is not None:
                     query_head += 'x={}, '.format(x)
-                if y != None:
+                if y is not None:
                     query_head += 'y={}, '.format(y)
 
                 query = query_head[:-2]
                 query += query_tail
-
                 cursor.execute(query)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def get_table(self, id, table):
         """
@@ -685,22 +677,20 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'SELECT * FROM ' + table + ' WHERE id=%s'
-                values = (id)
-                cursor.execute(query, values)
+                query = "SELECT * FROM {} WHERE id={}".format(table, id)
+                cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3], '_', table)
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def delete_table(self, id, table) -> bool:
         """
@@ -718,15 +708,14 @@ class DB:
                 query = 'DELETE FROM ' + table + ' WHERE id=%s'
                 values = (id)
                 cursor.execute(query, values)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3], table)
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def list_table(self, table):
         """
@@ -747,18 +736,17 @@ class DB:
                 query = 'SELECT * FROM ' + table
                 cursor.execute(query)
                 v = cursor.fetchall()
-                if v:
-                    return v
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3], '_', table)
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def init_table(self) -> bool:
         """
@@ -776,19 +764,18 @@ class DB:
                 cursor.execute("SHOW TABLES")
                 for line in cursor.fetchall():
                     print(line)
-                return True
-
         except Exception as e:
             print('table is already exist')
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def drop_table(self, table) -> bool:
         """
-        mysql databse에 있는 특정 table을 지웁니다.
+        mysql databse에 있는 table을 지웁니다.
 
         Args:
             table (str): 지우고자하는 table
@@ -798,18 +785,16 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'DROP TABLE '
-                query += table
+                query = "DROP TABLE " + table
                 cursor.execute(query)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def get_last_id(self, table):
         """
@@ -830,18 +815,17 @@ class DB:
                 query = 'SELECT MAX(id) FROM ' + table
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3], '_', table)
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def get_env_id(self, ipv4, floor):
         """
@@ -863,18 +847,17 @@ class DB:
                 query = "SELECT id FROM Environment WHERE ipv4='" + ipv4 + "' AND floor=" + floor
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def get_grid_id(self, grid_w_h):
         """
@@ -896,18 +879,17 @@ class DB:
                 query = "SELECT id FROM Grid WHERE width=" + w + " AND height=" + h
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return None
-
         else:
             self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_supercategory_id(self, name):
         """
@@ -928,18 +910,17 @@ class DB:
                 query = "SELECT id FROM SuperCategory WHERE name='" + name + "'"
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_loc_id(self, grid_id, loc_x_y):
         """
@@ -962,18 +943,17 @@ class DB:
                 query = "SELECT id FROM Location WHERE grid_id=" + grid_id + " AND x=" + x + " AND y=" + y
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def get_loc_id_GL(self, grid_w_h, loc_x_y):
         """
@@ -1000,18 +980,17 @@ class DB:
                 value = (x, y, w, h)
                 cursor.execute(query, value)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_category_id(self, super_id, category_name):
         """
@@ -1033,18 +1012,17 @@ class DB:
                 query = 'SELECT id FROM Category WHERE super_id=' + super_id + " AND name='" + category_name + "'"
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def get_category_id_obj(self, obj_id):
         """
@@ -1065,18 +1043,17 @@ class DB:
                 query = "SELECT category_id FROM Object WHERE id=" + obj_id
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def get_img_id(self, obj_id):
         """
@@ -1097,18 +1074,17 @@ class DB:
                 query = 'SELECT img_id FROM Object WHERE id=' + obj_id
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def get_location(self, grid_id):
         """
@@ -1130,18 +1106,17 @@ class DB:
                 query = 'SELECT id FROM Location WHERE grid_id=' + grid_id
                 cursor.execute(query)
                 v = cursor.fetchall()
-                if v:
-                    return v
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_bbox_info(self, object_id):
         """
@@ -1163,18 +1138,17 @@ class DB:
                 query = "SELECT x, y, width, height from Bbox WHERE obj_id=" + object_id
                 cursor.execute(query)
                 v = cursor.fetchall()
-                if v:
-                    return v
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_obj_id_img(self, img_id):
         """
@@ -1195,18 +1169,17 @@ class DB:
                 query = "SELECT id FROM Object WHERE img_id=" + img_id
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_obj_id(self, category_id):
         """
@@ -1228,18 +1201,17 @@ class DB:
                 query = "SELECT id FROM Object WHERE category_id=" + category_id + " AND mix_num=" + "-1"
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_super_id(self, category_id):
         """
@@ -1261,18 +1233,17 @@ class DB:
                 query = "SELECT super_id FROM Category WHERE id=" + category_id
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def get_super_name(self, super_id):
         """
@@ -1294,18 +1265,17 @@ class DB:
                 query = "SELECT name FROM SuperCategory WHERE id=" + super_id
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def get_mix_num(self, loc_id, category_id, iteration):
         """
@@ -1330,18 +1300,17 @@ class DB:
                 value = (loc_id, category_id, iteration)
                 cursor.execute(query, value)
                 mix_nums = sum(cursor.fetchall(), ())
-                if mix_nums:
-                    return sorted(mix_nums, reverse=True)[0]
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if mix_nums:
+                return sorted(mix_nums, reverse=True)[0]
+            else:
+                return None
 
     def get_bbox_id(self, obj_id):
         """
@@ -1363,18 +1332,17 @@ class DB:
                 query = "SELECT id FROM Bbox WHERE obj_id=" + obj_id
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_mask_id(self, obj_id):
         """
@@ -1396,52 +1364,17 @@ class DB:
                 query = "SELECT id FROM Mask WHERE obj_id=" + obj_id
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
-
-    def get_img_check_num(self, obj_id):
-        """
-        Object table의 (id)를 입력 받아
-        Image table의 (check_num) 반환
-
-        Args:
-            obj_id (str): Object table의 id
-
-        Return:
-            check_num (int): Image table의 check_num
-
-            None: 조회 실패
-
-            False: 쿼리 실패
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "SELECT check_num FROM Image WHERE id=(SELECT img_id FROM Object WHERE id=%s)"
-                value = (obj_id)
-                cursor.execute(query, value)
-                v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
-
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            return False
-
-        else:
-            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_bbox_img(self, img_id):
         """
@@ -1465,18 +1398,17 @@ class DB:
                 value = (img_id)
                 cursor.execute(query, value)
                 v = cursor.fetchall()
-                if v:
-                    return v
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_cat_id(self, super_name, cat_name):
         """
@@ -1501,18 +1433,17 @@ class DB:
                 value = (super_name, cat_name)
                 cursor.execute(query, value)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def list_bbox(self, obj_id):
         """
@@ -1534,18 +1465,17 @@ class DB:
                 query = 'SELECT * FROM Bbox WHERE obj_id=' + obj_id
                 cursor.execute(query)
                 v = cursor.fetchall()
-                if v:
-                    return v
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def list_obj(self, category_id, loc_ids):
         """
@@ -1573,18 +1503,17 @@ class DB:
                 cursor.execute(query)
                 # print('function: {}, query: {}'.format(inspect.stack()[0][3], query))
                 v = cursor.fetchall()
-                if v:
-                    return v
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def list_obj_check_num(self, grid_id, category_id, check_num):
         """
@@ -1618,18 +1547,17 @@ class DB:
                 value = (category_id, grid_id, check_num)
                 cursor.execute(query, value)
                 v = cursor.fetchall()
-                if v:
-                    return v
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def check_image_check_num(self, img_id):
         """
@@ -1650,18 +1578,17 @@ class DB:
                 query = 'SELECT check_num FROM Image WHERE id=' + img_id
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return v[0]
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v[0]
+            else:
+                return None
 
     def check_obj_id(self, loc_id, category_id, iteration, mix_num) -> bool:
         """
@@ -1683,18 +1610,17 @@ class DB:
                 value = (loc_id, category_id, iteration, mix_num)
                 cursor.execute(query, value)
                 obj_id = sum(cursor.fetchall(), ())
-                if obj_id:
-                    return True
-                else:
-                    return False
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if obj_id:
+                return True
+            else:
+                return False
 
     def check_process(self, category_id) -> bool:
         """
@@ -1723,18 +1649,17 @@ class DB:
                 value = (category_id)
                 cursor.execute(query, value)
                 mask_ids = cursor.fetchall()
-                if bbox_ids and mask_ids:
-                    return True
-                else:
-                    return False
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if bbox_ids and mask_ids:
+                return True
+            else:
+                return False
 
     def check_cat_id(self, super_name, cat_name) -> bool:
         """
@@ -1755,18 +1680,17 @@ class DB:
                 value = (super_name, cat_name)
                 cursor.execute(query, value)
                 v = sum(cursor.fetchall(), ())
-                if v:
-                    return True
-                else:
-                    return False
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return True
+            else:
+                return False
 
     def update_img_check_num_obj_id(self, obj_id, check_num)->bool:
         """
@@ -1786,15 +1710,14 @@ class DB:
                         "WHERE id=(SELECT img_id FROM Object WHERE id=%s)"
                 value = (check_num, obj_id)
                 cursor.execute(query, value)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def update_img_check_num_img_id(self, img_id, check_num)->bool:
         """
@@ -1812,15 +1735,14 @@ class DB:
                 query = "UPDATE Image SET check_num=%s WHERE id=%s"
                 value = (check_num, img_id)
                 cursor.execute(query, value)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def update_img_img_obj_id(self, obj_id, img) -> bool:
         """
@@ -1840,15 +1762,14 @@ class DB:
                         "WHERE id=(SELECT img_id FROM Object WHERE id=%s)"
                 value = (img, obj_id)
                 cursor.execute(query, value)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def update_img_img_img_id(self, img_id, img) -> bool:
         """
@@ -1866,15 +1787,14 @@ class DB:
                 query = "UPDATE Image SET data=%s WHERE id=%s"
                 value = (img, img_id)
                 cursor.execute(query, value)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def delete_object(self, img_id) -> bool:
         """
@@ -1891,15 +1811,14 @@ class DB:
             with self.db.cursor() as cursor:
                 query = 'DELETE FROM Object WHERE img_id=' + img_id
                 cursor.execute(query)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def delete_bbox(self, obj_id) -> bool:
         """
@@ -1915,15 +1834,14 @@ class DB:
             with self.db.cursor() as cursor:
                 query = 'DELETE FROM Bbox WHERE obj_id=' + obj_id
                 cursor.execute(query)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def delete_mask(self, obj_id) -> bool:
         """
@@ -1939,15 +1857,14 @@ class DB:
             with self.db.cursor() as cursor:
                 query = 'DELETE FROM Mask WHERE obj_id=' + obj_id
                 cursor.execute(query)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def delete_bbox_img(self, img_id) -> bool:
         """
@@ -1966,15 +1883,14 @@ class DB:
                         "obj_id IN (SELECT id FROM Object WHERE img_id=%s)"
                 value = (img_id)
                 cursor.execute(query, value)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def delete_nomix_img(self, img_id) -> bool:
         """
@@ -1996,15 +1912,14 @@ class DB:
 
                 value = (img_id)
                 cursor.execute(query, value)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def get_aug_mask(self, grid_id, category_id):
         """
@@ -2033,18 +1948,17 @@ class DB:
                 value = (category_id, grid_id)
                 cursor.execute(query, value)
                 v = cursor.fetchall()
-                if v:
-                    return v
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_aug_img(self, grid_id, category_id):
         """
@@ -2076,18 +1990,17 @@ class DB:
                 value = (category_id, grid_id)
                 cursor.execute(query, value)
                 v = cursor.fetchall()
-                if v:
-                    return v
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def get_aug_loc_id(self, grid_id):
         """
@@ -2111,18 +2024,17 @@ class DB:
                 value = (grid_id)
                 cursor.execute(query, value)
                 v = cursor.fetchall()
-                if v:
-                    return v
-                else:
-                    return None
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            if v:
+                return v
+            else:
+                return None
 
     def set_obj_list(self, grid_id, category_id, iteration, mix_num) -> bool:
         """
@@ -2176,16 +2088,14 @@ class DB:
                 # tmp table 삭제
                 query = "DROP TABLE tmp"
                 cursor.execute(query)
-
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def set_bulk_obj(self, datas) -> bool:
         """
@@ -2203,15 +2113,14 @@ class DB:
                 query = "INSERT INTO Object (img_id, loc_id, category_id, iteration, mix_num) " \
                         "VALUES (%s, %s, %s, %s, %s)"
                 cursor.executemany(query, datas)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def set_bulk_bbox(self, datas) -> bool:
         """
@@ -2229,15 +2138,14 @@ class DB:
                 query = "INSERT INTO Bbox (obj_id, x, y, width, height) " \
                         "VALUES (%s, %s, %s, %s, %s)"
                 cursor.executemany(query, datas)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def set_bulk_img(self, datas) -> bool:
         """
@@ -2255,15 +2163,14 @@ class DB:
                 query = "INSERT INTO Image (env_id, data, type, check_num) " \
                         "VALUES (%s, _binary%s, %s, %s)"
                 cursor.executemany(query, datas)
-                return True
-
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
+            self.db.rollback()
             return False
-
         else:
             self.db.commit()
+            return True
 
     def db_to_json(self, json_path, img_path):
         """
