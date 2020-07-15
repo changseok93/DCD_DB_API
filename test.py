@@ -309,11 +309,8 @@ if __name__ == "__main__":
     mydb.set_mask(obj_id='1', x='1', y='2')
     mydb.set_mask(obj_id='1', x='1', y='3')
     mydb.set_mask(obj_id='1', x='1', y='4')
-    mydb.set_bbox(obj_id='1', x='1', y='1', width='1', height='2')
-    mydb.set_bbox(obj_id='1', x='1', y='1', width='1', height='3')
-    mydb.set_bbox(obj_id='1', x='1', y='1', width='1', height='4')
 
-    json_path = "./"
+    json_path = "./coco_info.json"
     img_path = "./img"
     if not os.path.exists(img_path):
         os.makedirs(img_path)

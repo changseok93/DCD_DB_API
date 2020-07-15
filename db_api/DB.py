@@ -5,6 +5,7 @@ from os.path import join
 
 import pymysql
 import inspect
+import json
 
 
 class DB:
@@ -2207,6 +2208,11 @@ class DB:
                 categories = []
                 s_categories = []
 
+                coco_info = {"annotations": [],
+                             "categories": [],
+                             "supercategories": [],
+                             }
+
                 # make json file
                 for row in obj_table:
                     img_id = row[0]
@@ -2221,18 +2227,25 @@ class DB:
                     query = "SELECT x, y, width, height FROM Bbox WHERE obj_id=%s"
                     value = (obj_id)
                     cursor.execute(query, value)
-                    bbox_table = cursor.fetchall()
-                    print(bbox_table)
+                    bbox = list(sum(cursor.fetchall(), ()))
+                    coco_info["annotations"].append({"bbox": bbox})
 
                     # mask table 조회
                     query = "SELECT x, y FROM Mask WHERE obj_id=%s"
                     value = (obj_id)
                     cursor.execute(query, value)
                     mask_table = cursor.fetchall()
-                    print(mask_table)
+                    mask = list(sum(mask_table, ()))
+                    coco_info["annotations"].append({"segmentation": mask})
+
+                    print(coco_info)
 
                 # SuperCategory, Category 정보 json file에 마지막으로 저장
                 # 위에 두개 배열 json 타입으로 저장만 해주면 됨
+                # coco_info["categories"].append()
+
+                # with open(json_path, 'w') as json_file:
+                #     json.dump(coco_info, json_file)
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
