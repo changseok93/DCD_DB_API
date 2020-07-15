@@ -2234,7 +2234,7 @@ class DB:
                     obj_id = row[2]
 
                     # area
-                    area = 100
+                    area = 0
                     coco_info["annotations"].append({"area": area})
 
                     # bbox
