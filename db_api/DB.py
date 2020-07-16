@@ -2226,7 +2226,7 @@ class DB:
                                                     "name": cat_name,
                                                     "supercategory": super_name[0]})
 
-                obj_id_counter = 0
+                obj_id_cnt = 0
                 # make json file
                 for row in obj_table:
                     img_id, cat_id, obj_id = row[0], row[1], row[2]
@@ -2244,8 +2244,8 @@ class DB:
                     # category id
                     dict["category_id"] = cat_id
                     # id
-                    dict["id"] = obj_id_counter
-                    obj_id_counter += 1
+                    dict["id"] = obj_id_cnt
+                    obj_id_cnt += 1
                     # img_id
                     dict["image_id"] = img_id
                     # iscrowd
