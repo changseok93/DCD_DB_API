@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from . import querys
 from .utils.img_util import save_img
+from .utils.util import save_json
 from os.path import join
 
 import pymysql
 import inspect
-import json
 
 
 class DB:
@@ -2191,17 +2191,18 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                # coco format
+                # coco format init
                 coco_info = {"annotations": [],
                              "categories": []}
 
-                # Image table의 모든 img는 folder에 update -> Image table이 언제 갱신되었을지 모름 -> img folder도 갱신
+                # Image table의 모든 img는 folder에 update
+                # Image table이 언제 갱신되었을지 모름
+                # Image folder도 갱신
                 query = "SELECT id, data FROM Image"
                 cursor.execute(query)
                 img_table = cursor.fetchall()
                 for row in img_table:
-                    img_id = row[0]
-                    img = row[1]
+                    img_id, img = row[0], row[1]
                     save_img(byte_img=img, img_dir=join(img_path, str(img_id) + '.png'))
 
                 # Object table search
@@ -2214,9 +2215,7 @@ class DB:
                 cursor.execute(query)
                 cat_table = cursor.fetchall()
                 for row in cat_table:
-                    super_id = row[0]
-                    cat_id = row[1]
-                    cat_name = row[2]
+                    super_id, cat_id, cat_name = row[0], row[1], row[2]
 
                     # SuperCategory table search
                     query = "SELECT name FROM SuperCategory WHERE id=%s"
@@ -2226,16 +2225,9 @@ class DB:
                     coco_info["categories"].append({"id": cat_id,
                                                     "name": cat_name,
                                                     "supercategory": super_name[0]})
-
                 # make json file
                 for row in obj_table:
-                    img_id = row[0]
-                    cat_id = row[1]
-                    obj_id = row[2]
-
-                    # area
-                    area = 0
-                    coco_info["annotations"].append({"area": area})
+                    img_id, cat_id, obj_id = row[0], row[1], row[2]
 
                     # bbox
                     query = "SELECT x, y, width, height FROM Bbox WHERE obj_id=%s"
@@ -2253,6 +2245,10 @@ class DB:
                     # iscrowd
                     coco_info["annotations"].append({"iscrowd": 0})
 
+                    # area
+                    area = 0
+                    coco_info["annotations"].append({"area": area})
+
                     # segmentation
                     query = "SELECT x, y FROM Mask WHERE obj_id=%s"
                     value = (obj_id)
@@ -2261,9 +2257,7 @@ class DB:
                     mask = [list(sum(mask_table, ()))]
                     coco_info["annotations"].append({"segmentation": mask})
 
-                # json type file write -> utf-8 encoding
-                with open(json_path, 'w', encoding='UTF-8') as json_file:
-                    json.dump(coco_info, json_file, ensure_ascii=False)
+                save_json(json_path=json_path, coco_format=coco_info)
 
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
