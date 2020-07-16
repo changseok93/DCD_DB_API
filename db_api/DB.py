@@ -2228,30 +2228,34 @@ class DB:
                 # make json file
                 for row in obj_table:
                     img_id, cat_id, obj_id = row[0], row[1], row[2]
+                    dict = {}
 
+                    # area
+                    area = 0
+                    dict["area"] = area
                     # bbox
                     query = "SELECT x, y, width, height FROM Bbox WHERE obj_id=%s"
                     value = (obj_id)
                     cursor.execute(query, value)
                     bbox = list(sum(cursor.fetchall(), ()))
-                    coco_info["annotations"].append({"bbox": bbox})
-
+                    dict["bbox"] = bbox
                     # category id
-                    coco_info["annotations"].append({"category_id": cat_id})
+                    dict["category_id"] = cat_id
+                    # id
+                    dict["id"] = 0
                     # img_id
-                    coco_info["annotations"].append({"image_id": img_id})
+                    dict["image_id"] = img_id
                     # iscrowd
-                    coco_info["annotations"].append({"iscrowd": 0})
-                    # area
-                    area = 0
-                    coco_info["annotations"].append({"area": area})
-                    # segmentation
+                    dict["iscrowd"] = 0
+                    # segmentation(mask info)
                     query = "SELECT x, y FROM Mask WHERE obj_id=%s"
                     value = (obj_id)
                     cursor.execute(query, value)
                     mask_table = cursor.fetchall()
                     mask = [list(sum(mask_table, ()))]
-                    coco_info["annotations"].append({"segmentation": mask})
+                    dict["segmentation"] = mask
+
+                    coco_info["annotations"].append(dict)
 
                 save_json(json_path=json_path, coco_format=coco_info)
 
