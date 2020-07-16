@@ -598,7 +598,7 @@ False: 쿼리 실패</p>
 <dl class="py method">
 <dt id="db_api.DB.DB.drop_table">
 <code class="sig-name descname">drop_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.drop_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.drop_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>mysql databse에 있는 특정 table을 지웁니다.</p>
+<dd><p>mysql databse에 있는 table을 지웁니다.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>table</strong> (<em>str</em>) – 지우고자하는 table</p>
@@ -934,24 +934,6 @@ Mask table의 (id) 반환</p>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><em>tuple ()</em> – Mask table의 (id)</p>
 <p>None: 값 없음</p>
-<p>False: 쿼리 실패</p>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="db_api.DB.DB.get_img_check_num">
-<code class="sig-name descname">get_img_check_num</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj_id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.get_img_check_num"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.get_img_check_num" title="Permalink to this definition">¶</a></dt>
-<dd><p>Object table의 (id)를 입력 받아
-Image table의 (check_num) 반환</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>obj_id</strong> (<em>str</em>) – Object table의 id</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><p><em>check_num (int)</em> – Image table의 check_num</p>
-<p>None: 조회 실패</p>
 <p>False: 쿼리 실패</p>
 </p>
 </dd>
@@ -1344,7 +1326,9 @@ Location table의 (x), Location table의 (y), Location table의 (loc_id) 반환<
 <dt id="db_api.DB.DB.set_obj_list">
 <code class="sig-name descname">set_obj_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">grid_id</span></em>, <em class="sig-param"><span class="n">category_id</span></em>, <em class="sig-param"><span class="n">iteration</span></em>, <em class="sig-param"><span class="n">mix_num</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/db_api/DB.html#DB.set_obj_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.set_obj_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Location table의 (grid_id)를 가진 row와 Category table의 (id)를 가진 row를 통해
-(Location table의 특정 (grid_id)를 가진 row 수) X (category table의 특정 (category_id)를 가진 row 수)만큼
+(Location table의 특정 (grid_id)를 가진 row 수) X
+(category table의 특정 (category_id)를 가진 row 수) X
+(iteration)만큼
 Object table에 row 생성</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1367,7 +1351,7 @@ Object table에 row 생성</p>
 <dd><p>Object table에 여러개의 row 추가</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>datas</strong> (<em>tuple</em>) – ((img_id, loc_id, category_id, iteration, mix_num),
+<dd class="field-odd"><p><strong>datas</strong> (<em>generator</em>) – ((img_id, loc_id, category_id, iteration, mix_num),
 (…))</p>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1382,7 +1366,7 @@ Object table에 row 생성</p>
 <dd><p>Bbox table에 여러개의 row 추가</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>datas</strong> (<em>tuple</em>) – ((obj_id, x, y, width, height),
+<dd class="field-odd"><p><strong>datas</strong> (<em>generator</em>) – ((obj_id, x, y, width, height),
 (…))</p>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1397,8 +1381,26 @@ Object table에 row 생성</p>
 <dd><p>Image table에 여러개의 row 추가</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>datas</strong> (<em>list</em>) – ((env_id, data, type, check_num),
+<dd class="field-odd"><p><strong>datas</strong> (<em>generator</em>) – ((env_id, data, type, check_num),
 (…))</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Bool</em> – True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="db_api.DB.DB.db_to_json">
+<code class="sig-name descname">db_to_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">json_path</span></em>, <em class="sig-param"><span class="n">img_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db_api/DB.html#DB.db_to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db_api.DB.DB.db_to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>DB의 전체 테이블에서 학습에 필요한 데이터들을 가져와
+json 타입으로 저장</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json_path</strong> (<em>str</em>) – json file 저장 경로</p></li>
+<li><p><strong>img_path</strong> (<em>str</em>) – img folder 경로</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>Bool</em> – True or False</p>

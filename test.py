@@ -323,4 +323,4 @@ if __name__ == "__main__":
     if not os.path.exists(img_path):
         os.makedirs(img_path)
 
-    mydb.db_to_json(json_path=json_path, img_path=img_path)
+    print(mydb.db_to_json(json_path=json_path, img_path=img_path))

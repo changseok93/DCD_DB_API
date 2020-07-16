@@ -1696,7 +1696,7 @@ class DB:
             else:
                 return False
 
-    def update_img_check_num_obj_id(self, obj_id, check_num)->bool:
+    def update_img_check_num_obj_id(self, obj_id, check_num) -> bool:
         """
         Object table의 (id)를 입력 받아
         Image table의 (check_num)을 update 하는 함수
@@ -1723,7 +1723,7 @@ class DB:
             self.db.commit()
             return True
 
-    def update_img_check_num_img_id(self, img_id, check_num)->bool:
+    def update_img_check_num_img_id(self, img_id, check_num) -> bool:
         """
         Image table의 check_num 갱신
 
@@ -2182,8 +2182,8 @@ class DB:
         json 타입으로 저장
 
         Args:
-            json_path (str):
-            img_path (str):
+            json_path (str): json file 저장 경로
+            img_path (str): img folder 경로
 
         Return:
             Bool: True or False
@@ -2261,8 +2261,10 @@ class DB:
                     mask = [list(sum(mask_table, ()))]
                     coco_info["annotations"].append({"segmentation": mask})
 
+                # json type file write -> utf-8 encoding
                 with open(json_path, 'w', encoding='UTF-8') as json_file:
                     json.dump(coco_info, json_file, ensure_ascii=False)
+
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
