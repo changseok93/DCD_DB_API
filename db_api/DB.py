@@ -2203,7 +2203,8 @@ class DB:
                 img_table = cursor.fetchall()
                 for row in img_table:
                     img_id, img = row[0], row[1]
-                    save_img(byte_img=img, img_dir=join(img_path, str(img_id) + '.png'))
+                    save_img(byte_img=img,
+                             img_dir=join(img_path, str(img_id) + '.png'))
 
                 # Object table search
                 query = "SELECT img_id, category_id, id FROM Object"
@@ -2216,7 +2217,6 @@ class DB:
                 cat_table = cursor.fetchall()
                 for row in cat_table:
                     super_id, cat_id, cat_name = row[0], row[1], row[2]
-
                     # SuperCategory table search
                     query = "SELECT name FROM SuperCategory WHERE id=%s"
                     value = (super_id)
@@ -2238,17 +2238,13 @@ class DB:
 
                     # category id
                     coco_info["annotations"].append({"category_id": cat_id})
-
                     # img_id
                     coco_info["annotations"].append({"image_id": img_id})
-
                     # iscrowd
                     coco_info["annotations"].append({"iscrowd": 0})
-
                     # area
                     area = 0
                     coco_info["annotations"].append({"area": area})
-
                     # segmentation
                     query = "SELECT x, y FROM Mask WHERE obj_id=%s"
                     value = (obj_id)

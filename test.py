@@ -3,10 +3,10 @@ from db_api.DB import DB
 from db_api.DB import *
 from os import listdir
 from os.path import join
-import os
-from utils.memory import cpu_mem_check
+from db_api.utils.util import cpu_mem_check
 
 import time
+import os
 
 
 def img_loader(img_dir):
