@@ -959,43 +959,6 @@ class DB:
             else:
                 return None
 
-    def get_loc_id_GL(self, grid_w_h, loc_x_y):
-        """
-        Grid table의 (width, height)와 Location table의 (x, y)를 입력받아
-        Location table의 (id) 반환하는 함수
-
-        Args:
-            grid_w_h (str): Grid table의 width height 정보
-            loc_x_y (str): Location table의 x, y 정보
-
-        Return:
-            tuple (): Location table의 id
-
-            None: 값 없음
-
-            False: 쿼리 실패
-        """
-        try:
-            w, h = grid_w_h.split('x')
-            x, y = loc_x_y.split('x')
-            with self.db.cursor() as cursor:
-                query = "SELECT id FROM Location WHERE x=%s AND y=%s " \
-                        "AND grid_id=(SELECT id FROM Grid WHERE width=%s AND height=%s)"
-                value = (x, y, w, h)
-                cursor.execute(query, value)
-                v = sum(cursor.fetchall(), ())
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            self.db.rollback()
-            return False
-        else:
-            self.db.commit()
-            if v:
-                return v
-            else:
-                return None
-
     def get_category_id(self, super_id, category_name):
         """
         Category table의 id를 반환
@@ -1367,6 +1330,43 @@ class DB:
             with self.db.cursor() as cursor:
                 query = "SELECT id FROM Mask WHERE obj_id=" + obj_id
                 cursor.execute(query)
+                v = sum(cursor.fetchall(), ())
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            self.db.rollback()
+            return False
+        else:
+            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
+
+    def get_loc_id_GL(self, grid_w_h, loc_x_y):
+        """
+        Grid table의 (width, height)와 Location table의 (x, y)를 입력받아
+        Location table의 (id) 반환하는 함수
+
+        Args:
+            grid_w_h (str): Grid table의 width height 정보
+            loc_x_y (str): Location table의 x, y 정보
+
+        Return:
+            tuple (): Location table의 id
+
+            None: 값 없음
+
+            False: 쿼리 실패
+        """
+        try:
+            w, h = grid_w_h.split('x')
+            x, y = loc_x_y.split('x')
+            with self.db.cursor() as cursor:
+                query = "SELECT id FROM Location WHERE x=%s AND y=%s " \
+                        "AND grid_id=(SELECT id FROM Grid WHERE width=%s AND height=%s)"
+                value = (x, y, w, h)
+                cursor.execute(query, value)
                 v = sum(cursor.fetchall(), ())
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -1974,8 +1974,7 @@ class DB:
             category_id (str): category table의 (id)
 
         Return:
-            tuple ()(): ((loc_x, loc_y, iteration, (byte)img),
-                         (...))
+            tuple ()(): ((loc_x, loc_y, iteration, (byte)img), (...))
 
             None: 값 없음
 
@@ -2015,8 +2014,7 @@ class DB:
             grid_id (str): Grid table의 (id)
 
         Return:
-            tuple()(): ((loc_x, loc_y, loc_id),
-                        (...))
+            tuple()(): ((loc_x, loc_y, loc_id), (...))
 
             None: 조회된 값 없음
 
@@ -2045,8 +2043,7 @@ class DB:
         Location table의 (grid_id)를 가진 row와 Category table의 (id)를 가진 row를 통해
         (Location table의 특정 (grid_id)를 가진 row 수) X
         (category table의 특정 (category_id)를 가진 row 수) X
-        (iteration)만큼
-        Object table에 row 생성
+        (iteration)만큼 Object table에 row 생성
 
         Args:
             grid_id (str): Location table의 (grid_id)
@@ -2059,7 +2056,7 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                # While procedure 생성
+                # tmp 임시 table 생성
                 query = "CREATE TEMPORARY TABLE tmp(" \
                         "   img_id INT UNSIGNED," \
                         "   iteration INT UNSIGNED NOT NULL," \
@@ -2106,8 +2103,7 @@ class DB:
         Object table에 여러개의 row 추가
 
         Args:
-            datas (generator): ((img_id, loc_id, category_id, iteration, mix_num),
-                                (...))
+            datas (generator): ((img_id, loc_id, category_id, iteration, mix_num), (...))
 
         Return:
             Bool: True or False
@@ -2227,7 +2223,6 @@ class DB:
                                                     "supercategory": super_name[0]})
 
                 obj_id_cnt = 0
-                # make json file
                 for row in obj_table:
                     img_id, cat_id, obj_id = row[0], row[1], row[2]
                     dict = {}
@@ -2235,7 +2230,7 @@ class DB:
                     # area
                     area = 0
                     dict["area"] = area
-                    # bbox
+                    # Bbox table search
                     query = "SELECT x, y, width, height FROM Bbox WHERE obj_id=%s"
                     value = (obj_id)
                     cursor.execute(query, value)
@@ -2250,7 +2245,7 @@ class DB:
                     dict["image_id"] = img_id
                     # iscrowd
                     dict["iscrowd"] = 0
-                    # segmentation(mask info)
+                    # Mask table search
                     query = "SELECT x, y FROM Mask WHERE obj_id=%s"
                     value = (obj_id)
                     cursor.execute(query, value)

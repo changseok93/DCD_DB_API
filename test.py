@@ -219,6 +219,15 @@ if __name__ == "__main__":
     # Mask table test
     check_mask(mydb)
 
+    # get_loc_id_GL test 코드
+    # mydb.set_grid(width='1', height='2')
+    # mydb.set_grid(width='1', height='3')
+    # mydb.set_location(grid_id='1', x='1', y='2')
+    # mydb.set_location(grid_id='1', x='1', y='3')
+    # mydb.set_location(grid_id='1', x='1', y='4')
+    # mydb.set_location(grid_id='1', x='1', y='5')
+    # print(mydb.get_loc_id_GL(grid_w_h='1x1', loc_x_y='1x1'))
+
     # # get_mix_num test 코드
     # mydb.set_location(grid_id='1', x='1', y='2')
     # mydb.set_location(grid_id='1', x='1', y='3')
@@ -303,24 +312,24 @@ if __name__ == "__main__":
     # set_bulk_img test 코드
     # compare_set_bulk_img()
 
-    # db_to_json test 코드
-    mydb.set_supercategory(name='생수')
-    mydb.set_category(super_id='2', name='삼다수', width='1', height='1', depth='1', iteration='1', thumbnail='1')
-    mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='2', mix_num='-1')
-    mydb.set_mask(obj_id='2', x='1', y='2')
-    mydb.set_mask(obj_id='2', x='1', y='3')
-    mydb.set_mask(obj_id='2', x='1', y='4')
-    mydb.set_bbox(obj_id='2', x='1', y='1', width='1', height='1')
-
-    mydb.set_image(device_id='20001', image=img, type='0', check_num='1')
-    mydb.set_image(device_id='20001', image=img, type='0', check_num='1')
-    mydb.set_mask(obj_id='1', x='1', y='2')
-    mydb.set_mask(obj_id='1', x='1', y='3')
-    mydb.set_mask(obj_id='1', x='1', y='4')
-
-    json_path = "./coco_info.json"
-    img_path = "./img"
-    if not os.path.exists(img_path):
-        os.makedirs(img_path)
-
-    print(mydb.db_to_json(json_path=json_path, img_path=img_path))
+    # # db_to_json test 코드
+    # mydb.set_supercategory(name='생수')
+    # mydb.set_category(super_id='2', name='삼다수', width='1', height='1', depth='1', iteration='1', thumbnail='1')
+    # mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='2', mix_num='-1')
+    # mydb.set_mask(obj_id='2', x='1', y='2')
+    # mydb.set_mask(obj_id='2', x='1', y='3')
+    # mydb.set_mask(obj_id='2', x='1', y='4')
+    # mydb.set_bbox(obj_id='2', x='1', y='1', width='1', height='1')
+    #
+    # mydb.set_image(device_id='20001', image=img, type='0', check_num='1')
+    # mydb.set_image(device_id='20001', image=img, type='0', check_num='1')
+    # mydb.set_mask(obj_id='1', x='1', y='2')
+    # mydb.set_mask(obj_id='1', x='1', y='3')
+    # mydb.set_mask(obj_id='1', x='1', y='4')
+    #
+    # json_path = "./coco_info.json"
+    # img_path = "./img"
+    # if not os.path.exists(img_path):
+    #     os.makedirs(img_path)
+    #
+    # print(mydb.db_to_json(json_path=json_path, img_path=img_path))
