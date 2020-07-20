@@ -77,6 +77,54 @@ class DB:
         finally:
             self.db.select_db(db_name)
 
+    def init_table(self) -> bool:
+        """
+        table을 생성합니다.
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                for i, sql in enumerate(querys.initial_queries):
+                    print('{} 번째 sql 실행중...'.format(i + 1))
+                    cursor.execute(sql)
+
+                cursor.execute("SHOW TABLES")
+                for line in cursor.fetchall():
+                    print(line)
+        except Exception as e:
+            print('table is already exist')
+            print(e)
+            self.db.rollback()
+            return False
+        else:
+            self.db.commit()
+            return True
+
+    def drop_table(self, table) -> bool:
+        """
+        mysql databse에 있는 table을 지웁니다.
+
+        Args:
+            table (str): 지우고자하는 table
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "DROP TABLE " + table
+                cursor.execute(query)
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            self.db.rollback()
+            return False
+        else:
+            self.db.commit()
+            return True
+
     def set_environment(self, ipv4, floor, width, height, depth) -> bool:
         """
         Environment table에 row 추가
@@ -106,12 +154,12 @@ class DB:
             self.db.commit()
             return True
 
-    def update_environment(self, id, ipv4=None, floor=None, width=None, height=None, depth=None) -> bool:
+    def update_environment(self, env_id, ipv4=None, floor=None, width=None, height=None, depth=None) -> bool:
         """
-        Enviroment table의 특정 id의 row 값 갱신
+        Environment table의 row 값 갱신
 
         Args:
-            id (str): Enviroment table의 특정 id(primary key)
+            env_id (str): Enviroment table의 env_id
             ipv4 (str): 냉장고 ip 주소
             floor (str): 냉 장고 층
             width (str): 냉장고 층 가로 길이
@@ -124,7 +172,7 @@ class DB:
         try:
             with self.db.cursor() as cursor:
                 query_head = 'UPDATE Environment SET '
-                query_tail = ' WHERE id={}'.format(id)
+                query_tail = ' WHERE env_id={}'.format(env_id)
                 if ipv4 is not None:
                     query_head += "ipv4='{}', ".format(ipv4)
                 if floor is not None:
@@ -135,72 +183,6 @@ class DB:
                     query_head += 'height={}, '.format(height)
                 if depth is not None:
                     query_head += 'depth={}, '.format(depth)
-                query = query_head[:-2]
-                query += query_tail
-                cursor.execute(query)
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            self.db.rollback()
-            return False
-        else:
-            self.db.commit()
-            return True
-
-    def set_image(self, device_id, image, type, check_num) -> bool:
-        """
-        Image table에 row 추가
-
-        Args:
-            device_id (str): Environment table의 id(foreigner key)
-            image (image): image data
-            type (str): 합성된 이미지인지 아닌지
-            check_num (str): 검수표시할 check 컬럼
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = 'INSERT INTO Image(env_id, data, type, check_num) ' \
-                        'VALUES(%s, _binary%s, %s, %s)'
-                values = (device_id, image, type, check_num)
-                cursor.execute(query, values)
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            self.db.rollback()
-            return False
-        else:
-            self.db.commit()
-            return True
-
-    def update_image(self, id, device_id=None, image=None, type=None, check_num=None) -> bool:
-        """
-        Image table의 특정 id의 row 값 갱신
-
-        Args:
-            id (str): Image table의 특정 id(primary key)
-            device_id (str): Image table의 env_id(foreigner key)
-            image (image): image 정보
-            type (str): 합성된 이미지 인지 아닌지
-            check_num (str): 검수표시할 check 컬럼
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query_head = 'UPDATE Image SET '
-                query_tail = ' WHERE id={}'.format(id)
-                if device_id is not None:
-                    query_head += 'env_id={}, '.format(device_id)
-                if image is not None:
-                    query_head += "data=x'{}' , ".format(image.hex())
-                if type is not None:
-                    query_head += 'type={}, '.format(type)
-                if check_num is not None:
-                    check_num += 'check={}, '.format(check_num)
                 query = query_head[:-2]
                 query += query_tail
                 cursor.execute(query)
@@ -239,12 +221,12 @@ class DB:
             self.db.commit()
             return True
 
-    def update_grid(self, id, width=None, height=None) -> bool:
+    def update_grid(self, grid_id, width=None, height=None) -> bool:
         """
         Grid table의 특정 id row 값 갱신
 
         Args:
-            id (str): Grid table의 특정 id(primary key)
+            grid_id (str): Grid table의 (grid_id)
             width (str): grid 가로 칸 수
             height (str): grid 세로 칸 수
 
@@ -254,11 +236,131 @@ class DB:
         try:
             with self.db.cursor() as cursor:
                 query_head = 'UPDATE Grid SET '
-                query_tail = ' WHERE id={}'.format(id)
+                query_tail = ' WHERE grid_id={}'.format(grid_id)
                 if width is not None:
                     query_head += 'width={}, '.format(width)
                 if height is not None:
                     query_head += 'height={}, '.format(height)
+                query = query_head[:-2]
+                query += query_tail
+                cursor.execute(query)
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            self.db.rollback()
+            return False
+        else:
+            self.db.commit()
+            return True
+
+    def set_supercategory(self, super_name) -> bool:
+        """
+        SuperCategory table에 row 추가
+
+        Arg:
+            super_name (str): 상위 카테고리 물체 이름 ex) 생수
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = 'INSERT INTO SuperCategory(super_name) ' \
+                        'VALUES(%s)'
+                values = (super_name)
+                cursor.execute(query, values)
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            self.db.rollback()
+            return False
+        else:
+            self.db.commit()
+            return True
+
+    def update_supercategory(self, super_id, cat_name=None) -> bool:
+        """
+        SuperCategory table의 특정 id의 row 값 갱신
+
+        Args:
+            super_id (str): SuperCategory table의 id
+            cat_name (str): 물체의 이름 ex) 삼다수
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query_head = 'UPDATE SuperCategory SET '
+                query_tail = ' WHERE super_id={}'.format(super_id)
+                if cat_name is not None:
+                    query_head += "name='{}', ".format(cat_name)
+                query = query_head[:-2]
+                query += query_tail
+                cursor.execute(query)
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            self.db.rollback()
+            return False
+        else:
+            self.db.commit()
+            return True
+
+    def set_image(self, env_id, img, type, check_num) -> bool:
+        """
+        Image table에 row 추가
+
+        Args:
+            env_id (str): Environment table의 (env_id)
+            img (Image): image data
+            type (str): 합성된 이미지인지 아닌지
+            check_num (str): 검수표시할 check 컬럼
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = 'INSERT INTO Image(env_id, img, type, check_num) ' \
+                        'VALUES(%s, _binary%s, %s, %s)'
+                values = (env_id, img, type, check_num)
+                cursor.execute(query, values)
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            self.db.rollback()
+            return False
+        else:
+            self.db.commit()
+            return True
+
+    def update_image(self, img_id, env_id=None, img=None, type=None, check_num=None) -> bool:
+        """
+        Image table의 (id)의 row 값 갱신
+
+        Args:
+            img_id (str): Image table의 특정 id(primary key)
+            env_id (str): Image table의 env_id(foreigner key)
+            img (image): image 정보
+            type (str): 합성된 이미지 인지 아닌지
+            check_num (str): 검수표시할 check 컬럼
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query_head = 'UPDATE Image SET '
+                query_tail = ' WHERE img_id={}'.format(img_id)
+                if env_id is not None:
+                    query_head += 'env_id={}, '.format(env_id)
+                if img is not None:
+                    query_head += "data=x'{}' , ".format(img.hex())
+                if type is not None:
+                    query_head += 'type={}, '.format(type)
+                if check_num is not None:
+                    check_num += 'check={}, '.format(check_num)
                 query = query_head[:-2]
                 query += query_tail
                 cursor.execute(query)
@@ -276,7 +378,7 @@ class DB:
         Location table에 row 추가
 
         Args:
-            grid_id (str): Grid table의 id(foreigner key)
+            grid_id (str): Grid table의 (id)
             x (str): 물체의 가로 좌표
             y (str): 물체의 세로 좌표
 
@@ -298,12 +400,12 @@ class DB:
             self.db.commit()
             return True
 
-    def update_location(self, id, grid_id=None, x=None, y=None) -> bool:
+    def update_location(self, loc_id, grid_id=None, x=None, y=None) -> bool:
         """
         Location table의 특정 id 값 갱신
 
         Args:
-            id (str): Location table의 특정 id(primary key)
+            loc_id (str): Location table의 특정 id(primary key)
             grid_id (str): Grid table의 특정 id(foreigner key)
             x (str): 물체의 x 좌표
             y (str): 물체의 y 좌표
@@ -314,7 +416,7 @@ class DB:
         try:
             with self.db.cursor() as cursor:
                 query_head = 'UPDATE Location SET '
-                query_tail = ' WHERE id={}'.format(id)
+                query_tail = ' WHERE loc_id={}'.format(loc_id)
                 if grid_id is not None:
                     query_head += 'Grid_id={}, '.format(grid_id)
                 if x is not None:
@@ -333,67 +435,13 @@ class DB:
             self.db.commit()
             return True
 
-    def set_supercategory(self, name) -> bool:
-        """
-        SuperCategory table에 row 추가
-
-        Arg:
-            name (str): 물체의 이름(종류)
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = 'INSERT INTO SuperCategory(name) ' \
-                        'VALUES(%s)'
-                values = (name)
-                cursor.execute(query, values)
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            self.db.rollback()
-            return False
-        else:
-            self.db.commit()
-            return True
-
-    def update_supercategory(self, id, name=None) -> bool:
-        """
-        SuperCategory table의 특정 id의 row 값 갱신
-
-        Args:
-            id (str): SuperCategory table의 특정 id(primary key)
-            name (str): 물체의 이름(종류)
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query_head = 'UPDATE SuperCategory SET '
-                query_tail = ' WHERE id={}'.format(id)
-                if name is not None:
-                    query_head += "name='{}', ".format(name)
-                query = query_head[:-2]
-                query += query_tail
-                cursor.execute(query)
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            self.db.rollback()
-            return False
-        else:
-            self.db.commit()
-            return True
-
-    def set_category(self, super_id, name, width, height, depth, iteration, thumbnail) -> bool:
+    def set_category(self, super_id, cat_name, width, height, depth, iteration, thumbnail) -> bool:
         """
         Category table에 row 추가
 
         Args:
             super_id (str): SuperCategory table의 특정 id(foreigner key)
-            name (str): 물품의 이름
+            cat_name (str): 물품의 이름
             width (str): 물체의 가로 크기
             height (str): 물체의 세로 크기
             depth (str): 물체의 높이
@@ -405,9 +453,9 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'INSERT INTO Category(super_id, name, width, height, depth, iteration, thumbnail) ' \
+                query = 'INSERT INTO Category(super_id, cat_name, width, height, depth, iteration, thumbnail) ' \
                         'VALUES(%s, %s, %s, %s, %s, %s, %s)'
-                values = (super_id, name, width, height, depth, iteration, thumbnail)
+                values = (super_id, cat_name, width, height, depth, iteration, thumbnail)
                 cursor.execute(query, values)
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -418,15 +466,15 @@ class DB:
             self.db.commit()
             return True
 
-    def update_category(self, id, super_id=None, name=None, width=None,
+    def update_category(self, cat_id, super_id=None, cat_name=None, width=None,
                         height=None, depth=None, iteration=None, thumbnail=None) -> bool:
         """
         Category table의 특정 id의 row 정보 갱신
 
         Args:
-            id (str): Category table의 특정 id(primary key)
+            cat_id (str): Category table의 특정 id(primary key)
             super_id (str): superCategory의 id(foreigner key)
-            name (str): 물품의 이름
+            cat_name (str): 물품의 이름
             width (str): 물체의 가로 크기
             height (str): 물체의 세로 크기
             depth (str): 물체의 높이
@@ -439,11 +487,11 @@ class DB:
         try:
             with self.db.cursor() as cursor:
                 query_head = 'UPDATE Category SET '
-                query_tail = ' WHERE id={}'.format(id)
+                query_tail = ' WHERE cat_id={}'.format(cat_id)
                 if super_id is not None:
                     query_head += 'super_id={}, '.format(super_id)
-                if name is not None:
-                    query_head += "name='{}', ".format(name)
+                if cat_name is not None:
+                    query_head += "name='{}', ".format(cat_name)
                 if width is not None:
                     query_head += 'width={}, '.format(width)
                 if height is not None:
@@ -466,25 +514,26 @@ class DB:
             self.db.commit()
             return True
 
-    def set_object(self, img_id, loc_id, category_id, iteration, mix_num) -> bool:
+    def set_object(self, img_id, loc_id, cat_id, iteration, mix_num, aug_num) -> bool:
         """
         Object table에 row 추가
 
         Args:
             img_id (str or None): Image table의 id(foreigner key)
             loc_id (str): Location table의 id(foreigner key)
-            category_id (str): Category table의 id(foreigner key)
+            cat_id (str): Category table의 id(foreigner key)
             iteration (str): 물체를 방향 별로 찍어야하는 횟수
             mix_num (str): mix 이미지에 대한 정보
+            aug_num (str): augumentation img에 대한 정보
 
         Return:
             Bool: True or False
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) ' \
-                        'VALUES(%s, %s, %s, %s, %s)'
-                values = (img_id, loc_id, category_id, iteration, mix_num)
+                query = 'INSERT INTO Object(loc_id, cat_id, iteration, mix_num, aug_num, img_id) ' \
+                        'VALUES(%s, %s, %s, %s, %s, %s)'
+                values = (loc_id, cat_id, iteration, mix_num, aug_num, img_id)
                 cursor.execute(query, values)
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -495,16 +544,18 @@ class DB:
             self.db.commit()
             return True
 
-    def update_object(self, id, img_id=None, loc_id=None, category_id=None, iteration=None, mix_num=None) -> bool:
+    def update_object(self, obj_id, img_id=None, loc_id=None, cat_id=None, iteration=None, mix_num=None, aug_num=None) -> bool:
         """
         Object table의 특정 id 정보 갱신
 
         Args:
-            id (str): Object table의 특정 id(primary key)
+            obj_id (str): Object table의 특정 obj_id(primary key)
             img_id (str or None): Image talbe의 특정 id(foreigner key)
             loc_id (str): Location table의 특정 id(foreigner key)
-            category_id (str): Category table의 특정 id(foreigner key)
+            cat_id (str): Category table의 특정 id(foreigner key)
             iteration (str): 물체를 방향 별로 찍어야하는 횟수
+            mix_num (str): mix 이미지에 대한 정보
+            aug_num (str): augumentation img에 대한 정보
 
         Return:
             Bool: True or False
@@ -512,17 +563,19 @@ class DB:
         try:
             with self.db.cursor() as cursor:
                 query_head = 'UPDATE Object SET '
-                query_tail = ' WHERE id={}'.format(id)
+                query_tail = ' WHERE obj_id={}'.format(obj_id)
                 if img_id is not None:
                     query_head += 'img_id={}, '.format(img_id)
                 if loc_id is not None:
                     query_head += 'loc_id={}, '.format(loc_id)
-                if category_id is not None:
-                    query_head += 'Category_id={}, '.format(category_id)
-                if category_id is not None:
+                if cat_id is not None:
+                    query_head += 'Category_id={}, '.format(cat_id)
+                if iteration is not None:
                     query_head += 'iteration={}, '.format(iteration)
                 if mix_num is not None:
                     query_head += 'mix_num={}, '.format(mix_num)
+                if aug_num is not None:
+                    query_head += 'mix_num={}, '.format(aug_num)
 
                 query = query_head[:-2]
                 query += query_tail
@@ -541,7 +594,7 @@ class DB:
         Bbox table에 row 추가
 
         Args:
-            obj_id (str): Object table의 id(foreigner key)
+            obj_id (str): Object table의 obj_id(foreigner key)
             x (str): Bbox의 왼쪽 시작 점 x 좌표
             y (str): Bbox의 왼쪽 시작 점 y 좌표
             width (str): Bbox의 가로 크기
@@ -565,12 +618,13 @@ class DB:
             self.db.commit()
             return True
 
-    def update_bbox(self, id, x=None, y=None, width=None, height=None) -> bool:
+    def update_bbox(self, bbox_id, obj_id=None, x=None, y=None, width=None, height=None) -> bool:
         """
-        Bbox table의 특정 id 정보 갱
+        Bbox table의 특정 id 정보 갱신
 
         Args:
-            id (str): Bbox table의 특정 id(primary key)
+            bbox_id (str): Bbox table의 특정 bbox_id(primary key)
+            obj_id (str): Object table의 특정 obj_id
             x (str): Bbox의 왼쪽 시작점 x 좌표
             y (str): Bbox의 왼쪽 시작점 y 좌표
             width (str): Bbox의 가로 크기
@@ -582,7 +636,9 @@ class DB:
         try:
             with self.db.cursor() as cursor:
                 query_head = 'UPDATE Bbox SET '
-                query_tail = ' WHERE id={}'.format(id)
+                query_tail = ' WHERE bbox_id={}'.format(bbox_id)
+                if obj_id is not None:
+                    query_head += 'x={}, '.format(obj_id)
                 if x is not None:
                     query_head += 'x={}, '.format(x)
                 if y is not None:
@@ -608,7 +664,7 @@ class DB:
         Mask table의 id row 추가
 
         Args:
-            obj_id (str): Object table의 id(foreigner key)
+            obj_id (str): Object table의 obj_id(foreigner key)
             x: Mask 점의 x 좌표
             y: Mask 점의 y 좌표
 
@@ -630,12 +686,12 @@ class DB:
             self.db.commit()
             return True
 
-    def update_mask(self, id, obj_id=None, x=None, y=None) -> bool:
+    def update_mask(self, mask_id, obj_id=None, x=None, y=None) -> bool:
         """
         Mask table의 특정 id의 row 갱신
 
         Args:
-            id: Mask table의 id(primary key)
+            mask_id: Mask table의 id(primary key)
             obj_id (str): Object table의 id(foreigner key)
             x: Mask 점의 x 좌표
             y: Mask 점의 y 좌표
@@ -646,7 +702,7 @@ class DB:
         try:
             with self.db.cursor() as cursor:
                 query_head = 'UPDATE Mask SET '
-                query_tail = ' WHERE id={}'.format(id)
+                query_tail = ' WHERE mask_id={}'.format(mask_id)
                 if obj_id is not None:
                     query_head += 'obj_id={}, '.format(obj_id)
                 if x is not None:
@@ -751,54 +807,6 @@ class DB:
                 return v
             else:
                 return None
-
-    def init_table(self) -> bool:
-        """
-        table을 생성합니다.
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                for i, sql in enumerate(querys.initial_queries):
-                    print('{} 번째 sql 실행중...'.format(i + 1))
-                    cursor.execute(sql)
-
-                cursor.execute("SHOW TABLES")
-                for line in cursor.fetchall():
-                    print(line)
-        except Exception as e:
-            print('table is already exist')
-            print(e)
-            self.db.rollback()
-            return False
-        else:
-            self.db.commit()
-            return True
-
-    def drop_table(self, table) -> bool:
-        """
-        mysql databse에 있는 table을 지웁니다.
-
-        Args:
-            table (str): 지우고자하는 table
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "DROP TABLE " + table
-                cursor.execute(query)
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3])
-            print(e)
-            self.db.rollback()
-            return False
-        else:
-            self.db.commit()
-            return True
 
     def get_last_id(self, table):
         """
