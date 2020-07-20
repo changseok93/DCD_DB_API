@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from . import querys
 from .utils.img_util import save_img
-from .utils.util import save_json
+from .utils.util import save_json, find_id_name
 from os.path import join
 
 import pymysql
@@ -141,7 +141,7 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'INSERT INTO environment(ipv4, floor, width, height, depth) ' \
+                query = 'INSERT INTO Environment(ipv4, floor, width, height, depth) ' \
                         'VALUES(%s, %s, %s, %s, %s)'
                 values = (ipv4, floor, width, height, depth)
                 cursor.execute(query, values)
@@ -278,13 +278,13 @@ class DB:
             self.db.commit()
             return True
 
-    def update_supercategory(self, super_id, cat_name=None) -> bool:
+    def update_supercategory(self, super_id, super_name=None) -> bool:
         """
         SuperCategory table의 특정 id의 row 값 갱신
 
         Args:
             super_id (str): SuperCategory table의 id
-            cat_name (str): 물체의 이름 ex) 삼다수
+            super_name (str): 물체의 이름 ex) 삼다수
 
         Return:
             Bool: True or False
@@ -293,8 +293,8 @@ class DB:
             with self.db.cursor() as cursor:
                 query_head = 'UPDATE SuperCategory SET '
                 query_tail = ' WHERE super_id={}'.format(super_id)
-                if cat_name is not None:
-                    query_head += "name='{}', ".format(cat_name)
+                if super_name is not None:
+                    query_head += "super_name='{}', ".format(super_name)
                 query = query_head[:-2]
                 query += query_tail
                 cursor.execute(query)
@@ -514,7 +514,7 @@ class DB:
             self.db.commit()
             return True
 
-    def set_object(self, img_id, loc_id, cat_id, iteration, mix_num, aug_num='0') -> bool:
+    def set_object(self, img_id, loc_id, cat_id, iteration, mix_num, aug_num='-1') -> bool:
         """
         Object table에 row 추가
 
@@ -524,7 +524,7 @@ class DB:
             cat_id (str): Category table의 id(foreigner key)
             iteration (str): 물체를 방향 별로 찍어야하는 횟수
             mix_num (str): mix 이미지에 대한 정보
-            aug_num (str): augumentation img에 대한 정보
+            aug_num (str): augumentation img에 대한 정보, -1일땐 합성된 이미지가 아님
 
         Return:
             Bool: True or False
@@ -753,28 +753,31 @@ class DB:
             else:
                 return None
 
-    def get_table(self, pk_id, id_name, table):
+    def get_table(self, id, table):
         """
-        mysql databse에 있는 특정 table의 특정 id의 row를 가져옵니다.
+        특정 table의 특정 Primary Key id의 row를 가져옵니다.
 
         Args:
-            pk_id (str): table의 id 값
-            id_name (str): id의 이름
+            id (str): 특정 table의 primary key (id)
             table (str): 조회하기 원하는 table 이름
 
         Return:
             tuple(): 해당 id의 row 값
+
             None: 값 없음
+
             False: 쿼리 실패
         """
         try:
             with self.db.cursor() as cursor:
+                id_name = find_id_name(table)
                 query = "SELECT * FROM %s WHERE %s=%s"
-                value = (table, id, id)
+                value = (table, id_name, id)
                 cursor.execute(query, value)
                 v = sum(cursor.fetchall(), ())
         except Exception as e:
-            print('Error function:', inspect.stack()[0][3], '_', table)
+            print('Error function:', inspect.stack()[0][3])
+            print('Table name:', table)
             print(e)
             self.db.rollback()
             return False
@@ -787,20 +790,21 @@ class DB:
 
     def delete_table(self, id, table) -> bool:
         """
-        mysql databse에 있는 특정 table의 특정 id의 row를 지웁니다..
+        특정 table의 특정 Primary Key id의 row를 가져옵니다.
 
         Args:
-            id (str): table의 id 값
-            table (str): 조회하기 원하는 table 이름
+            id (str): 특정 table의 primary key (id)
+            table (str): table 이름
 
         Return:
             Bool: True or False
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'DELETE FROM ' + table + ' WHERE %s=%s'
-                values = (id, id)
-                cursor.execute(query, values)
+                id_name = find_id_name(table)
+                query = "DELETE FROM %s WHERE %s=%s"
+                value = (table, id_name, id)
+                cursor.execute(query, value)
         except Exception as e:
             print('Error function:', inspect.stack()[0][3], table)
             print(e)
@@ -812,7 +816,7 @@ class DB:
 
     def get_last_id(self, table):
         """
-        table의 마지막 id 조회
+        table의 마지막 (id) 조회
 
         Args:
             table (str): table 이름
@@ -826,8 +830,10 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'SELECT MAX(id) FROM ' + table
-                cursor.execute(query)
+                id_name = find_id_name(table)
+                query = "SELECT MAX(%s) FROM %s"
+                value = (id_name, table)
+                cursor.execute(query, value)
                 v = sum(cursor.fetchall(), ())
         except Exception as e:
             print('Error function:', inspect.stack()[0][3], '_', table)
@@ -2169,15 +2175,14 @@ class DB:
         Image table에 여러개의 row 추가
 
         Args:
-            datas (generator): ((env_id, data, type, check_num),
-                                (...))
+            datas (generator): ((env_id, data, type, check_num), (...))
 
         Return:
             Bool: True or False
         """
         try:
             with self.db.cursor() as cursor:
-                query = "INSERT INTO Image (env_id, data, type, check_num) " \
+                query = "INSERT INTO Image (env_id, img, type, check_num) " \
                         "VALUES (%s, _binary%s, %s, %s)"
                 cursor.executemany(query, datas)
         except Exception as e:
@@ -2211,7 +2216,7 @@ class DB:
                 # Image table의 모든 img는 folder에 update
                 # Image table이 언제 갱신되었을지 모름
                 # Image folder도 갱신
-                query = "SELECT id, data FROM Image"
+                query = "SELECT img_id, data FROM Image"
                 cursor.execute(query)
                 img_table = cursor.fetchall()
                 for row in img_table:
@@ -2220,18 +2225,18 @@ class DB:
                              img_dir=join(img_path, str(img_id) + '.png'))
 
                 # Object table search
-                query = "SELECT img_id, category_id, id FROM Object"
+                query = "SELECT obj_id, img_id, cat_id FROM Object"
                 cursor.execute(query)
                 obj_table = cursor.fetchall()
 
                 # Category table search
-                query = "SELECT super_id, id, name FROM Category"
+                query = "SELECT cat_id, super_id, cat_name FROM Category"
                 cursor.execute(query)
                 cat_table = cursor.fetchall()
                 for row in cat_table:
                     super_id, cat_id, cat_name = row[0], row[1], row[2]
                     # SuperCategory table search
-                    query = "SELECT name FROM SuperCategory WHERE id=%s"
+                    query = "SELECT super_name FROM SuperCategory WHERE super_id=%s"
                     value = (super_id)
                     cursor.execute(query, value)
                     super_name = sum(cursor.fetchall(), ())

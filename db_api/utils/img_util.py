@@ -40,3 +40,11 @@ def save_img(byte_img, img_dir):
         return False
     else:
         return True
+
+
+def img_loader(img_dir):
+    if isinstance(img_dir, str):
+        with open(img_dir, 'rb') as file:
+            img = file.read()
+
+    return img

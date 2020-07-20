@@ -17,3 +17,26 @@ def cpu_mem_check():
     memory_usage = round(py.memory_info()[0] / 2. ** 30, 2)
     print("cpu usage:", cpu_usage, "%")
     print("memory usage:", memory_usage, "%")
+
+
+def find_id_name(table):
+    if table is 'Environment':
+        id_name = 'env_id'
+    elif table is 'Grid':
+        id_name = 'grid_id'
+    elif table is 'SuperCategory':
+        id_name = 'super_id'
+    elif table is 'Image':
+        id_name = 'img_id'
+    elif table is 'Location':
+        id_name = 'loc_id'
+    elif table is 'Category':
+        id_name = 'cat_id'
+    elif table is 'Object':
+        id_name = 'obj_id'
+    elif table is 'Bbox':
+        id_name = 'bbox_id'
+    elif table is 'Mask':
+        id_name = 'mask_id'
+
+    return id_name
