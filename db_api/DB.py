@@ -141,7 +141,7 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'INSERT INTO Environment(ipv4, floor, width, height, depth) ' \
+                query = 'INSERT INTO environment(ipv4, floor, width, height, depth) ' \
                         'VALUES(%s, %s, %s, %s, %s)'
                 values = (ipv4, floor, width, height, depth)
                 cursor.execute(query, values)
@@ -514,7 +514,7 @@ class DB:
             self.db.commit()
             return True
 
-    def set_object(self, img_id, loc_id, cat_id, iteration, mix_num, aug_num) -> bool:
+    def set_object(self, img_id, loc_id, cat_id, iteration, mix_num, aug_num='0') -> bool:
         """
         Object table에 row 추가
 
@@ -722,61 +722,6 @@ class DB:
             self.db.commit()
             return True
 
-    def get_table(self, id, table):
-        """
-        mysql databse에 있는 특정 table의 특정 id의 row를 가져옵니다.
-
-        Args:
-            id (str): table의 id 값
-            table (str): 조회하기 원하는 table 이름
-
-        Return:
-            tuple(): 해당 id의 row 값
-            None: 값 없음
-            False: 쿼리 실패
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = "SELECT * FROM {} WHERE id={}".format(table, id)
-                cursor.execute(query)
-                v = sum(cursor.fetchall(), ())
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3], '_', table)
-            print(e)
-            self.db.rollback()
-            return False
-        else:
-            self.db.commit()
-            if v:
-                return v
-            else:
-                return None
-
-    def delete_table(self, id, table) -> bool:
-        """
-        mysql databse에 있는 특정 table의 특정 id의 row를 지웁니다..
-
-        Args:
-            id (str): table의 id 값
-            table (str): 조회하기 원하는 table 이름
-
-        Return:
-            Bool: True or False
-        """
-        try:
-            with self.db.cursor() as cursor:
-                query = 'DELETE FROM ' + table + ' WHERE id=%s'
-                values = (id)
-                cursor.execute(query, values)
-        except Exception as e:
-            print('Error function:', inspect.stack()[0][3], table)
-            print(e)
-            self.db.rollback()
-            return False
-        else:
-            self.db.commit()
-            return True
-
     def list_table(self, table):
         """
         mysql databse에 있는 특정 table의 모든 값을 가져옵니다.
@@ -807,6 +752,63 @@ class DB:
                 return v
             else:
                 return None
+
+    def get_table(self, pk_id, id_name, table):
+        """
+        mysql databse에 있는 특정 table의 특정 id의 row를 가져옵니다.
+
+        Args:
+            pk_id (str): table의 id 값
+            id_name (str): id의 이름
+            table (str): 조회하기 원하는 table 이름
+
+        Return:
+            tuple(): 해당 id의 row 값
+            None: 값 없음
+            False: 쿼리 실패
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "SELECT * FROM %s WHERE %s=%s"
+                value = (table, id, id)
+                cursor.execute(query, value)
+                v = sum(cursor.fetchall(), ())
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3], '_', table)
+            print(e)
+            self.db.rollback()
+            return False
+        else:
+            self.db.commit()
+            if v:
+                return v
+            else:
+                return None
+
+    def delete_table(self, id, table) -> bool:
+        """
+        mysql databse에 있는 특정 table의 특정 id의 row를 지웁니다..
+
+        Args:
+            id (str): table의 id 값
+            table (str): 조회하기 원하는 table 이름
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = 'DELETE FROM ' + table + ' WHERE %s=%s'
+                values = (id, id)
+                cursor.execute(query, values)
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3], table)
+            print(e)
+            self.db.rollback()
+            return False
+        else:
+            self.db.commit()
+            return True
 
     def get_last_id(self, table):
         """
@@ -841,14 +843,14 @@ class DB:
 
     def get_env_id(self, ipv4, floor):
         """
-        Environment table의 id 반환
+        Environment table의 env_id 반환
 
         Args:
             ipv4 (str): Environment table ipv4 정보
             floor (str): Environment table floor 정보
 
         Return:
-            int: Environment table (id)
+            int: Environment table (env_id)
 
             None: 값 없음
 
@@ -856,7 +858,7 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT id FROM Environment WHERE ipv4='" + ipv4 + "' AND floor=" + floor
+                query = "SELECT env_id FROM Environment WHERE ipv4='" + ipv4 + "' AND floor=" + floor
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
         except Exception as e:
@@ -873,13 +875,13 @@ class DB:
 
     def get_grid_id(self, grid_w_h):
         """
-        Grid table의 (id) 반환
+        Grid table의 (grid_id) 반환
 
         Args:
             grid_w_h (str): Grid table의 (width), (height)
 
         Return:
-            tuple (): Grid table (id)
+            tuple (): Grid table (grid_id)
 
             None: 값 없음
 
@@ -888,7 +890,7 @@ class DB:
         try:
             w, h = grid_w_h.split('x')
             with self.db.cursor() as cursor:
-                query = "SELECT id FROM Grid WHERE width=" + w + " AND height=" + h
+                query = "SELECT grid_id FROM Grid WHERE width=" + w + " AND height=" + h
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
         except Exception as e:
@@ -903,15 +905,15 @@ class DB:
             else:
                 return None
 
-    def get_supercategory_id(self, name):
+    def get_supercategory_id(self, super_name):
         """
-        SuperCategory table의 id 반환
+        SuperCategory table의 (super_id) 반환
 
         Args:
-            name (str): SuperCategory table의 name 정보
+            super_name (str): SuperCategory table의 (super_name) 정보
 
         Return:
-            tuple (): SuperCategory table의 name에 해당하는 (id)
+            tuple (): SuperCategory table의 (super_name)에 해당하는 (id)
 
             None: 값 없음
 
@@ -919,7 +921,7 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT id FROM SuperCategory WHERE name='" + name + "'"
+                query = "SELECT super_id FROM SuperCategory WHERE super_name='" + super_name + "'"
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
         except Exception as e:
@@ -936,14 +938,14 @@ class DB:
 
     def get_loc_id(self, grid_id, loc_x_y):
         """
-        Location table의 id 반환
+        Location table의 (loc_id) 반환
 
         Args:
-            grid_id (str): Grid table의 (grid_id)
+            grid_id (str): Location table의 (grid_id)
             loc_x_y (str): Location table의 (x), (y)
 
         Return:
-            int: Location table의 (id)
+            int: Location table의 (loc_id)
 
             None: 값 없음
 
@@ -952,7 +954,7 @@ class DB:
         x, y = loc_x_y.split('x')
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT id FROM Location WHERE grid_id=" + grid_id + " AND x=" + x + " AND y=" + y
+                query = "SELECT loc_id FROM Location WHERE grid_id=" + grid_id + " AND x=" + x + " AND y=" + y
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
         except Exception as e:
@@ -967,16 +969,16 @@ class DB:
             else:
                 return None
 
-    def get_category_id(self, super_id, category_name):
+    def get_category_id(self, super_id, cat_name):
         """
-        Category table의 id를 반환
+        Category table의 (cat_id) 반환
 
         Args:
-            super_id (str): 조회하기 원하는 category의 상위 super_category
-            category_name (str): 조회하기 원하는 category의 name
+            super_id (str): Category table의 (super_id)
+            cat_name (str): Category table의 (cat_name)
 
         Return:
-            int: 해당 category의 id
+            int: Category table의 (cat_id)
 
             None: 값 없음
 
@@ -984,7 +986,7 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'SELECT id FROM Category WHERE super_id=' + super_id + " AND name='" + category_name + "'"
+                query = 'SELECT cat_id FROM Category WHERE super_id=' + super_id + " AND cat_name='" + cat_name + "'"
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
         except Exception as e:
@@ -1001,13 +1003,13 @@ class DB:
 
     def get_category_id_obj(self, obj_id):
         """
-        Object table의 (obj_id)를 받아 (category_id)를 얻음
+        Object table의 (obj_id)를 받아 (cat_id)를 얻음
 
         Args:
-            obj_id (str): Object table의 id
+            obj_id (str): Object table의 (obj_id)
 
         Return:
-            int: Object table의 (category_id)
+            int: Object table의 (cat_id)
 
             None: 값 없음
 
@@ -1015,7 +1017,7 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT category_id FROM Object WHERE id=" + obj_id
+                query = "SELECT cat_id FROM Object WHERE obj_id=" + obj_id
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
         except Exception as e:
@@ -1032,13 +1034,13 @@ class DB:
 
     def get_img_id(self, obj_id):
         """
-        Object table의 img_id를 반환
+        Object table의 (img_id) 반환
 
         Args:
-            obj_id (str): 조회하기 원하는 Object table의 id
+            obj_id (str): 조회하기 원하는 Object table의 (obj_id)
 
         Return:
-            int: 해당하는 Object table의 (image_id)
+            int: 해당하는 Object table의 (img_id)
 
             None: 값 없음
 
@@ -1046,7 +1048,7 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'SELECT img_id FROM Object WHERE id=' + obj_id
+                query = 'SELECT img_id FROM Object WHERE obj_id=' + obj_id
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
         except Exception as e:
@@ -1064,13 +1066,13 @@ class DB:
     def get_location(self, grid_id):
         """
         Location table의 (grid_id)를 입력 받아
-        (grid_id)를 값으로 가지는 Location table의 row 반환 함수
+        Location table의 row 반환
 
         Args:
-            grid_id (str): Location table의 grid_id
+            grid_id (str): Location table의 (grid_id)
 
         Return:
-            tuple()(): Location table의 (id)
+            tuple()(): Location table의 (loc_id)
 
             None: 값 없음
 
@@ -1078,7 +1080,7 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'SELECT id FROM Location WHERE grid_id=' + grid_id
+                query = 'SELECT loc_id FROM Location WHERE grid_id=' + grid_id
                 cursor.execute(query)
                 v = cursor.fetchall()
         except Exception as e:
@@ -1093,16 +1095,16 @@ class DB:
             else:
                 return None
 
-    def get_bbox_info(self, object_id):
+    def get_bbox_info(self, obj_id):
         """
-        입력받은 object [id]를 가지는 Bbox table의
-        [x, y, width, height]들을 2차원 리스트로 반환
+        Object table의 (obj_id)를 가지는
+        Bbox table의 (x), (y), (width), (height) 2차원 리스트로 반환
 
         Args:
-            object_id (str): 조회하기 원하는 Bbox table의 object id
+            obj_id (str): 조회하기 원하는 Bbox table의 (obj_id)
 
         Return:
-            tuple ()(): Bbox table의 (x, y, width, height)
+            tuple ()(): Bbox table의 ((x, y, width, height), (...))
 
             None: 값 없음
 
@@ -1110,8 +1112,9 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT x, y, width, height from Bbox WHERE obj_id=" + object_id
-                cursor.execute(query)
+                query = "SELECT x, y, width, height from Bbox WHERE obj_id=%s"
+                value = (obj_id)
+                cursor.execute(query, value)
                 v = cursor.fetchall()
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -1133,7 +1136,7 @@ class DB:
             img_id (str): Object table의 (img_id)
 
         Return:
-            tuple (): Object table의 (id)
+            tuple (): Object table의 (obj_id)
 
             None: 값 없음
 
@@ -1141,8 +1144,9 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT id FROM Object WHERE img_id=" + img_id
-                cursor.execute(query)
+                query = "SELECT obj_id FROM Object WHERE img_id=%s"
+                value = (img_id)
+                cursor.execute(query, img_id)
                 v = sum(cursor.fetchall(), ())
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -1156,16 +1160,16 @@ class DB:
             else:
                 return None
 
-    def get_obj_id(self, category_id):
+    def get_obj_id(self, cat_id):
         """
-        Object table의 (category id)를 입력 받아
+        Object table의 (cat_id)를 입력 받아 (cat_id)와 (mix_num)=-1인
         Object table의 (obj id)들 반환
 
         Args:
-            category_id (str): Object table의 (category id)
+            cat_id (str): Object table의 (cat_id)
 
         Return:
-            tuple () : Object_table의 (obj id) row
+            tuple () : Object_table의 (obj_id) row
 
             None: 값 없음
 
@@ -1173,8 +1177,9 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT id FROM Object WHERE category_id=" + category_id + " AND mix_num=" + "-1"
-                cursor.execute(query)
+                query = "SELECT id FROM Object WHERE category_id=%s AND mix_num=-1"
+                value = (cat_id)
+                cursor.execute(query, value)
                 v = sum(cursor.fetchall(), ())
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -1188,13 +1193,13 @@ class DB:
             else:
                 return None
 
-    def get_super_id(self, category_id):
+    def get_super_id(self, cat_id):
         """
-        Category table의 (id)를 받아
+        Category table의 (cat_id)를 받아
         Category table의 (super_id)를 반환
 
         Args:
-            category_id (str): Category table의 id
+            cat_id (str): Category table의 (cat_id)
 
         Return:
             int: (super_id)
@@ -1205,8 +1210,9 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT super_id FROM Category WHERE id=" + category_id
-                cursor.execute(query)
+                query = "SELECT super_id FROM Category WHERE cat_id=%s"
+                value = (cat_id)
+                cursor.execute(query, value)
                 v = sum(cursor.fetchall(), ())
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -1222,14 +1228,14 @@ class DB:
 
     def get_super_name(self, super_id):
         """
-        SuperCategory table의 (id)를 받아
-        SuperCategory table의 (name)을 반환함
+        SuperCategory table의 (super_id)를 받아
+        SuperCategory table의 (super_name)을 반환함
 
         Args:
-            super_id (str): SuperCategory table의 (id)
+            super_id (str): SuperCategory table의 (super_id)
 
         Return:
-            int: SuperCategory table의 (name)
+            int: SuperCategory table의 (super_name)
 
             None: 값 없음
 
@@ -1237,8 +1243,9 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT name FROM SuperCategory WHERE id=" + super_id
-                cursor.execute(query)
+                query = "SELECT super_name FROM SuperCategory WHERE super_id=%s"
+                value = (super_id)
+                cursor.execute(query, value)
                 v = sum(cursor.fetchall(), ())
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -1252,18 +1259,18 @@ class DB:
             else:
                 return None
 
-    def get_mix_num(self, loc_id, category_id, iteration):
+    def get_mix_num(self, loc_id, cat_id, iteration):
         """
-        Object table의 (loc_id, category_id, iteration)를 입력받아
+        Object table의  (loc_id, cat_id, iteration)를 입력받아
         Object table의 가장 큰 mix_num을 가진 (mix_num) 반환
 
         Args:
             loc_id (str): Object table의 (loc_id)
-            category_id (str): Object table의 (category_id)
+            cat_id (str): Object table의 (cat_id)
             iteration (str): Object table의 (iteration)
 
         Return:
-            int : Object_table의 (mix_num) row
+            int : Object_table의 MAX(mix_num)
 
             None: 값 없음
 
@@ -1271,8 +1278,8 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT mix_num FROM Object WHERE loc_id=%s AND category_id=%s AND iteration=%s"
-                value = (loc_id, category_id, iteration)
+                query = "SELECT MAX(mix_num) FROM Object WHERE loc_id=%s AND cat_id=%s AND iteration=%s"
+                value = (loc_id, cat_id, iteration)
                 cursor.execute(query, value)
                 mix_nums = sum(cursor.fetchall(), ())
         except Exception as e:
@@ -1283,20 +1290,20 @@ class DB:
         else:
             self.db.commit()
             if mix_nums:
-                return sorted(mix_nums, reverse=True)[0]
+                return mix_nums
             else:
                 return None
 
     def get_bbox_id(self, obj_id):
         """
-        Object table의 (id)를 받아
-        Bbox table의 (id) 반환
+        Object table의 (obj_id)를 받아
+        Bbox table의 (bbox_id) 반환
 
         Args:
-            obj_id (str): Object table의 (id)
+            obj_id (str): Object table의 (obj_id)
 
         Return:
-            tuple (): Bbox table의 (id)
+            tuple (): Bbox table의 (bbox_id)
 
             None: 값 없음
 
@@ -1304,8 +1311,9 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT id FROM Bbox WHERE obj_id=" + obj_id
-                cursor.execute(query)
+                query = "SELECT bbox_id FROM Bbox WHERE obj_id=%s"
+                value = (obj_id)
+                cursor.execute(query, value)
                 v = sum(cursor.fetchall(), ())
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -1321,14 +1329,14 @@ class DB:
 
     def get_mask_id(self, obj_id):
         """
-        Object table의 (id)를 받아
-        Mask table의 (id) 반환
+        Object table의 (obj_id)를 받아
+        Mask table의 (mask_id) 반환
 
         Args:
-            object_id (str): Object table의 (id)
+            obj_id (str): Object table의 (obj_id)
 
         Return:
-            tuple (): Mask table의 (id)
+            tuple (): Mask table의 (mask_id)
 
             None: 값 없음
 
@@ -1336,7 +1344,8 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT id FROM Mask WHERE obj_id=" + obj_id
+                query = "SELECT mask_id FROM Mask WHERE obj_id=%s"
+                value = (obj_id)
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
         except Exception as e:
@@ -1354,14 +1363,14 @@ class DB:
     def get_loc_id_GL(self, grid_w_h, loc_x_y):
         """
         Grid table의 (width, height)와 Location table의 (x, y)를 입력받아
-        Location table의 (id) 반환하는 함수
+        Location table의 (loc_id) 반환하는 함수
 
         Args:
-            grid_w_h (str): Grid table의 width height 정보
-            loc_x_y (str): Location table의 x, y 정보
+            grid_w_h (str): Grid table의 (width), (height) 정보
+            loc_x_y (str): Location table의 (x), (y) 정보
 
         Return:
-            tuple (): Location table의 id
+            tuple (): Location table의 (loc_id)
 
             None: 값 없음
 
@@ -1371,8 +1380,8 @@ class DB:
             w, h = grid_w_h.split('x')
             x, y = loc_x_y.split('x')
             with self.db.cursor() as cursor:
-                query = "SELECT id FROM Location WHERE x=%s AND y=%s " \
-                        "AND grid_id=(SELECT id FROM Grid WHERE width=%s AND height=%s)"
+                query = "SELECT loc_id FROM Location WHERE x=%s AND y=%s " \
+                        "AND grid_id=(SELECT grid_id FROM Grid WHERE width=%s AND height=%s)"
                 value = (x, y, w, h)
                 cursor.execute(query, value)
                 v = sum(cursor.fetchall(), ())
@@ -1391,7 +1400,7 @@ class DB:
     def get_bbox_img(self, img_id):
         """
         Object table의 (img_id)를 받아 (obj_id)들을 가져옴
-        얻은 (obj_id)들로 Bbox table의 row들을 조회
+        얻은 (obj_id)들로 Bbox table의 row 조회
 
         Args:
             img_id (str): Object table의 (img_id)
@@ -1406,7 +1415,7 @@ class DB:
         try:
             with self.db.cursor() as cursor:
                 query = "SELECT * FROM Bbox " \
-                        "WHERE obj_id IN (SELECT id FROM Object WHERE img_id=%s)"
+                        "WHERE obj_id IN (SELECT obj_id FROM Object WHERE img_id=%s)"
                 value = (img_id)
                 cursor.execute(query, value)
                 v = cursor.fetchall()
@@ -1424,15 +1433,15 @@ class DB:
 
     def get_cat_id(self, super_name, cat_name):
         """
-        SuperCateogry table의 (name)과 Category table의 (name)을 받아
-        Category table의 (id) 반환
+        SuperCateogry table의 (super_name)과 Category table의 (cat_name)을 받아
+        Category table의 (cat_id) 반환
 
         Args:
-            super_name (str): SuperCategory table의 (name)
-            cat_name (str): Category table의 (name)
+            super_name (str): SuperCategory table의 (super_name)
+            cat_name (str): Category table의 (cat_name)
 
         Return:
-            category_id (int): Category table의 (id)
+            category_id (int): Category table의 (cat_id)
 
             None: 값 없음
 
@@ -1440,8 +1449,8 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT id FROM Category WHERE name=%s AND " \
-                        "super_id=(SELECT id FROM SuperCategory WHERE name=%s)"
+                query = "SELECT cat_id FROM Category WHERE cat_name=%s AND " \
+                        "super_id=(SELECT super_id FROM SuperCategory WHERE super_name=%s)"
                 value = (super_name, cat_name)
                 cursor.execute(query, value)
                 v = sum(cursor.fetchall(), ())
@@ -1460,10 +1469,10 @@ class DB:
     def list_bbox(self, obj_id):
         """
         Bbox table의 (obj_id)를 이용해
-        Bbox table의 모든 row 반환
+        Bbox table의 row 반환
 
         Args:
-            obj_id (str): Bbox table의 obj_id
+            obj_id (str): Bbox table의 (obj_id)
 
         Return:
             tuple()(): Bbox table의 row
@@ -1474,8 +1483,9 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'SELECT * FROM Bbox WHERE obj_id=' + obj_id
-                cursor.execute(query)
+                query = "SELECT * FROM Bbox WHERE obj_id=%s"
+                value = (obj_id)
+                cursor.execute(query, value)
                 v = cursor.fetchall()
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -1489,17 +1499,17 @@ class DB:
             else:
                 return None
 
-    def list_obj(self, category_id, loc_ids):
+    def list_obj(self, cat_id, loc_ids):
         """
-        Object table의 (category_id, loc_ids)를 입력 받아
+        Object table의 (cat_id), (loc_ids)를 입력 받아
         해당되는 Object table의 row들을 반환하는 함수
 
         Args:
-            category_id (str): Object table의 category_id
-            loc_ids (tuple): Object table의 loc_id들
+            cat_id (str): Object table의 (cat_id)
+            loc_ids (tuple): Object table의 (loc_id)들
 
         Return:
-            tuple()(): Location table의 (id)
+            tuple()(): Location table의 (loc_id)
 
             None: 값 없음
 
@@ -1507,13 +1517,12 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query_head = 'SELECT img_id FROM Object WHERE (category_id=' + category_id + ') AND ('
+                query_head = 'SELECT img_id FROM Object WHERE (category_id=' + cat_id + ') AND ('
                 for loc_id in loc_ids:
                     query_head += 'loc_id={} OR '.format(loc_id[0])
 
                 query = query_head[:-4] + ')'
                 cursor.execute(query)
-                # print('function: {}, query: {}'.format(inspect.stack()[0][3], query))
                 v = cursor.fetchall()
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
