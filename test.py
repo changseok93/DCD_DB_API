@@ -25,10 +25,23 @@ def print_basic(func):
     @wraps(func)
     def show(self, *method_args, **method_kwargs):
         func(self)
-        print('{} table: '.format(func.__name__[1:]), self.table)
-        print('{} table last id: '.format(func.__name__[1:]), self.last_id)
+        print(func.__name__[1].upper() + '{} table: '.format(func.__name__[2:]), self.table)
+        print(func.__name__[1].upper() + '{} table last id: '.format(func.__name__[2:]), self.last_id)
 
     return show
+
+
+# decorator
+def mem_check(func):
+    @wraps(func)
+    def mem(self, *method_args, **method_kwargs):
+        start_time = time.time()
+        func(self)
+        cpu_mem_check()
+        end_time = time.time()
+        print('total_time: ', end_time - start_time)
+
+    return mem
 
 
 class CheckBasic:
@@ -184,6 +197,12 @@ class CheckGet:
 
     @print_check
     def _get_loc_id_GL(self):
+        mydb.set_grid(width='1', height='2')
+        mydb.set_grid(width='1', height='3')
+        mydb.set_location(grid_id='1', x='1', y='2')
+        mydb.set_location(grid_id='1', x='1', y='3')
+        mydb.set_location(grid_id='1', x='1', y='4')
+        mydb.set_location(grid_id='1', x='1', y='5')
         self.ans = self.db.get_loc_id_GL(grid_w_h='1x1', loc_x_y='1x1')
 
     @print_check
@@ -216,6 +235,14 @@ class CheckGet:
 
     @print_check
     def _get_mix_num(self):
+        mydb.set_location(grid_id='1', x='1', y='2')
+        mydb.set_location(grid_id='1', x='1', y='3')
+        mydb.set_location(grid_id='1', x='1', y='4')
+        mydb.set_location(grid_id='1', x='1', y='5')
+        mydb.set_category(super_id='1', cat_name='22', width='1', height='1', depth='22', iteration='2', thumbnail='1')
+        mydb.set_object(img_id='1', loc_id='5', cat_id='2', iteration='1', mix_num='-1')
+        mydb.set_object(img_id='1', loc_id='5', cat_id='2', iteration='1', mix_num='0')
+        mydb.set_object(img_id='1', loc_id='5', cat_id='2', iteration='1', mix_num='1')
         self.ans = self.db.get_mix_num(loc_id='1', cat_id='1', iteration='1')
 
     @print_check
@@ -255,6 +282,11 @@ class CheckList:
 
     @print_check
     def _list_obj_CN(self):
+        mydb.set_environment(ipv4='127.223.444.445', floor='1', width='3', height='5', depth='2')
+        mydb.set_image(env_id='20002', img='1ddd', type='2', check_num='1')
+        mydb.set_location(grid_id='1', x='1', y='2')
+        mydb.set_object(img_id='1', loc_id='2', cat_id='1', iteration='1', mix_num='-1')
+        mydb.set_object(img_id='2', loc_id='2', cat_id='1', iteration='3', mix_num='-1')
         self.ans = self.db.list_obj_CN(grid_id='1', cat_id='1', check_num='-1')
 
 
@@ -335,10 +367,25 @@ class CheckDelete:
 
     @print_check
     def _delete_bbox_img(self):
+        mydb.set_bbox(obj_id='1', x='1', y='2', width='1', height='1')
+        mydb.set_bbox(obj_id='1', x='1', y='3', width='1', height='1')
+        mydb.set_bbox(obj_id='1', x='1', y='3', width='1', height='1')
         self.ans = self.db.delete_bbox_img(img_id='1')
 
     @print_check
     def _delete_nomix_img(self):
+        mydb.set_supercategory(super_name='mix')
+        mydb.set_category(super_id='2', cat_name='hi', width='1', height='1', depth='1', iteration='1', thumbnail='1')
+        mydb.set_object(img_id='1', loc_id='1', cat_id='1', iteration='2', mix_num='-1')
+        mydb.set_object(img_id='1', loc_id='1', cat_id='1', iteration='3', mix_num='-1')
+        mydb.set_object(img_id='1', loc_id='1', cat_id='1', iteration='4', mix_num='-1')
+        mydb.set_object(img_id='1', loc_id='1', cat_id='2', iteration='5', mix_num='-1')
+        mydb.set_object(img_id='1', loc_id='1', cat_id='2', iteration='6', mix_num='-1')
+        mydb.set_object(img_id='1', loc_id='1', cat_id='2', iteration='7', mix_num='-1')
+        mydb.set_object(img_id='1', loc_id='1', cat_id='2', iteration='8', mix_num='-1')
+        # img_id=1이면 mix, img_id=2이면 mix 아님
+        print(mydb.delete_nomix_img(img_id='1'))
+
         self.ans = self.db.delete_nomix_img(img_id='1')
 
 
@@ -347,18 +394,35 @@ class CheckAug:
         self.db = db
         self.ans = None
 
+    @print_check
     def check_all(self):
         self._get_aug_mask()
         self._get_aug_img()
         self._get_aug_loc_id()
 
+    @print_check
     def _get_aug_mask(self):
+        mydb.set_location(grid_id='1', x='1', y='2')
+        mydb.set_object(img_id='1', loc_id='2', cat_id='1', iteration='1', mix_num='-1')
+        mydb.set_mask(obj_id='1', x='1', y='2')
+        mydb.set_mask(obj_id='2', x='1', y='1')
+        mydb.set_mask(obj_id='2', x='1', y='2')
         self.ans = self.db.get_aug_mask(grid_id='1', cat_id='1')
 
+    @print_check
     def _get_aug_img(self):
+        mydb.set_environment(ipv4='127.223.444.445', floor='1', width='3', height='5', depth='2')
+        mydb.set_image(env_id='20002', img='1ddd', type='2', check_num='3')
+        mydb.set_location(grid_id='1', x='1', y='2')
+        mydb.set_object(img_id='1', loc_id='2', cat_id='1', iteration='1', mix_num='-1')
+        mydb.set_object(img_id='2', loc_id='2', cat_id='1', iteration='3', mix_num='-1')
         self.ans = self.db.get_aug_img(grid_id='1', cat_id='1')
 
+    @print_check
     def _get_aug_loc_id(self):
+        mydb.set_location(grid_id='1', x='1', y='2')
+        mydb.set_location(grid_id='1', x='2', y='1')
+        mydb.set_location(grid_id='1', x='2', y='2')
         self.ans = self.db.get_aug_loc_id(grid_id='1')
 
 
@@ -367,28 +431,73 @@ class CheckSet:
         self.db = db
         self.ans = None
 
+    @print_check
     def check_all(self):
         self._set_obj_list()
         self._set_bulk_obj()
         self._set_bulk_bbox()
         self._set_bulk_img()
 
+    @print_check
     def _set_obj_list(self):
+        mydb.delete_table(id='1', table='Object')
+        mydb.set_location(grid_id='1', x='1', y='2')
+        mydb.set_location(grid_id='1', x='1', y='3')
+        mydb.set_location(grid_id='1', x='1', y='4')
         self.ans = self.db.set_obj_list(grid_id='1', cat_id='1', iteration='1', mix_num='1')
 
+    @mem_check
+    @print_check
     def _set_bulk_obj(self):
-        # self.ans = self.db.set_bulk_obj(datas=)
-        pass
+        ex_table = ([('1', '1', "1", "{}".format(i), '1') for i in range(4, 65533)])
+        self.ans = self.db.set_bulk_obj(datas=ex_table)
 
+    @mem_check
+    @print_check
     def _set_bulk_bbox(self):
         ex_table = ([('1', '1', "{}".format(i), '1', '1') for i in range(4, 10)])
         self.ans = self.db.set_bulk_bbox(datas=ex_table)
 
+    @mem_check
+    @print_check
     def _set_bulk_img(self):
-        # img_path = '/home/cha/DB/img/aug_img'
-        # ex_table = (['20001', img_loader(join(img_path, img_p)), '1', '1'] for img_p in sorted(listdir(img_path)))
-        # self.ans = self.db.set_bulk_img(datas=ex_table)
-        pass
+        img_path = 'img'
+        ex_table = (['20001', img_loader(join(img_path, img_p)), '1', '1'] for img_p in sorted(listdir(img_path)))
+        self.ans = self.db.set_bulk_img(datas=ex_table)
+
+
+class CheckDbJson:
+    def __init__(self, db, json_path, img_path):
+        self.db = db
+        self.ans = None
+        self.json_path = json_path
+        self.img_path = img_path
+        if not os.path.exists(self.img_path):
+            os.makedirs(self.img_path)
+
+        self._db_to_json()
+
+    @print_check
+    def check_all(self):
+        self._db_to_json()
+
+    @print_check
+    def _db_to_json(self):
+        self.db.set_supercategory(super_name='생수')
+        self.db.set_category(super_id='2', cat_name='삼다수', width='1', height='1', depth='1', iteration='1', thumbnail='1')
+        self.db.set_object(img_id='1', loc_id='1', cat_id='2', iteration='2', mix_num='-1')
+        self.db.set_mask(obj_id='2', x='1', y='2')
+        self.db.set_mask(obj_id='2', x='1', y='3')
+        self.db.set_mask(obj_id='2', x='1', y='4')
+        self.db.set_bbox(obj_id='2', x='1', y='1', width='1', height='1')
+
+        self.db.set_image(env_id='20001', img=img, type='0', check_num='1')
+        self.db.set_image(env_id='20001', img=img, type='0', check_num='1')
+        self.db.set_mask(obj_id='1', x='1', y='2')
+        self.db.set_mask(obj_id='1', x='1', y='3')
+        self.db.set_mask(obj_id='1', x='1', y='4')
+
+        self.ans = self.db.db_to_json(json_path=json_path, img_path=img_path)
 
 
 def reset_table(db):
@@ -401,46 +510,6 @@ def reset_table(db):
     db.drop_table(table='Environment')
     db.drop_table(table='Grid')
     db.drop_table(table='SuperCategory')
-
-
-def set_bulk_bbox():
-    # (obj_id, x, y, width, height)
-
-    start_time = time.time()
-    cpu_mem_check()
-    end_time = time.time()
-    print('total_time: ', end_time - start_time)
-
-
-def compare_set_bulk_obj():
-    # (img_id, loc_id, category_id, iteration, mix_num)
-    ex_table = ([('1', '1', "1", "{}".format(i), '1') for i in range(4, 65533)])
-
-    print('no execute many')
-    start_time = time.time()
-    print(mydb.set_bulk_obj(datas=ex_table))
-    cpu_mem_check()
-    end_time = time.time()
-    print('total_time: ', end_time - start_time)
-
-
-def compare_set_bulk_img():
-    img_path = '/home/cha/DB/img/aug_img'
-
-    # list case
-    # (env_id, data, type, check_num)
-    # start_time = time.time()
-    # ex_table = [['20001', img_loader(join(img_path, img_p)), '1', '1'] for img_p in sorted(listdir(img_path))]
-    # cpu_mem_check()
-
-    # generator case
-    # (env_id, data, type, check_num)
-    start_time = time.time()
-    cpu_mem_check()
-
-    cpu_mem_check()
-    end_time = time.time()
-    print('total_time: ', end_time - start_time)
 
 
 if __name__ == "__main__":
@@ -457,7 +526,7 @@ if __name__ == "__main__":
     # reset tables
     reset_table(mydb)
 
-    # id를 기반으로 하는 basic 코드 test
+    # basic 코드 test
     cb = CheckBasic(mydb)
     cb.check_all()
 
@@ -486,112 +555,12 @@ if __name__ == "__main__":
     ca.check_all()
 
     # set 함수 test
-    # cs = CheckSet(mydb)
-    # cs.check_all()
+    cs = CheckSet(mydb)
+    cs.check_all()
+
+    json_path = "./coco_info.json",
+    img_path = "./img"
+    cdj = CheckDbJson(db=mydb, json_path=json_path, img_path=img_path)
+    cdj.check_all()
 
 
-    # get_loc_id_GL test 코드
-    # mydb.set_grid(width='1', height='2')
-    # mydb.set_grid(width='1', height='3')
-    # mydb.set_location(grid_id='1', x='1', y='2')
-    # mydb.set_location(grid_id='1', x='1', y='3')
-    # mydb.set_location(grid_id='1', x='1', y='4')
-    # mydb.set_location(grid_id='1', x='1', y='5')
-    # print(mydb.get_loc_id_GL(grid_w_h='1x1', loc_x_y='1x1'))
-
-    # # get_mix_num test 코드
-    # mydb.set_location(grid_id='1', x='1', y='2')
-    # mydb.set_location(grid_id='1', x='1', y='3')
-    # mydb.set_location(grid_id='1', x='1', y='4')
-    # mydb.set_location(grid_id='1', x='1', y='5')
-    # mydb.set_category(super_id='1', name='22', width='1', height='1', depth='22', iteration='2', thumbnail='1')
-    # mydb.set_object(img_id='1', loc_id='5', category_id='2', iteration='1', mix_num='-1')
-    # mydb.set_object(img_id='1', loc_id='5', category_id='2', iteration='1', mix_num='0')
-    # mydb.set_object(img_id='1', loc_id='5', category_id='2', iteration='1', mix_num='1')
-    # print(mydb.get_mix_num(loc_id='5', category_id='2', iteration='1'))
-
-    # # list_obj_check_num test 코드
-    # mydb.set_environment(ipv4='127.223.444.445', floor='1', width='3', height='5', depth='2')
-    # mydb.set_image(device_id='20002', image='1ddd', type='2', check_num='3')
-    # mydb.set_location(grid_id='1', x='1', y='2')
-    # mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
-    # mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='3', mix_num='-1')
-    # print(mydb.list_obj_check_num(grid_id='1', category_id='1', check_num='1'))
-
-    # # delete_bbox_img test 코드
-    # mydb.set_bbox(obj_id='1', x='1', y='2', width='1', height='1')
-    # mydb.set_bbox(obj_id='1', x='1', y='3', width='1', height='1')
-    # mydb.set_bbox(obj_id='1', x='1', y='3', width='1', height='1')
-    # print(mydb.delete_bbox_img(img_id='1'))
-
-    # # delete_nomix_img test 코드
-    # mydb.set_supercategory(name='mix')
-    # mydb.set_category(super_id='2', name='hi', width='1', height='1', depth='1', iteration='1', thumbnail='1')
-    # mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='2', mix_num='-1')
-    # mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='3', mix_num='-1')
-    # mydb.set_object(img_id='1', loc_id='1', category_id='1', iteration='4', mix_num='-1')
-    # mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='5', mix_num='-1')
-    # mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='6', mix_num='-1')
-    # mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='7', mix_num='-1')
-    # mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='8', mix_num='-1')
-    # # img_id=1이면 mix, img_id=2이면 mix 아님
-    # print(mydb.delete_nomix_img(img_id='1'))
-
-    # # list_obj_check_num test 코드
-    # mydb.set_environment(ipv4='127.223.444.445', floor='1', width='3', height='5', depth='2')
-    # mydb.set_image(device_id='20002', image='1ddd', type='2', check_num='1')
-    # mydb.set_location(grid_id='1', x='1', y='2')
-    # mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
-    # mydb.set_object(img_id='2', loc_id='2', category_id='1', iteration='3', mix_num='-1')
-    # print(mydb.list_obj_check_num(grid_id='1', category_id='1', check_num='1'))
-
-    # set_obj_list test 코드
-    # mydb.delete_table(id='1', table='Object')
-    # mydb.set_location(grid_id='1', x='1', y='2')
-    # mydb.set_location(grid_id='1', x='1', y='3')
-    # mydb.set_location(grid_id='1', x='1', y='4')
-    # print(mydb.set_obj_list(grid_id='1', category_id='1', iteration='3', mix_num='-1'))
-
-    # get_aug_mask test 코드
-    # mydb.set_location(grid_id='1', x='1', y='2')
-    # mydb.set_object(img_id='1', loc_id='2', category_id='1', iteration='1', mix_num='-1')
-    # mydb.set_mask(obj_id='1', x='1', y='2')
-    # mydb.set_mask(obj_id='2', x='1', y='1')
-    # mydb.set_mask(obj_id='2', x='1', y='2')
-    # print(mydb.get_aug_mask(grid_id='1', category_id='1'))
-
-    # # get_aug_img test 코드
-    # mydb.set_environment(ipv4='127.223.444.445', floor='1', width='3', height='5', depth='2')
-    # mydb.set_image(env_id='20002', img='1ddd', type='2', check_num='3')
-    # mydb.set_location(grid_id='1', x='1', y='2')
-    # mydb.set_object(img_id='1', loc_id='2', cat_id='1', iteration='1', mix_num='-1')
-    # mydb.set_object(img_id='2', loc_id='2', cat_id='1', iteration='3', mix_num='-1')
-    # print(mydb.get_aug_img(grid_id='1', cat_id='1'))
-
-    # get_aug_loc_id test 코드
-    # mydb.set_location(grid_id='1', x='1', y='2')
-    # mydb.set_location(grid_id='1', x='2', y='1')
-    # mydb.set_location(grid_id='1', x='2', y='2')
-    # print(mydb.get_aug_loc_id(grid_id='1'))
-
-    # # db_to_json test 코드
-    # mydb.set_supercategory(name='생수')
-    # mydb.set_category(super_id='2', name='삼다수', width='1', height='1', depth='1', iteration='1', thumbnail='1')
-    # mydb.set_object(img_id='1', loc_id='1', category_id='2', iteration='2', mix_num='-1')
-    # mydb.set_mask(obj_id='2', x='1', y='2')
-    # mydb.set_mask(obj_id='2', x='1', y='3')
-    # mydb.set_mask(obj_id='2', x='1', y='4')
-    # mydb.set_bbox(obj_id='2', x='1', y='1', width='1', height='1')
-    #
-    # mydb.set_image(device_id='20001', image=img, type='0', check_num='1')
-    # mydb.set_image(device_id='20001', image=img, type='0', check_num='1')
-    # mydb.set_mask(obj_id='1', x='1', y='2')
-    # mydb.set_mask(obj_id='1', x='1', y='3')
-    # mydb.set_mask(obj_id='1', x='1', y='4')
-    #
-    # json_path = "./coco_info.json"
-    # img_path = "./img"
-    # if not os.path.exists(img_path):
-    #     os.makedirs(img_path)
-    #
-    # print(mydb.db_to_json(json_path=json_path, img_path=img_path))

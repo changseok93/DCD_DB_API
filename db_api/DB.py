@@ -1968,10 +1968,10 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT Obj.loc_x, Obj.loc_y, Obj.iteration, Mask.id, Mask.x, Mask.y " \
+                query = "SELECT Obj.loc_x, Obj.loc_y, Obj.iteration, Mask.mask_id, Mask.x, Mask.y " \
                         "FROM (SELECT O.obj_id, O.iteration, Loc.x AS loc_x, Loc.y AS loc_y " \
-                        "      FROM (SELECT id AS obj_id, iteration, loc_id FROM Object WHERE cat_id=%s) AS O " \
-                        "      INNER JOIN (SELECT x, y, id AS loc_id FROM Location WHERE grid_id=%s) AS Loc " \
+                        "      FROM (SELECT obj_id, iteration, loc_id FROM Object WHERE cat_id=%s) AS O " \
+                        "      INNER JOIN (SELECT x, y, loc_id FROM Location WHERE grid_id=%s) AS Loc " \
                         "      ON Loc.loc_id=O.loc_id) AS Obj " \
                         "INNER JOIN Mask ON Mask.obj_id=Obj.obj_id"
                 value = (cat_id, grid_id)
@@ -2047,7 +2047,7 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT x, y, id FROM Location WHERE grid_id=%s"
+                query = "SELECT x, y, loc_id FROM Location WHERE grid_id=%s"
                 value = (grid_id)
                 cursor.execute(query, value)
                 v = cursor.fetchall()
@@ -2218,7 +2218,7 @@ class DB:
                 # Image table의 모든 img는 folder에 update
                 # Image table이 언제 갱신되었을지 모름
                 # Image folder도 갱신
-                query = "SELECT img_id, data FROM Image"
+                query = "SELECT img_id, img FROM Image"
                 cursor.execute(query)
                 img_table = cursor.fetchall()
                 for row in img_table:
