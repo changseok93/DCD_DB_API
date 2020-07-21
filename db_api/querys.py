@@ -39,8 +39,8 @@ initial_queries.append(create_superCategories_sql)
 # table Image
 create_img_sql="""
 CREATE TABLE Image(
-env_id INT UNSIGNED NOT NULL,
 img_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+env_id INT UNSIGNED NOT NULL,
 img MEDIUMBLOB NOT NULL,
 type TINYINT UNSIGNED NOT NULL,
 check_num TINYINT UNSIGNED NOT NULL,
@@ -52,8 +52,8 @@ initial_queries.append(create_img_sql)
 # table Location
 create_loc_sql="""
 CREATE TABLE Location(
-grid_id INT UNSIGNED NOT NULL,
 loc_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+grid_id INT UNSIGNED NOT NULL,
 x TINYINT UNSIGNED NOT NULL,
 y TINYINT UNSIGNED NOT NULL,
 PRIMARY KEY(loc_id),
@@ -65,8 +65,8 @@ initial_queries.append(create_loc_sql)
 # table class
 create_categories_sql="""
 CREATE TABLE Category(
-super_id INT UNSIGNED NOT NULL,
 cat_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+super_id INT UNSIGNED NOT NULL,
 cat_name VARCHAR(100) NOT NULL,
 width SMALLINT UNSIGNED NOT NULL,
 height SMALLINT UNSIGNED NOT NULL,
@@ -82,10 +82,10 @@ initial_queries.append(create_categories_sql)
 # table Object
 create_object_sql="""
 CREATE TABLE Object(
-img_id INT UNSIGNED,
+obj_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 loc_id INT UNSIGNED NOT NULL,
 cat_id INT UNSIGNED NOT NULL,
-obj_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+img_id INT UNSIGNED,
 iteration INT UNSIGNED NOT NULL,
 mix_num INT NOT NULL,
 aug_num INT NOT NULL,
@@ -100,23 +100,22 @@ initial_queries.append(create_object_sql)
 # table Bbox
 create_bbox_sql="""
 CREATE TABLE Bbox(
-obj_id INT UNSIGNED NOT NULL,
 bbox_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+obj_id INT UNSIGNED NOT NULL,
 x SMALLINT UNSIGNED NOT NULL,
 y SMALLINT UNSIGNED NOT NULL,
 width SMALLINT UNSIGNED NOT NULL,
 height SMALLINT UNSIGNED NOT NULL,
 PRIMARY KEY(bbox_id),
-FOREIGN KEY FOREIGN_KEY (obj_id) REFERENCES Object(obj_id) ON UPDATE CASCADE ON DELETE CASCADE,
-UNIQUE KEY UNIQUE_KEY (obj_id)
+FOREIGN KEY FOREIGN_KEY (obj_id) REFERENCES Object(obj_id) ON UPDATE CASCADE ON DELETE CASCADE
 )"""
 initial_queries.append(create_bbox_sql)
 
 # table Mask
 create_mask_sql="""
 CREATE TABLE Mask(
-obj_id INT UNSIGNED NOT NULL,
 mask_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+obj_id INT UNSIGNED NOT NULL,
 x SMALLINT UNSIGNED NOT NULL,
 Y SMALLINT UNSIGNED NOT NULL,
 PRIMARY KEY(mask_id),

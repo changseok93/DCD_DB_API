@@ -102,9 +102,53 @@ class DB:
             self.db.commit()
             return True
 
+    def init_table_no_print(self) -> bool:
+        """
+        table을 생성합니다. print 없
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                for i, sql in enumerate(querys.initial_queries):
+                    cursor.execute(sql)
+                cursor.execute("SHOW TABLES")
+        except Exception as e:
+            print('table is already exist')
+            print(e)
+            self.db.rollback()
+            return False
+        else:
+            self.db.commit()
+            return True
+
+    def del_table(self, table):
+        """
+        mysql databse에 있는 table의 모든 row를 지웁니다.(테이블은 유지)
+
+        Args:
+            table (str): 지우고자하는 table
+
+        Return:
+            Bool: True or False
+        """
+        try:
+            with self.db.cursor() as cursor:
+                query = "DELETE FROM {}".format(table)
+                cursor.execute(query)
+        except Exception as e:
+            print('Error function:', inspect.stack()[0][3])
+            print(e)
+            self.db.rollback()
+            return False
+        else:
+            self.db.commit()
+            return True
+
     def drop_table(self, table) -> bool:
         """
-        mysql databse에 있는 table을 지웁니다.
+        mysql databse에 있는 table을 지웁니다.(테이블 자체를 없애버림)
 
         Args:
             table (str): 지우고자하는 table
@@ -531,9 +575,9 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = 'INSERT INTO Object(loc_id, cat_id, iteration, mix_num, aug_num, img_id) ' \
+                query = 'INSERT INTO Object(loc_id, cat_id, img_id, iteration, mix_num, aug_num) ' \
                         'VALUES(%s, %s, %s, %s, %s, %s)'
-                values = (loc_id, cat_id, iteration, mix_num, aug_num, img_id)
+                values = (loc_id, cat_id, img_id, iteration, mix_num, aug_num)
                 cursor.execute(query, values)
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -866,6 +910,7 @@ class DB:
                 query = "SELECT env_id FROM Environment WHERE ipv4='{}' AND floor={}".format(ipv4, floor)
                 cursor.execute(query)
                 v = sum(cursor.fetchall(), ())
+
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
@@ -1329,7 +1374,7 @@ class DB:
                 query = "SELECT MAX(mix_num) FROM Object WHERE loc_id=%s AND cat_id=%s AND iteration=%s"
                 value = (loc_id, cat_id, iteration)
                 cursor.execute(query, value)
-                mix_nums = sum(cursor.fetchall(), ())
+                mix_num = sum(cursor.fetchall(), ())
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
             print(e)
@@ -1337,8 +1382,8 @@ class DB:
             return False
         else:
             self.db.commit()
-            if mix_nums:
-                return mix_nums
+            if mix_num:
+                return mix_num[0]
             else:
                 return None
 
@@ -1511,14 +1556,14 @@ class DB:
     def list_obj(self, cat_id, loc_ids):
         """
         Object table의 (cat_id), (loc_ids)를 입력 받아
-        해당되는 Object table의 row들을 반환하는 함수
+        Object table의 row들을 반환하는 함수
 
         Args:
             cat_id (str): Object table의 (cat_id)
             loc_ids (tuple): Object table의 (loc_id)들
 
         Return:
-            tuple()(): Location table의 (loc_id)
+            tuple()(): Object table의 row
 
             None: 값 없음
 
@@ -1526,7 +1571,7 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query_head = 'SELECT img_id FROM Object WHERE (cat_id=' + cat_id + ') AND ('
+                query_head = 'SELECT * FROM Object WHERE (cat_id=' + cat_id + ') AND ('
                 for loc_id in loc_ids:
                     query_head += 'loc_id={} OR '.format(loc_id[0])
 
@@ -1627,7 +1672,7 @@ class DB:
 
         Args:
             loc_id (str): Object table의 loc_id
-            category_id (str): Object table의 category_id
+            cat_id (str): Object table의 category_id
             cat_id (str): Object table의 iteration
             mix_num (str): Object table의 mix_num
 
@@ -1636,7 +1681,8 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT obj_id FROM Object WHERE loc_id=%s AND cat_id=%s AND iteration=%s AND mix_num=%s"
+                query = "SELECT obj_id FROM Object " \
+                        "WHERE loc_id=%s AND cat_id=%s AND iteration=%s AND mix_num=%s"
                 value = (loc_id, cat_id, iteration, mix_num)
                 cursor.execute(query, value)
                 obj_id = sum(cursor.fetchall(), ())
@@ -2063,18 +2109,20 @@ class DB:
             else:
                 return None
 
-    def set_obj_list(self, grid_id, cat_id, iteration, mix_num) -> bool:
+    def set_obj_list(self, grid_id, cat_id, iteration, mix_num, aug_num='-1') -> bool:
         """
         Location table의 (grid_id)를 가진 row와 Category table의 (id)를 가진 row를 통해
-        (Location table의 특정 (grid_id)를 가진 row 수) X
-        (category table의 특정 (cat_id)를 가진 row 수) X
-        (iteration)만큼 Object table에 row 생성
+        [Location table의 특정 (grid_id)를 가진 row 수] X
+        [category table의 특정 (cat_id)를 가진 row 수] X
+        [iteration]
+        만큼 Object table에 row 생성
 
         Args:
             grid_id (str): Location table의 (grid_id)
             cat_id (str): Category table의 (id)
             iteration (str): Object table의 (iteration)
             mix_num (str): Object table의 (mix_num)
+            aug_num (str): Object table의 (aug_num)
 
         Return:
             Bool: True or False
@@ -2086,21 +2134,22 @@ class DB:
                         "   img_id INT UNSIGNED," \
                         "   iteration INT UNSIGNED NOT NULL," \
                         "   mix_num INT NOT NULL," \
-                        "   cat_id INT UNSIGNED NOT NULL" \
+                        "   cat_id INT UNSIGNED NOT NULL," \
+                        "   aug_num INT NOT NULL" \
                         ")"
                 cursor.execute(query)
                 # for문 이용해 tmp 테이블에 값을 채움
                 for i in range(int(iteration)):
-                    query = "INSERT INTO tmp(img_id, iteration, mix_num, cat_id) " \
-                            "VALUES(NULL, %s, %s, %s)"
-                    value = (i+1, mix_num, cat_id)
+                    query = "INSERT INTO tmp(img_id, iteration, mix_num, cat_id, aug_num) " \
+                            "VALUES(NULL, %s, %s, %s, %s)"
+                    value = (i+1, mix_num, cat_id, aug_num)
                     cursor.execute(query, value)
 
                 # main query
-                query = "INSERT INTO Object(img_id, loc_id, cat_id, iteration, mix_num) " \
-                        "SELECT Obj.img_id, Obj.loc_id, Obj.cat_id, Obj.iteration, Obj.mix_num " \
+                query = "INSERT INTO Object(loc_id, cat_id, img_id, iteration, mix_num, aug_num) " \
+                        "SELECT Obj.loc_id, Obj.cat_id, Obj.img_id, Obj.iteration, Obj.mix_num, Obj.aug_num " \
                         "FROM (SELECT * FROM tmp " \
-                        "      CROSS JOIN (SELECT loc_id FROM Location WHERE grid_id=%s) AS Loc) AS Obj"
+                        "CROSS JOIN (SELECT loc_id FROM Location WHERE grid_id=%s) AS Loc) AS Obj"
                 value = (grid_id)
                 cursor.execute(query, value)
 
@@ -2135,8 +2184,8 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "INSERT INTO Object (img_id, loc_id, category_id, iteration, mix_num) " \
-                        "VALUES (%s, %s, %s, %s, %s)"
+                query = "INSERT INTO Object (loc_id, cat_id, img_id, iteration, mix_num, aug_num) " \
+                        "VALUES (%s, %s, %s, %s, %s, %s)"
                 cursor.executemany(query, datas)
         except Exception as e:
             print('Error function:', inspect.stack()[0][3])
@@ -2152,8 +2201,7 @@ class DB:
         Bbox table에 여러개의 row 추가
 
         Args:
-            datas (generator) : ((obj_id, x, y, width, height),
-                                 (...))
+            datas (generator) : ((obj_id, x, y, width, height), (...))
 
         Return:
             Bool: True or False
@@ -2278,7 +2326,6 @@ class DB:
                     dict["segmentation"] = mask
 
                     coco_info["annotations"].append(dict)
-
                 save_json(json_path=json_path, coco_format=coco_info)
 
         except Exception as e:
