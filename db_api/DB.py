@@ -1565,14 +1565,14 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT * FROM Object WHERE id IN (SELECT C.obj_id " \
+                query = "SELECT * FROM Object WHERE obj_id IN (SELECT C.obj_id " \
                         "   FROM (SELECT tmp.obj_id, Image.check_num " \
                         "       FROM (SELECT Obj.obj_id, Obj.img_id " \
-                        "           FROM (SELECT id AS obj_id, img_id, loc_id " \
-                        "               FROM Object WHERE category_id=%s) AS Obj " \
-                        "           INNER JOIN (SELECT id AS loc_id FROM Location WHERE grid_id=%s) AS Loc " \
+                        "           FROM (SELECT obj_id, img_id, loc_id " \
+                        "               FROM Object WHERE cat_id=%s) AS Obj " \
+                        "           INNER JOIN (SELECT loc_id FROM Location WHERE grid_id=%s) AS Loc " \
                         "           ON Loc.loc_id=Obj.loc_id) AS tmp " \
-                        "       INNER JOIN Image ON Image.id=tmp.img_id) AS C " \
+                        "       INNER JOIN Image ON Image.img_id=tmp.img_id) AS C " \
                         "WHERE check_num=%s)"
                 value = (cat_id, grid_id, check_num)
                 cursor.execute(query, value)
@@ -1673,7 +1673,7 @@ class DB:
                 bbox_ids = cursor.fetchall()
 
                 # Mask query
-                query = "SELECT bbox_id FROM Mask " \
+                query = "SELECT mask_id FROM Mask " \
                         "WHERE obj_id IN (SELECT obj_id FROM Object WHERE cat_id=%s AND mix_num=-1)"
                 value = (cat_id)
                 cursor.execute(query, value)
@@ -1704,8 +1704,8 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "SELECT cat_id FROM Category WHERE name=%s AND " \
-                        "super_id IN (SELECT super_id FROM SuperCategory WHERE name=%s)"
+                query = "SELECT cat_id FROM Category WHERE cat_name=%s AND " \
+                        "super_id IN (SELECT super_id FROM SuperCategory WHERE super_name=%s)"
                 value = (super_name, cat_name)
                 cursor.execute(query, value)
                 v = sum(cursor.fetchall(), ())
@@ -1736,7 +1736,7 @@ class DB:
         try:
             with self.db.cursor() as cursor:
                 query = "UPDATE Image SET check_num=%s " \
-                        "WHERE id=(SELECT img_id FROM Object WHERE id=%s)"
+                        "WHERE img_id=(SELECT img_id FROM Object WHERE obj_id=%s)"
                 value = (check_num, obj_id)
                 cursor.execute(query, value)
         except Exception as e:
@@ -1761,7 +1761,7 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "UPDATE Image SET check_num=%s WHERE id=%s"
+                query = "UPDATE Image SET check_num=%s WHERE img_id=%s"
                 value = (check_num, img_id)
                 cursor.execute(query, value)
         except Exception as e:
@@ -1787,8 +1787,8 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "UPDATE Image SET data=%s" \
-                        "WHERE id=(SELECT img_id FROM Object WHERE id=%s)"
+                query = "UPDATE Image SET img=%s" \
+                        "WHERE img_id=(SELECT img_id FROM Object WHERE obj_id=%s)"
                 value = (img, obj_id)
                 cursor.execute(query, value)
         except Exception as e:
@@ -1813,7 +1813,7 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "UPDATE Image SET data=%s WHERE id=%s"
+                query = "UPDATE Image SET img=%s WHERE img_id=%s"
                 value = (img, img_id)
                 cursor.execute(query, value)
         except Exception as e:
@@ -1909,7 +1909,7 @@ class DB:
         try:
             with self.db.cursor() as cursor:
                 query = "DELETE FROM Bbox WHERE " \
-                        "obj_id IN (SELECT id FROM Object WHERE img_id=%s)"
+                        "obj_id IN (SELECT obj_id FROM Object WHERE img_id=%s)"
                 value = (img_id)
                 cursor.execute(query, value)
         except Exception as e:
@@ -1934,10 +1934,10 @@ class DB:
         """
         try:
             with self.db.cursor() as cursor:
-                query = "DELETE FROM Object WHERE img_id=%s AND id " \
-                        "IN (SELECT obj_id FROM (SELECT id as obj_id FROM Object WHERE category_id " \
-                        "IN (SELECT id as category_id FROM Category WHERE super_id " \
-                        "IN (SELECT id as super_id FROM SuperCategory WHERE NOT name='mix'))) AS Obj)"
+                query = "DELETE FROM Object WHERE img_id=%s AND obj_id " \
+                        "IN (SELECT obj_id FROM (SELECT obj_id FROM Object WHERE cat_id " \
+                        "IN (SELECT cat_id FROM Category WHERE super_id " \
+                        "IN (SELECT super_id FROM SuperCategory WHERE NOT super_name='mix'))) AS Obj)"
 
                 value = (img_id)
                 cursor.execute(query, value)
@@ -2063,16 +2063,16 @@ class DB:
             else:
                 return None
 
-    def set_obj_list(self, grid_id, category_id, iteration, mix_num) -> bool:
+    def set_obj_list(self, grid_id, cat_id, iteration, mix_num) -> bool:
         """
         Location table의 (grid_id)를 가진 row와 Category table의 (id)를 가진 row를 통해
         (Location table의 특정 (grid_id)를 가진 row 수) X
-        (category table의 특정 (category_id)를 가진 row 수) X
+        (category table의 특정 (cat_id)를 가진 row 수) X
         (iteration)만큼 Object table에 row 생성
 
         Args:
             grid_id (str): Location table의 (grid_id)
-            category_id (str): Category table의 (id)
+            cat_id (str): Category table의 (id)
             iteration (str): Object table의 (iteration)
             mix_num (str): Object table의 (mix_num)
 
@@ -2086,27 +2086,27 @@ class DB:
                         "   img_id INT UNSIGNED," \
                         "   iteration INT UNSIGNED NOT NULL," \
                         "   mix_num INT NOT NULL," \
-                        "   category_id INT UNSIGNED NOT NULL" \
+                        "   cat_id INT UNSIGNED NOT NULL" \
                         ")"
                 cursor.execute(query)
                 # for문 이용해 tmp 테이블에 값을 채움
                 for i in range(int(iteration)):
-                    query = "INSERT INTO tmp(img_id, iteration, mix_num, category_id) " \
+                    query = "INSERT INTO tmp(img_id, iteration, mix_num, cat_id) " \
                             "VALUES(NULL, %s, %s, %s)"
-                    value = (i+1, mix_num, category_id)
+                    value = (i+1, mix_num, cat_id)
                     cursor.execute(query, value)
 
                 # main query
-                query = "INSERT INTO Object(img_id, loc_id, category_id, iteration, mix_num) " \
-                        "SELECT Obj.img_id, Obj.loc_id, Obj.category_id, Obj.iteration, Obj.mix_num " \
+                query = "INSERT INTO Object(img_id, loc_id, cat_id, iteration, mix_num) " \
+                        "SELECT Obj.img_id, Obj.loc_id, Obj.cat_id, Obj.iteration, Obj.mix_num " \
                         "FROM (SELECT * FROM tmp " \
-                        "      CROSS JOIN (SELECT id AS loc_id FROM Location WHERE grid_id=%s) AS Loc) AS Obj"
+                        "      CROSS JOIN (SELECT loc_id FROM Location WHERE grid_id=%s) AS Loc) AS Obj"
                 value = (grid_id)
                 cursor.execute(query, value)
 
                 # table id 변경
                 # mysql의 autoincrement gap error 때문에 설정이 필요
-                query = "SELECT MAX(id) FROM Object"
+                query = "SELECT MAX(obj_id) FROM Object"
                 max_id = cursor.execute(query)
                 query = "ALTER TABLE Object AUTO_INCREMENT = %s"
                 value = (max_id)

@@ -20,10 +20,23 @@ def print_check(func):
     return show
 
 
+# decorator
+def print_basic(func):
+    @wraps(func)
+    def show(self, *method_args, **method_kwargs):
+        func(self)
+        print('{} table: '.format(func.__name__[1:]), self.table)
+        print('{} table last id: '.format(func.__name__[1:]), self.last_id)
+
+    return show
+
+
 class CheckBasic:
     def __init__(self, db):
         self.db = db
         self.db.init_table()
+        self.table = None
+        self.last_id = None
 
     def check_all(self):
         self._environment()
@@ -36,78 +49,87 @@ class CheckBasic:
         self._bbox()
         self._mask()
 
+    @print_basic
     def _environment(self):
         # check environment fucntions
         self.db.set_environment(ipv4='127.223.444.445', floor='1', width='3', height='4', depth='2')
         self.db.get_table(id='20001', table='Environment')
         # self.db.delete_table(id='1', table='Environment')
         self.db.update_environment(env_id='20001', ipv4='127.223.444.444')
-        print('Environment table: ', self.db.list_table(table='Environment'))
-        print('Environment table last id: ', self.db.get_last_id(table="Environment"))
+        self.table = self.db.list_table(table='Environment')
+        self.last_id = self.db.get_last_id(table="Environment")
 
+    @print_basic
     def _supercategory(self):
         self.db.set_supercategory(super_name='hi')
         self.db.get_table(id='1', table='SuperCategory')
         # self.db.delete_table(id='1', table='SuperCategory')
         self.db.update_supercategory(super_id='1', super_name='hi')
-        print('SuperCateogry table: ', self.db.list_table(table='SuperCategory'))
-        print('SuperCategory table last id: ', self.db.get_last_id(table='SuperCategory'))
+        self.table = self.db.list_table(table='SuperCategory')
+        self. last_id = self.db.get_last_id(table='SuperCategory')
 
+    @print_basic
     def _grid(self):
         self.db.set_grid(width='1', height='1')
         self.db.get_table(id='1', table='Grid')
         # self.db.delete_table(id='1', table='Grid')
         self.db.update_grid(grid_id='1', width='1')
-        print('Grid table: ', self.db.list_table(table='Grid'))
-        print('Grid table last id: ', self.db.get_last_id(table='Grid'))
+        self.table = self.db.list_table(table='Grid')
+        self.last_id = self.db.get_last_id(table='Grid')
 
+    @print_basic
     def _image(self):
         self.db.set_image(env_id='20001', img='1', type='0', check_num='1')
         self.db.get_table(id='1', table='Image')
         # self.db.delete_table(id='1', table='Image')
         self.db.update_image(img_id='1', env_id='20001')
-        # print('Image table: ', self.db.list_table(table='Image'))
-        print('Image table last id: ', self.db.get_last_id(table='Image'))
+        self.table = self.db.list_table(table='Image')
+        self.last_id = self.db.get_last_id(table='Image')
 
+    @print_basic
     def _location(self):
         self.db.set_location(grid_id='1', x='1', y='1')
         self.db.get_table(id='1', table='Location')
         # self.db.delete_table(id='1', table='Location')
         self.db.update_location(loc_id='1', x='1')
-        print('Location table: ', self.db.list_table(table='Location'))
-        print('Location table last id: ', self.db.get_last_id(table='Location'))
+        self.table = self.db.list_table(table='Location')
+        self.last_id = self.db.get_last_id(table='Location')
 
+    @print_basic
     def _category(self):
         self.db.set_category(super_id='1', cat_name='1', width='1', height='1', depth='1', iteration='1', thumbnail='1')
         self.db.get_table(id='1', table='Category')
         # self.db.delete_table(id='1', table='Category')
         self.db.update_category(cat_id='1', cat_name='1')
-        print('Category table: ', self.db.list_table(table='Category'))
-        print('Category table last id: ', self.db.get_last_id(table='Category'))
+        self.table = self.db.list_table(table='Category')
+        self.last_id = self.db.get_last_id(table='Category')
 
+    @print_basic
     def _object(self):
         self.db.set_object(img_id='1', loc_id='1', cat_id='1', iteration='1', mix_num='-1')
         self.db.get_table(id='1', table='Object')
         # self.db.delete_table(id='1', table='Object')
         self.db.update_object(obj_id='1', loc_id='1')
-        print('Object table: ', self.db.list_table(table='Object'))
-        print('Object table last id: ', self.db.get_last_id(table='Object'))
+        self.table = self.db.list_table(table='Object')
+        self.last_id = self.db.get_last_id(table='Object')
 
+    @print_basic
     def _bbox(self):
         self.db.set_bbox(obj_id='1', x='1', y='1', width='1', height='1')
         self.db.get_table(id='1', table='Bbox')
         # self.db.delete_table(id='1', table='Bbox')
         self.db.update_bbox(bbox_id='1', x='1')
-        print('Bbox table: ', self.db.list_table(table='Bbox'))
-        print('Bbox table last id: ', self.db.get_last_id(table='Bbox'))
+        self.table = self.db.list_table(table='Bbox')
+        self.last_id = self.db.get_last_id(table='Bbox')
 
+    @print_basic
     def _mask(self):
         self.db.set_mask(obj_id='1', x='1', y='1')
         self.db.get_table(id='1', table='Mask')
         # self.db.delete_table(id='1', table='Mask')
         self.db.update_mask(mask_id='1', x='1')
-        print('Mask table: ', self.db.list_table(table='Mask'))
-        print('Mask table last id: ', self.db.get_last_id(table='Mask'))
+        self.table = self.db.list_table(table='Mask')
+        self.last_id = self.db.get_last_id(table='Mask')
 
 
 class CheckGet:
@@ -233,7 +255,7 @@ class CheckList:
 
     @print_check
     def _list_obj_CN(self):
-        self.ans = self.db.list_obj_CN(grid_id='1', category_id='1', check_num='-1')
+        self.ans = self.db.list_obj_CN(grid_id='1', cat_id='1', check_num='-1')
 
 
 class CheckCheck:
@@ -320,42 +342,53 @@ class CheckDelete:
         self.ans = self.db.delete_nomix_img(img_id='1')
 
 
-# class CheckAug:
-#     def __init__(self, db):
-#         self.db = db
-#         self.ans = None
-#
-#     def check_all(self):
-#         self._get_aug_mask()
-#         self._get_aug_img()
-#         self._get_aug_loc_id()
-#         self._set_obj_list()
-#         self._set_bulk_obj()
-#         self._set_bulk_bbox()
-#         self._set_bulk_img()
-#
-#     def _get_aug_mask(self):
-#         self.ans = self.db.get_aug_mask(grid_id='1', cat_id='1')
-#
-#     def _get_aug_img(self):
-#         self.ans = self.db.get_aug_img(grid_id='1', cat_id='1')
-#
-#     def _get_aug_loc_id(self):
-#         self.ans = self.db.get_aug_loc_id(grid_id='1')
-#
-#     def _set_obj_list(self):
-#         # self.ans = self.db.set_obj_list(grid_id='1')
-#
-#     def _set_bulk_obj(self):
-#         self.ans = self.db.set_bulk_obj(datas=)
-#
-#     def _set_bulk_bbox(self):
-#         ex_table = ([('1', '1', "{}".format(i), '1', '1') for i in range(4, 10)])
-#         self.ans = self.db.set_bulk_bbox(datas=ex_table)
-#
-#     def _set_bulk_img(self):
-#         ex_table = (['20001', img_loader(join(img_path, img_p)), '1', '1'] for img_p in sorted(listdir(img_path)))
-#         self.ans = self.db.set_bulk_img(datas=ex_table)
+class CheckAug:
+    def __init__(self, db):
+        self.db = db
+        self.ans = None
+
+    def check_all(self):
+        self._get_aug_mask()
+        self._get_aug_img()
+        self._get_aug_loc_id()
+
+    def _get_aug_mask(self):
+        self.ans = self.db.get_aug_mask(grid_id='1', cat_id='1')
+
+    def _get_aug_img(self):
+        self.ans = self.db.get_aug_img(grid_id='1', cat_id='1')
+
+    def _get_aug_loc_id(self):
+        self.ans = self.db.get_aug_loc_id(grid_id='1')
+
+
+class CheckSet:
+    def __init__(self, db):
+        self.db = db
+        self.ans = None
+
+    def check_all(self):
+        self._set_obj_list()
+        self._set_bulk_obj()
+        self._set_bulk_bbox()
+        self._set_bulk_img()
+
+    def _set_obj_list(self):
+        self.ans = self.db.set_obj_list(grid_id='1', cat_id='1', iteration='1', mix_num='1')
+
+    def _set_bulk_obj(self):
+        # self.ans = self.db.set_bulk_obj(datas=)
+        pass
+
+    def _set_bulk_bbox(self):
+        ex_table = ([('1', '1', "{}".format(i), '1', '1') for i in range(4, 10)])
+        self.ans = self.db.set_bulk_bbox(datas=ex_table)
+
+    def _set_bulk_img(self):
+        # img_path = '/home/cha/DB/img/aug_img'
+        # ex_table = (['20001', img_loader(join(img_path, img_p)), '1', '1'] for img_p in sorted(listdir(img_path)))
+        # self.ans = self.db.set_bulk_img(datas=ex_table)
+        pass
 
 
 def reset_table(db):
@@ -432,8 +465,30 @@ if __name__ == "__main__":
     cg = CheckGet(mydb)
     cg.check_all()
 
+    # list 함수 test
     cl = CheckList(mydb)
     cl.check_all()
+
+    # check 함수 test
+    ct = CheckCheck(mydb)
+    ct.check_all()
+
+    # update 함수 test
+    cu = CheckUpdate(mydb)
+    cu.check_all()
+
+    # delete 함수 test
+    cd = CheckDelete(mydb)
+    cd.check_all()
+
+    # aug 함수 test
+    ca = CheckAug(mydb)
+    ca.check_all()
+
+    # set 함수 test
+    # cs = CheckSet(mydb)
+    # cs.check_all()
+
 
     # get_loc_id_GL test 코드
     # mydb.set_grid(width='1', height='2')
